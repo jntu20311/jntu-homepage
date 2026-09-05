@@ -52,7 +52,12 @@ export const Header = () => {
               menu.items ? (
                 <NavigationMenuItem key={menu.label}>
                   <NavigationMenuTrigger>
-                    <Link to={menu.items[0].path}>{menu.label}</Link>
+                    <Link
+                      to={menu.items[0].path}
+                      target={menu.items[0].external ? "_blank" : undefined}
+                    >
+                      {menu.label}
+                    </Link>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-42 gap-1 p-0">
@@ -64,6 +69,7 @@ export const Header = () => {
                             <NavigationMenuLink asChild>
                               <Link
                                 to={item.path}
+                                target={item.external ? "_blank" : undefined}
                                 className={cn(
                                   "block rounded-md px-2 py-2 text-lg font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-primary",
                                   isSelected
@@ -139,6 +145,9 @@ export const Header = () => {
                                   <SheetClose asChild>
                                     <NavLink
                                       to={item.path}
+                                      target={
+                                        item.external ? "_blank" : undefined
+                                      }
                                       className={cn(
                                         "block rounded-md px-3 py-2 text-md transition-colors hover:bg-accent hover:text-accent-foreground text-muted-foreground",
                                       )}

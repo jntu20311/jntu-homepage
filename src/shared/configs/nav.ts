@@ -1,8 +1,10 @@
 import { routes } from "@/shared/configs/routes";
+import { CONSTANTS } from "./constants";
 
 export interface NavItem {
   label: string;
   path: string;
+  external?: boolean;
 }
 
 export interface NavMenu {
@@ -33,9 +35,9 @@ export const navMenus: NavMenu[] = [
   {
     label: "가입/변경",
     items: [
-      { label: "조합원 가입", path: routes.JOIN_MEMBER },
-      { label: "후원회원 가입", path: routes.JOIN_SUPPORTER },
-      { label: "정보 변경", path: routes.JOIN_UPDATE },
+      { label: "조합원 가입", path: CONSTANTS.BANKCMS_LINK, external: true },
+      { label: "후원회원 가입", path: CONSTANTS.BANKCMS_LINK, external: true },
+      { label: "정보 변경", path: CONSTANTS.BANKCMS_LINK, external: true },
     ],
   },
 ];

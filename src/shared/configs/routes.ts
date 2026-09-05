@@ -14,13 +14,10 @@ export const routes = {
   ACTIVITIES_POLICY: "/activities/policy",
   ACTIVITIES_BENEFITS: "/activities/benefits",
 
-  // 가입하기 (가입/변경)
+  // 가입하기 (가입/변경) - 외부 링크 확인 후 링크 및 페이지 제거
   JOIN_MEMBER: "/join/member",
   JOIN_SUPPORTER: "/join/supporter",
   JOIN_UPDATE: "/join/update",
-
-  // 교사지원포털
-  PORTAL: "/portal",
 
   // 이용약관 / 개인정보취급방침 (footer)
   TERMS: "/terms",
