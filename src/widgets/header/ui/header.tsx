@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ExternalLinkIcon, Menu } from "lucide-react";
 import { navMenus } from "@/shared/configs/nav";
 import { routes } from "@/shared/configs/routes";
 import { cn } from "@/shared/lib/utils";
@@ -29,8 +29,10 @@ import {
   SheetTrigger,
 } from "@/shared/ui/sheet";
 import { Logo } from "@/shared/ui/logo";
+import { CONSTANTS } from "@/shared/configs/constants";
 
 export const Header = () => {
+  const location = useLocation();
   const [open, setOpen] = useState(false);
 
   return (
@@ -49,21 +51,32 @@ export const Header = () => {
             {navMenus.map((menu) =>
               menu.items ? (
                 <NavigationMenuItem key={menu.label}>
-                  <NavigationMenuTrigger>{menu.label}</NavigationMenuTrigger>
+                  <NavigationMenuTrigger>
+                    <Link to={menu.items[0].path}>{menu.label}</Link>
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-56 gap-1 p-2">
-                      {menu.items.map((item) => (
-                        <li key={item.path}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={item.path}
-                              className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                            >
-                              {item.label}
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
+                    <ul className="grid w-42 gap-1 p-0">
+                      {menu.items.map((item) => {
+                        const isSelected = item.path == location.pathname;
+
+                        return (
+                          <li key={item.path}>
+                            <NavigationMenuLink asChild>
+                              <Link
+                                to={item.path}
+                                className={cn(
+                                  "block rounded-md px-2 py-2 text-lg font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-primary",
+                                  isSelected
+                                    ? "text-primary font-semibold"
+                                    : "",
+                                )}
+                              >
+                                {item.label}
+                              </Link>
+                            </NavigationMenuLink>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -78,6 +91,20 @@ export const Header = () => {
                 </NavigationMenuItem>
               ),
             )}
+
+            <NavigationMenuItem key={CONSTANTS.PORTAL_LINK}>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link to={CONSTANTS.PORTAL_LINK} target="_blank">
+                  <div className="flex items-center gap-2">
+                    {CONSTANTS.PORTAL_LABEL}
+                    <ExternalLinkIcon />
+                  </div>
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
@@ -105,25 +132,31 @@ export const Header = () => {
                         </AccordionTrigger>
                         <AccordionContent>
                           <ul className="flex flex-col gap-1 pl-2">
-                            {menu.items.map((item) => (
-                              <li key={item.path}>
-                                <SheetClose asChild>
-                                  <NavLink
-                                    to={item.path}
-                                    className={({ isActive }) =>
-                                      cn(
-                                        "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
-                                        isActive
-                                          ? "bg-accent text-accent-foreground"
-                                          : "text-muted-foreground",
-                                      )
-                                    }
-                                  >
-                                    {item.label}
-                                  </NavLink>
-                                </SheetClose>
-                              </li>
-                            ))}
+                            {menu.items.map((item) => {
+                              const isSelected = item.path == location.pathname;
+                              return (
+                                <li key={item.path}>
+                                  <SheetClose asChild>
+                                    <NavLink
+                                      to={item.path}
+                                      className={cn(
+                                        "block rounded-md px-3 py-2 text-md transition-colors hover:bg-accent hover:text-accent-foreground text-muted-foreground",
+                                      )}
+                                    >
+                                      <span
+                                        className={cn(
+                                          isSelected
+                                            ? "text-primary font-semibold"
+                                            : "text-muted-foreground",
+                                        )}
+                                      >
+                                        {item.label}
+                                      </span>
+                                    </NavLink>
+                                  </SheetClose>
+                                </li>
+                              );
+                            })}
                           </ul>
                         </AccordionContent>
                       </AccordionItem>
@@ -145,6 +178,33 @@ export const Header = () => {
                       </SheetClose>
                     ),
                   )}
+
+                  <SheetClose asChild key={`mobile-${CONSTANTS.PORTAL_LABEL}`}>
+                    <NavLink
+                      to={CONSTANTS.PORTAL_LINK}
+                      target="_blank"
+                      className={({ isActive }) =>
+                        cn(
+                          "flex py-4 font-medium transition-colors hover:text-foreground",
+                          isActive
+                            ? "text-foreground"
+                            : "text-muted-foreground",
+                        )
+                      }
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={cn(
+                            "flex py-4 text-base font-medium transition-colors hover:text-foreground",
+                            "text-foreground",
+                          )}
+                        >
+                          {CONSTANTS.PORTAL_LABEL}
+                        </span>
+                        <ExternalLinkIcon className="text-gray-600 size-4" />
+                      </div>
+                    </NavLink>
+                  </SheetClose>
                 </Accordion>
               </div>
             </SheetContent>

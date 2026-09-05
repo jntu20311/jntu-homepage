@@ -38,10 +38,6 @@ export const navMenus: NavMenu[] = [
       { label: "정보 변경", path: routes.JOIN_UPDATE },
     ],
   },
-  {
-    label: "교사지원포털",
-    path: routes.PORTAL,
-  },
 ];
 
 /** 푸터 하단 법적 고지 링크 */
@@ -50,11 +46,6 @@ export const legalItems: NavItem[] = [
   { label: "개인정보취급방침", path: routes.PRIVACY },
 ];
 
-/** 현재 경로가 속한 상위(메인) 메뉴 그룹을 찾습니다. (상세 페이지 등 하위 경로 포함) */
+/** 현재 경로가 속한 상위(메인) 메뉴 그룹을 찾습니다. */
 export const findMenuByPath = (pathname: string): NavMenu | undefined =>
-  navMenus.find((menu) =>
-    menu.items?.some(
-      (item) =>
-        pathname === item.path || pathname.startsWith(`${item.path}/`),
-    ),
-  );
+  navMenus.find((menu) => menu.items?.some((item) => pathname === item.path));
