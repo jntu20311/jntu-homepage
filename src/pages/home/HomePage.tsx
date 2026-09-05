@@ -24,6 +24,18 @@ const homeLinks: HomeLink[] = [
   // { label: "커뮤니티", link: CONSTANTS.INSTAGRAM, external: true },
 ];
 
+type HomeBoard = {
+  title: string;
+  link: string;
+  items: string[];
+};
+
+const homeBoards: HomeBoard[] = [
+  { title: "보도자료", link: routes.ACTIVITIES_PRESS, items: [] },
+  { title: "활동내역", link: routes.ACTIVITIES_HISTORY, items: [] },
+  { title: "조합원 혜택", link: routes.ACTIVITIES_BENEFITS, items: [] },
+];
+
 export const HomePage = () => {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -47,22 +59,25 @@ export const HomePage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 mt-4 gap-6">
-        {["보도자료", "활동내역", "조합원 혜택"].map((el) => {
+        {homeBoards.map((el) => {
           return (
             <div>
               <div className="flex items-center border-b py-2">
-                <span className="text-xl font-bold">{el}</span>
-                <div className="ml-auto flex items-center text-sm font-semibold text-primary gap-1">
+                <span className="text-xl font-bold">{el.title}</span>
+                <Link
+                  className="ml-auto flex items-center text-sm font-semibold text-primary gap-1"
+                  to={el.link}
+                >
                   {"전체보기"}
                   <ArrowRightIcon className="text-primary" size={16} />
-                </div>
+                </Link>
               </div>
 
               <div className="mt-4 flex flex-col gap-1">
                 {[1, 2, 3, 4, 5].map((num) => {
                   return (
                     <div className="py-1 hover:bg-gray-100 cursor-pointer flex items-center gap-1">
-                      <span className="grow truncate">{`${el} 게시물 제목 표시되는 곳입니다 ${num}`}</span>
+                      <span className="grow truncate">{`${el.title} 게시물 제목 표시되는 곳입니다 ${num}`}</span>
                       <span className="text-xs text-gray-600 text-nowrap">{`2026-09-08`}</span>
                     </div>
                   );
