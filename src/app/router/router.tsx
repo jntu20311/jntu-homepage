@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { routes } from "../../shared/configs/routes";
-import { AboutPage, HomePage } from "../../pages";
+import { AboutPage, HomePage } from "@/pages";
+import { routes } from "@/shared/configs/routes";
 
 const router = createBrowserRouter([
   {
