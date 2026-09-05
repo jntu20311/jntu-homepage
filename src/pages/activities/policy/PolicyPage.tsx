@@ -1,5 +1,7 @@
 import { PageHeader } from "@/shared/ui/page-header";
 
 export const PolicyPage = () => {
-  return <PageHeader title="교섭·정책" description="교섭 및 정책 활동입니다." />;
+  return (
+    <PageHeader title="월별활동보고" description="교섭 및 정책 활동입니다." />
+  );
 };

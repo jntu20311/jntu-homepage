@@ -48,15 +48,16 @@ const router = createBrowserRouter([
             path: routes.ACTIVITIES_HISTORY_DETAIL,
             element: <HistoryDetailPage />,
           },
+
           { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
           { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
+
+          // 가입하기
+          { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },
+          { path: routes.JOIN_SUPPORTER, element: <JoinSupporterPage /> },
+          { path: routes.JOIN_UPDATE, element: <JoinUpdatePage /> },
         ],
       },
-
-      // 가입하기
-      { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },
-      { path: routes.JOIN_SUPPORTER, element: <JoinSupporterPage /> },
-      { path: routes.JOIN_UPDATE, element: <JoinUpdatePage /> },
 
       // 법적 고지
       { path: routes.TERMS, element: <TermsPage /> },

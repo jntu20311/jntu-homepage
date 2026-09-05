@@ -141,7 +141,7 @@ export const Header = () => {
                             {menu.items.map((item) => {
                               const isSelected = item.path == location.pathname;
                               return (
-                                <li key={item.path}>
+                                <li key={`msub-${item.label}`}>
                                   <SheetClose asChild>
                                     <NavLink
                                       to={item.path}

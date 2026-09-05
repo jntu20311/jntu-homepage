@@ -48,7 +48,7 @@ export const HomePage = () => {
           <p className="text-3xl md:text-5xl font-bold">전남광주교사노동조합</p>
           <div className="grid grid-cols-2 gap-2 mt-4">
             {homeLinks.map((el) => (
-              <Link to={el.link}>
+              <Link to={el.link} key={`homelink-${el.link}`}>
                 <div className="flex items-center justify-center rounded-md border py-4 hover:bg-gray-100">
                   {el.label}
                 </div>
@@ -61,7 +61,7 @@ export const HomePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 mt-4 gap-6">
         {homeBoards.map((el) => {
           return (
-            <div>
+            <div key={`board-${el.title}`}>
               <div className="flex items-center border-b py-2">
                 <span className="text-xl font-bold">{el.title}</span>
                 <Link
@@ -76,7 +76,10 @@ export const HomePage = () => {
               <div className="mt-4 flex flex-col gap-1">
                 {[1, 2, 3, 4, 5].map((num) => {
                   return (
-                    <div className="py-1 hover:bg-gray-100 cursor-pointer flex items-center gap-1">
+                    <div
+                      key={`${el.title}-${num}`}
+                      className="py-1 hover:bg-gray-100 cursor-pointer flex items-center gap-1"
+                    >
                       <span className="grow truncate">{`${el.title} 게시물 제목 표시되는 곳입니다 ${num}`}</span>
                       <span className="text-xs text-gray-600 text-nowrap">{`2026-09-08`}</span>
                     </div>

@@ -19,7 +19,7 @@ export const BoardSubMenu = () => {
       <nav className="mt-3 md:mt-4">
         <ul className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 md:mx-0 md:flex-col md:overflow-visible md:px-0 md:pb-0">
           {menu.items.map((item) => (
-            <li key={item.path} className="shrink-0 md:shrink">
+            <li key={`${item.label}`} className="shrink-0 md:shrink">
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
