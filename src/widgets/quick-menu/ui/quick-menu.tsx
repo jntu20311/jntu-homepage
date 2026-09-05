@@ -65,16 +65,16 @@ export const QuickMenu = () => {
         aria-expanded={open}
         aria-controls={PANEL_ID}
         aria-label={open ? "퀵메뉴 접기" : "퀵메뉴 펼치기"}
-        className="flex w-11 flex-col items-center self-stretch overflow-hidden rounded-l-xl bg-primary text-white shadow-lg transition-colors hover:bg-primary-700"
+        className="flex w-9 flex-col items-center self-stretch overflow-hidden rounded-l-xl bg-primary text-white shadow-lg transition-colors hover:bg-primary-700"
       >
-        <span className="flex flex-1 items-center justify-center py-6 text-sm font-bold tracking-[0.2em] [writing-mode:vertical-rl]">
+        <span className="flex flex-1 items-center justify-center py-4 text-md font-bold tracking-[0.2em] [writing-mode:vertical-rl]">
           QUICK MENU
         </span>
-        <span className="flex w-full items-center justify-center bg-blue-950 py-3">
+        <span className="flex w-full items-center justify-center bg-blue-950 py-2.5">
           {open ? (
-            <ChevronRight className="size-5" />
+            <ChevronRight className="size-6" />
           ) : (
-            <ChevronLeft className="size-5" />
+            <ChevronLeft className="size-6" />
           )}
         </span>
       </button>
@@ -86,7 +86,7 @@ export const QuickMenu = () => {
         className="w-40 border border-l-0 border-border bg-card shadow-xl"
       >
         <div className="px-5 pt-2">
-          <p className="text-md font-bold tracking-tight text-center">
+          <p className="text-lg font-bold tracking-tight text-center mb-1">
             <span className="text-primary">전남교사노조</span>
           </p>
         </div>
@@ -112,12 +112,12 @@ export const QuickMenu = () => {
 
           <li
             key={"quick-phone"}
-            className="border-b border-border/70 last:border-b-0"
+            className="border-b border-border/70 last:border-b-0 mt-1"
           >
             <div className="flex flex-col items-center rounded-lg pt-1.5 text-sm font-medium text-foreground transition-colors">
               {/* 대표번호 */}
               <div className="flex items-center gap-1 mr-4">
-                <PhoneIcon className="size-4.5 shrink-0 text-primary" />
+                <PhoneIcon className="size-5 shrink-0 text-primary" />
                 <span className="whitespace-pre-wrap text-center font-semibold text-[14px]">
                   {"대표번호"}
                 </span>
@@ -127,7 +127,7 @@ export const QuickMenu = () => {
               </span>
 
               {/* 영업시간 */}
-              <span className="whitespace-pre-wrap text-center text-gray-500">
+              <span className="mt-1 whitespace-pre-wrap text-center text-gray-500">
                 {"평일 09:00~17:00\n주말/공휴일 휴무"}
               </span>
             </div>
