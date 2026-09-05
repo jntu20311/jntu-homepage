@@ -13,7 +13,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-3 sm:col-span-2 lg:col-span-1">
             <Link to={routes.ROOT} className="text-lg font-bold tracking-tight">
-              <Logo className="w-65" />
+              <Logo className="w-50 md:w-65" />
             </Link>
 
             <address className="w-full text-sm not-italic text-muted-foreground mt-4 flex flex-col gap-y-1">

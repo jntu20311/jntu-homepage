@@ -40,7 +40,7 @@ export const Header = () => {
           to={routes.ROOT}
           className="text-lg font-bold tracking-tight sm:text-xl"
         >
-          <Logo />
+          <Logo className="w-50 md:w-65" />
         </Link>
 
         {/* Desktop navigation */}
