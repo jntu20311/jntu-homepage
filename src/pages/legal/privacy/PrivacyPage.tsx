@@ -1,5 +1,10 @@
-import { PageHeader } from "@/shared/ui/page-header";
+import { Markdown } from "@/shared/ui/markdown";
+import privacyPolicy from "@/shared/assets/privacy-policy.md?raw";
 
 export const PrivacyPage = () => {
-  return <PageHeader title="개인정보취급방침" description="개인정보 취급방침입니다." />;
+  return (
+    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+      <Markdown>{privacyPolicy}</Markdown>
+    </section>
+  );
 };

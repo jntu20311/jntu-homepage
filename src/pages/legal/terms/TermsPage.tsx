@@ -1,5 +1,10 @@
-import { PageHeader } from "@/shared/ui/page-header";
+import { Markdown } from "@/shared/ui/markdown";
+import usePolicy from "@/shared/assets/use-policy.md?raw";
 
 export const TermsPage = () => {
-  return <PageHeader title="이용약관" description="서비스 이용약관입니다." />;
+  return (
+    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+      <Markdown>{usePolicy}</Markdown>
+    </section>
+  );
 };
