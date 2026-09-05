@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { Footer, Header } from "@/widgets";
+import { Footer, Header, QuickMenu } from "@/widgets";
 
 export const RootLayout = () => {
   return (
@@ -12,6 +12,7 @@ export const RootLayout = () => {
         </Suspense>
       </main>
       <Footer />
+      <QuickMenu />
     </div>
   );
 };
