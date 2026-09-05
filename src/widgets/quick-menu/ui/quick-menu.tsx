@@ -123,7 +123,7 @@ export const QuickMenu = () => {
                 </span>
               </div>
               <span className="text-[16px] font-semibold text-primary">
-                {"010-0000-0000"}
+                {CONSTANTS.PHONE}
               </span>
 
               {/* 영업시간 */}

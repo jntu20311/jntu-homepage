@@ -17,5 +17,6 @@ export const CONSTANTS = {
   ADDRESS: "주소 : 전라남도 무안군 일로읍 오남로1길 9-4 제이타워 5층",
   POSTCODE: "58581",
   TEL: "전화 : 010-6663-0311",
+  PHONE: "010-6663-0311",
   COPYRIGHT: "©2020 전남광주교사노동조합 All right reserved.",
 };
