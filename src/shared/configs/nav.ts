@@ -50,4 +50,6 @@ export const legalItems: NavItem[] = [
 
 /** 현재 경로가 속한 상위(메인) 메뉴 그룹을 찾습니다. */
 export const findMenuByPath = (pathname: string): NavMenu | undefined =>
-  navMenus.find((menu) => menu.items?.some((item) => pathname === item.path));
+  navMenus.find((menu) =>
+    menu.items?.some((item) => pathname.startsWith(item.path)),
+  );
