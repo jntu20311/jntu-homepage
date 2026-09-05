@@ -31,7 +31,7 @@ export const navMenus: NavMenu[] = [
     ],
   },
   {
-    label: "가입하기",
+    label: "가입/변경",
     items: [
       { label: "조합원 가입", path: routes.JOIN_MEMBER },
       { label: "후원회원 가입", path: routes.JOIN_SUPPORTER },
@@ -49,3 +49,7 @@ export const legalItems: NavItem[] = [
   { label: "이용약관", path: routes.TERMS },
   { label: "개인정보취급방침", path: routes.PRIVACY },
 ];
+
+/** 현재 경로가 속한 상위(메인) 메뉴 그룹을 찾습니다. */
+export const findMenuByPath = (pathname: string): NavMenu | undefined =>
+  navMenus.find((menu) => menu.items?.some((item) => pathname === item.path));
