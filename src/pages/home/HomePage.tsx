@@ -15,7 +15,9 @@ export const HomePage = () => {
       <div className="grid grid-cols-2 gap-4">
         <ImageSlider className="max-w-[550px]" images={slides} />
         <div className="flex flex-col justify-center">
-          <p className="text-4xl font-bold">당당한 교사! 바로 서는 교육!</p>
+          <p className="text-4xl font-bold text-primary">
+            당당한 교사! 바로 서는 교육!
+          </p>
           <p className="text-5xl font-bold">전남광주교사노동조합</p>
         </div>
       </div>
