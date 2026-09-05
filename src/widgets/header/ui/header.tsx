@@ -1,10 +1,25 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu } from "lucide-react";
-import { navItems } from "@/shared/configs/nav";
+import { navMenus } from "@/shared/configs/nav";
 import { routes } from "@/shared/configs/routes";
 import { cn } from "@/shared/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shared/ui/accordion";
 import { Button } from "@/shared/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/shared/ui/navigation-menu";
 import {
   Sheet,
   SheetClose,
@@ -24,29 +39,43 @@ export const Header = () => {
           to={routes.ROOT}
           className="text-lg font-bold tracking-tight sm:text-xl"
         >
-          JNTU
+          전남광주교사노조
         </Link>
 
         {/* Desktop navigation */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.path === routes.ROOT}
-              className={({ isActive }) =>
-                cn(
-                  "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                  isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground",
-                )
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
+        <NavigationMenu className="hidden md:flex" viewport={false}>
+          <NavigationMenuList>
+            {navMenus.map((menu) =>
+              menu.items ? (
+                <NavigationMenuItem key={menu.label}>
+                  <NavigationMenuTrigger>{menu.label}</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-56 gap-1 p-2">
+                      {menu.items.map((item) => (
+                        <li key={item.path}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={item.path}
+                              className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                            >
+                              {item.label}
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              ) : (
+                <NavigationMenuItem key={menu.label}>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <Link to={menu.path!}>{menu.label}</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ),
+            )}
+          </NavigationMenuList>
+        </NavigationMenu>
 
         {/* Mobile navigation */}
         <div className="md:hidden">
@@ -56,30 +85,60 @@ export const Header = () => {
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72">
+            <SheetContent side="right" className="w-80">
               <SheetHeader>
-                <SheetTitle className="text-left">JNTU</SheetTitle>
+                <SheetTitle className="text-left">전남광주교사노조</SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col gap-1 px-4">
-                {navItems.map((item) => (
-                  <SheetClose asChild key={item.path}>
-                    <NavLink
-                      to={item.path}
-                      end={item.path === routes.ROOT}
-                      className={({ isActive }) =>
-                        cn(
-                          "rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                          isActive
-                            ? "bg-accent text-accent-foreground"
-                            : "text-muted-foreground",
-                        )
-                      }
-                    >
-                      {item.label}
-                    </NavLink>
-                  </SheetClose>
-                ))}
-              </nav>
+              <div className="overflow-y-auto px-4 pb-6">
+                <Accordion type="multiple">
+                  {navMenus.map((menu) =>
+                    menu.items ? (
+                      <AccordionItem key={menu.label} value={menu.label}>
+                        <AccordionTrigger className="text-base font-medium">
+                          {menu.label}
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <ul className="flex flex-col gap-1 pl-2">
+                            {menu.items.map((item) => (
+                              <li key={item.path}>
+                                <SheetClose asChild>
+                                  <NavLink
+                                    to={item.path}
+                                    className={({ isActive }) =>
+                                      cn(
+                                        "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground",
+                                        isActive
+                                          ? "bg-accent text-accent-foreground"
+                                          : "text-muted-foreground",
+                                      )
+                                    }
+                                  >
+                                    {item.label}
+                                  </NavLink>
+                                </SheetClose>
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ) : (
+                      <SheetClose asChild key={menu.label}>
+                        <NavLink
+                          to={menu.path!}
+                          className={({ isActive }) =>
+                            cn(
+                              "flex py-4 text-base font-medium transition-colors hover:text-foreground",
+                              isActive ? "text-foreground" : "text-muted-foreground",
+                            )
+                          }
+                        >
+                          {menu.label}
+                        </NavLink>
+                      </SheetClose>
+                    ),
+                  )}
+                </Accordion>
+              </div>
             </SheetContent>
           </Sheet>
         </div>

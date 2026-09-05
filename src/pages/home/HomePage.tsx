@@ -1,20 +1,10 @@
-import { routes } from "@/shared/configs/routes";
-import { Button } from "@/shared/ui/button";
-import { useNavigate } from "react-router-dom";
+import { PageHeader } from "@/shared/ui/page-header";
 
 export const HomePage = () => {
-  const navigate = useNavigate();
-
   return (
-    <>
-      Home
-      <Button
-        onClick={() => {
-          navigate(routes.ABOUT);
-        }}
-      >
-        button
-      </Button>
-    </>
+    <PageHeader
+      title="전남광주교사노조"
+      description="전남·광주 교사들의 권익을 위한 노동조합입니다."
+    />
   );
 };
