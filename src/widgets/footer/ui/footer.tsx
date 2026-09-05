@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import { legalItems, navMenus } from "@/shared/configs/nav";
 import { routes } from "@/shared/configs/routes";
 import { Logo } from "@/shared/ui/logo";
+import { CONSTANTS } from "@/shared/configs/constants";
 
 export const Footer = () => {
-  const year = new Date().getFullYear();
-
   return (
     <footer className="border-t border-border bg-background">
       <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -16,12 +15,11 @@ export const Footer = () => {
               <Logo className="w-65" />
             </Link>
 
-            <p className="text-sm text-muted-foreground">
-              전남·광주 교사들의 권익을 위한 노동조합입니다.
-            </p>
             <address className="space-y-1 text-sm not-italic text-muted-foreground">
-              <p>광주광역시 북구 용봉로 77</p>
-              <p>062-530-5114</p>
+              <p>{CONSTANTS.REPRESENTATIVE}</p>
+              <p>{CONSTANTS.NUMBER}</p>
+              <p>{CONSTANTS.ADDRESS}</p>
+              <p>{CONSTANTS.TEL}</p>
             </address>
           </div>
 
@@ -48,7 +46,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
-          <p>© {year} 전남광주교사노조. All rights reserved.</p>
+          <p>{CONSTANTS.COPYRIGHT}</p>
           <nav className="flex items-center gap-4">
             {legalItems.map((item) => (
               <Link
