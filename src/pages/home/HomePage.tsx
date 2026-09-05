@@ -1,4 +1,5 @@
 import { routes } from "@/shared/configs/routes";
+import { Button } from "@/shared/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
@@ -7,13 +8,13 @@ export const HomePage = () => {
   return (
     <>
       Home
-      <button
+      <Button
         onClick={() => {
           navigate(routes.ABOUT);
         }}
       >
         button
-      </button>
+      </Button>
     </>
   );
 };
