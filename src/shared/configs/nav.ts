@@ -22,11 +22,11 @@ export const navMenus: NavMenu[] = [
     ],
   },
   {
-    label: "주요활동",
+    label: "알림마당",
     items: [
       { label: "보도자료 및 성명서", path: routes.ACTIVITIES_PRESS },
       { label: "활동내역", path: routes.ACTIVITIES_HISTORY },
-      { label: "교섭·정책", path: routes.ACTIVITIES_POLICY },
+      { label: "월별활동보고", path: routes.ACTIVITIES_POLICY },
       { label: "조합원 혜택", path: routes.ACTIVITIES_BENEFITS },
     ],
   },
