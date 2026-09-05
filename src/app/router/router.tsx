@@ -12,6 +12,7 @@ import {
   LocationPage,
   PolicyPage,
   PortalPage,
+  PressDetailPage,
   PressPage,
   PrivacyPage,
   TermsPage,
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
 
           // 주요활동
           { path: routes.ACTIVITIES_PRESS, element: <PressPage /> },
+          {
+            path: routes.ACTIVITIES_PRESS_DETAIL,
+            element: <PressDetailPage />,
+          },
           { path: routes.ACTIVITIES_HISTORY, element: <HistoryPage /> },
           {
             path: routes.ACTIVITIES_HISTORY_DETAIL,

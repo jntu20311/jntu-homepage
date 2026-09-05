@@ -8,6 +8,7 @@ export const routes = {
 
   // 주요활동 (알림마당)
   ACTIVITIES_PRESS: "/activities/press",
+  ACTIVITIES_PRESS_DETAIL: "/activities/press/:id",
   ACTIVITIES_HISTORY: "/activities/history",
   ACTIVITIES_HISTORY_DETAIL: "/activities/history/:id",
   ACTIVITIES_POLICY: "/activities/policy",
@@ -29,3 +30,6 @@ export const routes = {
 /** 활동내역 상세 페이지 경로를 생성합니다. */
 export const activityHistoryDetailPath = (id: string) =>
   `/activities/history/${id}`;
+
+/** 보도자료 상세 페이지 경로를 생성합니다. */
+export const pressDetailPath = (id: string) => `/activities/press/${id}`;

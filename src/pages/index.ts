@@ -27,6 +27,10 @@ export const PressPage = lazyNamed(
   () => import("./activities/press/PressPage"),
   "PressPage",
 );
+export const PressDetailPage = lazyNamed(
+  () => import("./activities/press/detail/PressDetailPage"),
+  "PressDetailPage",
+);
 export const HistoryPage = lazyNamed(
   () => import("./activities/history/HistoryPage"),
   "HistoryPage",
