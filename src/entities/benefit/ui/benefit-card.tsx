@@ -13,7 +13,7 @@ export const BenefitCard = ({ benefit }: BenefitCardProps) => {
       to={benefitDetailPath(benefit.id)}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
     >
-      <div className="aspect-video w-full overflow-hidden bg-muted">
+      <div className="aspect-[1/1] w-full overflow-hidden bg-muted">
         <img
           src={benefit.image}
           alt={benefit.title}
