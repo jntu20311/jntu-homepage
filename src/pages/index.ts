@@ -77,3 +77,7 @@ export const PrivacyPage = lazyNamed(
   () => import("./legal/privacy/PrivacyPage"),
   "PrivacyPage",
 );
+
+// 404 / 에러 (errorElement로도 사용되어 상위 Suspense 밖에서 렌더되므로 즉시 로드)
+export { NotFoundPage } from "./error/NotFoundPage";
+export { ErrorPage } from "./error/ErrorPage";

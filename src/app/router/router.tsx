@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import {
   AboutIntroPage,
   BenefitsPage,
+  ErrorPage,
   GreetingPage,
   HistoryDetailPage,
   HistoryPage,
@@ -10,6 +11,7 @@ import {
   JoinSupporterPage,
   JoinUpdatePage,
   LocationPage,
+  NotFoundPage,
   PolicyPage,
   PortalPage,
   PressDetailPage,
@@ -24,6 +26,7 @@ import { BoardLayout } from "../layouts/board-layout";
 const router = createBrowserRouter([
   {
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, path: routes.ROOT, element: <HomePage /> },
 
@@ -62,6 +65,9 @@ const router = createBrowserRouter([
       // 법적 고지
       { path: routes.TERMS, element: <TermsPage /> },
       { path: routes.PRIVACY, element: <PrivacyPage /> },
+
+      // 404 (매칭되지 않는 모든 경로)
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
 ]);
