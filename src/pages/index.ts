@@ -62,12 +62,6 @@ export const JoinUpdatePage = lazyNamed(
   "JoinUpdatePage",
 );
 
-// 교사지원포털
-export const PortalPage = lazyNamed(
-  () => import("./portal/PortalPage"),
-  "PortalPage",
-);
-
 // 법적 고지
 export const TermsPage = lazyNamed(
   () => import("./legal/terms/TermsPage"),

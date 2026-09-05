@@ -13,7 +13,6 @@ import {
   LocationPage,
   NotFoundPage,
   PolicyPage,
-  PortalPage,
   PressDetailPage,
   PressPage,
   PrivacyPage,
@@ -51,16 +50,13 @@ const router = createBrowserRouter([
           },
           { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
           { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
-
-          // 가입하기
-          { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },
-          { path: routes.JOIN_SUPPORTER, element: <JoinSupporterPage /> },
-          { path: routes.JOIN_UPDATE, element: <JoinUpdatePage /> },
         ],
       },
 
-      // 교사지원포털
-      { path: routes.PORTAL, element: <PortalPage /> },
+      // 가입하기
+      { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },
+      { path: routes.JOIN_SUPPORTER, element: <JoinSupporterPage /> },
+      { path: routes.JOIN_UPDATE, element: <JoinUpdatePage /> },
 
       // 법적 고지
       { path: routes.TERMS, element: <TermsPage /> },
