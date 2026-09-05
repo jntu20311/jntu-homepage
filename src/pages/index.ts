@@ -43,9 +43,17 @@ export const PolicyPage = lazyNamed(
   () => import("./activities/policy/PolicyPage"),
   "PolicyPage",
 );
+export const PolicyDetailPage = lazyNamed(
+  () => import("./activities/policy/detail/PolicyDetailPage"),
+  "PolicyDetailPage",
+);
 export const BenefitsPage = lazyNamed(
   () => import("./activities/benefits/BenefitsPage"),
   "BenefitsPage",
+);
+export const BenefitsDetailPage = lazyNamed(
+  () => import("./activities/benefits/detail/BenefitsDetailPage"),
+  "BenefitsDetailPage",
 );
 
 // 가입하기
