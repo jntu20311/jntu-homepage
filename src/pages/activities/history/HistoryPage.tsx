@@ -1,6 +1,19 @@
+import { useSearchParams } from "react-router-dom";
 import { ActivityCard, activities } from "@/entities/activity";
+import { Pagination } from "@/shared/ui/pagination";
+
+const PAGE_SIZE = 10;
 
 export const HistoryPage = () => {
+  const [searchParams] = useSearchParams();
+
+  const totalPages = Math.max(1, Math.ceil(activities.length / PAGE_SIZE));
+  const requestedPage = Number(searchParams.get("page")) || 1;
+  const page = Math.min(Math.max(1, requestedPage), totalPages);
+
+  const start = (page - 1) * PAGE_SIZE;
+  const pageItems = activities.slice(start, start + PAGE_SIZE);
+
   return (
     <div className="flex flex-col gap-6">
       <header>
@@ -8,17 +21,24 @@ export const HistoryPage = () => {
           활동내역
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          전남광주교사노조의 주요 활동을 확인하세요.
+          전남광주교사노조의 주요 활동을 확인하세요. (총 {activities.length}건)
         </p>
       </header>
 
       <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {activities.map((activity) => (
+        {pageItems.map((activity) => (
           <li key={activity.id}>
             <ActivityCard activity={activity} />
           </li>
         ))}
       </ul>
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        getPageHref={(p) => `?page=${p}`}
+        className="mt-2"
+      />
     </div>
   );
 };
