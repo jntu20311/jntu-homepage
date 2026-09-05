@@ -17,6 +17,7 @@ import {
 } from "@/pages";
 import { routes } from "@/shared/configs/routes";
 import { RootLayout } from "@/app/layouts/root-layout";
+import { BoardLayout } from "../layouts/board-layout";
 
 const router = createBrowserRouter([
   {
@@ -24,21 +25,26 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: routes.ROOT, element: <HomePage /> },
 
-      // 전남광주교사노조
-      { path: routes.ABOUT_INTRO, element: <AboutIntroPage /> },
-      { path: routes.ABOUT_GREETING, element: <GreetingPage /> },
-      { path: routes.ABOUT_LOCATION, element: <LocationPage /> },
+      {
+        element: <BoardLayout />,
+        children: [
+          // 전남광주교사노조
+          { path: routes.ABOUT_INTRO, element: <AboutIntroPage /> },
+          { path: routes.ABOUT_GREETING, element: <GreetingPage /> },
+          { path: routes.ABOUT_LOCATION, element: <LocationPage /> },
 
-      // 주요활동
-      { path: routes.ACTIVITIES_PRESS, element: <PressPage /> },
-      { path: routes.ACTIVITIES_HISTORY, element: <HistoryPage /> },
-      { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
-      { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
+          // 주요활동
+          { path: routes.ACTIVITIES_PRESS, element: <PressPage /> },
+          { path: routes.ACTIVITIES_HISTORY, element: <HistoryPage /> },
+          { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
+          { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
 
-      // 가입하기
-      { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },
-      { path: routes.JOIN_SUPPORTER, element: <JoinSupporterPage /> },
-      { path: routes.JOIN_UPDATE, element: <JoinUpdatePage /> },
+          // 가입하기
+          { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },
+          { path: routes.JOIN_SUPPORTER, element: <JoinSupporterPage /> },
+          { path: routes.JOIN_UPDATE, element: <JoinUpdatePage /> },
+        ],
+      },
 
       // 교사지원포털
       { path: routes.PORTAL, element: <PortalPage /> },
