@@ -19,14 +19,13 @@ export const PressPage = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <header>
+      <header className="flex items-center gap-2">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          보도자료 및 성명서
+          {`보도자료 및 성명서`}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          전남광주교사노조의 보도자료와 성명서입니다. (총 {pressReleases.length}
-          건)
-        </p>
+        {/* <p className="mt-2 text-lg text-muted-foreground">
+          {`(총 ${pressReleases.length}건)`}
+        </p> */}
       </header>
 
       <div className="overflow-x-auto">

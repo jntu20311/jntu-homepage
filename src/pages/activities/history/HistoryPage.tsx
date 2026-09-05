@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { ActivityCard, activities } from "@/entities/activity";
 import { Pagination } from "@/shared/ui/pagination";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 export const HistoryPage = () => {
   const [searchParams] = useSearchParams();
@@ -16,13 +16,13 @@ export const HistoryPage = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <header>
+      <header className="flex items-center gap-2">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
           활동내역
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          전남광주교사노조의 주요 활동을 확인하세요. (총 {activities.length}건)
-        </p>
+        {/* <p className="mt-2 text-lg text-muted-foreground">
+          {`(총 ${activities.length}건)`}
+        </p> */}
       </header>
 
       <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
