@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { legalItems, navMenus } from "@/shared/configs/nav";
 import { routes } from "@/shared/configs/routes";
+import { Logo } from "@/shared/ui/logo";
 
 export const Footer = () => {
   const year = new Date().getFullYear();
@@ -12,8 +13,9 @@ export const Footer = () => {
           {/* Brand */}
           <div className="space-y-3 sm:col-span-2 lg:col-span-1">
             <Link to={routes.ROOT} className="text-lg font-bold tracking-tight">
-              전남광주교사노조
+              <Logo className="w-65" />
             </Link>
+
             <p className="text-sm text-muted-foreground">
               전남·광주 교사들의 권익을 위한 노동조합입니다.
             </p>

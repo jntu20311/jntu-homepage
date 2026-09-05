@@ -28,6 +28,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/shared/ui/sheet";
+import { Logo } from "@/shared/ui/logo";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ export const Header = () => {
           to={routes.ROOT}
           className="text-lg font-bold tracking-tight sm:text-xl"
         >
-          전남광주교사노조
+          <Logo />
         </Link>
 
         {/* Desktop navigation */}
@@ -68,7 +69,10 @@ export const Header = () => {
                 </NavigationMenuItem>
               ) : (
                 <NavigationMenuItem key={menu.label}>
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink
+                    asChild
+                    className={navigationMenuTriggerStyle()}
+                  >
                     <Link to={menu.path!}>{menu.label}</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
@@ -128,7 +132,9 @@ export const Header = () => {
                           className={({ isActive }) =>
                             cn(
                               "flex py-4 text-base font-medium transition-colors hover:text-foreground",
-                              isActive ? "text-foreground" : "text-muted-foreground",
+                              isActive
+                                ? "text-foreground"
+                                : "text-muted-foreground",
                             )
                           }
                         >
