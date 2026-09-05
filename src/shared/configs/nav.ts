@@ -50,6 +50,11 @@ export const legalItems: NavItem[] = [
   { label: "개인정보취급방침", path: routes.PRIVACY },
 ];
 
-/** 현재 경로가 속한 상위(메인) 메뉴 그룹을 찾습니다. */
+/** 현재 경로가 속한 상위(메인) 메뉴 그룹을 찾습니다. (상세 페이지 등 하위 경로 포함) */
 export const findMenuByPath = (pathname: string): NavMenu | undefined =>
-  navMenus.find((menu) => menu.items?.some((item) => pathname === item.path));
+  navMenus.find((menu) =>
+    menu.items?.some(
+      (item) =>
+        pathname === item.path || pathname.startsWith(`${item.path}/`),
+    ),
+  );

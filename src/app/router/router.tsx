@@ -3,6 +3,7 @@ import {
   AboutIntroPage,
   BenefitsPage,
   GreetingPage,
+  HistoryDetailPage,
   HistoryPage,
   HomePage,
   JoinMemberPage,
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
           // 주요활동
           { path: routes.ACTIVITIES_PRESS, element: <PressPage /> },
           { path: routes.ACTIVITIES_HISTORY, element: <HistoryPage /> },
+          {
+            path: routes.ACTIVITIES_HISTORY_DETAIL,
+            element: <HistoryDetailPage />,
+          },
           { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
           { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
 

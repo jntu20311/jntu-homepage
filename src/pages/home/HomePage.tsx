@@ -19,6 +19,11 @@ export const HomePage = () => {
             당당한 교사! 바로 서는 교육!
           </p>
           <p className="text-5xl font-bold">전남광주교사노동조합</p>
+          <div className="grid grid-cols-3">
+            <div>조합원 가입</div>
+            <div>정보변경</div>
+            <div>커뮤니티</div>
+          </div>
         </div>
       </div>
     </section>

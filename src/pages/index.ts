@@ -31,6 +31,10 @@ export const HistoryPage = lazyNamed(
   () => import("./activities/history/HistoryPage"),
   "HistoryPage",
 );
+export const HistoryDetailPage = lazyNamed(
+  () => import("./activities/history/detail/HistoryDetailPage"),
+  "HistoryDetailPage",
+);
 export const PolicyPage = lazyNamed(
   () => import("./activities/policy/PolicyPage"),
   "PolicyPage",
