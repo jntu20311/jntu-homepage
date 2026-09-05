@@ -12,7 +12,9 @@ export const routes = {
   ACTIVITIES_HISTORY: "/activities/history",
   ACTIVITIES_HISTORY_DETAIL: "/activities/history/:id",
   ACTIVITIES_POLICY: "/activities/policy",
+  ACTIVITIES_POLICY_DETAIL: "/activities/policy/:id",
   ACTIVITIES_BENEFITS: "/activities/benefits",
+  ACTIVITIES_BENEFITS_DETAIL: "/activities/benefits/:id",
 
   // 가입하기 (가입/변경) - 외부 링크 확인 후 링크 및 페이지 제거
   JOIN_MEMBER: "/join/member",
@@ -30,3 +32,9 @@ export const activityHistoryDetailPath = (id: string) =>
 
 /** 보도자료 상세 페이지 경로를 생성합니다. */
 export const pressDetailPath = (id: string) => `/activities/press/${id}`;
+
+/** 월별활동보고 상세 페이지 경로를 생성합니다. */
+export const policyDetailPath = (id: string) => `/activities/policy/${id}`;
+
+/** 조합원 혜택 상세 페이지 경로를 생성합니다. */
+export const benefitDetailPath = (id: string) => `/activities/benefits/${id}`;

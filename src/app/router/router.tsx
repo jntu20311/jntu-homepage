@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import {
   AboutIntroPage,
+  BenefitsDetailPage,
   BenefitsPage,
   ErrorPage,
   GreetingPage,
@@ -12,6 +13,7 @@ import {
   JoinUpdatePage,
   LocationPage,
   NotFoundPage,
+  PolicyDetailPage,
   PolicyPage,
   PressDetailPage,
   PressPage,
@@ -50,7 +52,15 @@ const router = createBrowserRouter([
           },
 
           { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
+          {
+            path: routes.ACTIVITIES_POLICY_DETAIL,
+            element: <PolicyDetailPage />,
+          },
           { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
+          {
+            path: routes.ACTIVITIES_BENEFITS_DETAIL,
+            element: <BenefitsDetailPage />,
+          },
 
           // 가입하기
           { path: routes.JOIN_MEMBER, element: <JoinMemberPage /> },

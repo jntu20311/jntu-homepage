@@ -4,22 +4,27 @@ import { cn } from "@/shared/lib/utils";
 import KakaoChannelIcon from "@/shared/assets/images/kakao-channel.png";
 import { AppIcon } from "@/shared/ui/app-icon";
 import { CONSTANTS } from "@/shared/configs/constants";
+import { Link } from "react-router-dom";
+import { routes } from "@/shared/configs/routes";
 
 interface QuickMenuItem {
   label: string;
   link: string;
+  external?: boolean;
   icon: ReactNode;
 }
 
 const quickItems: QuickMenuItem[] = [
   {
     label: "조합원 가입",
-    link: CONSTANTS.BANKCMS_LINK,
+    link: routes.JOIN_MEMBER,
+    external: false,
     icon: <AppIcon className="size-7 shrink-0 text-primary" />,
   },
   {
     label: "카카오채널",
     link: CONSTANTS.KAKAO_CHANNEL,
+    external: true,
     icon: <img src={KakaoChannelIcon} className="size-7 shrink-0" />,
   },
 ];
@@ -97,15 +102,15 @@ export const QuickMenu = () => {
                 key={item.link}
                 className="border-b border-border/70 last:border-b-0"
               >
-                <a
-                  href={item.link}
-                  target="_blank"
+                <Link
+                  to={item.link}
+                  target={item.external ? "_blank" : undefined}
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                 >
                   {item.icon}
                   <span>{item.label}</span>
-                </a>
+                </Link>
               </li>
             );
           })}
