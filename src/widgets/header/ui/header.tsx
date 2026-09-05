@@ -91,7 +91,9 @@ export const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-80">
               <SheetHeader>
-                <SheetTitle className="text-left">전남광주교사노조</SheetTitle>
+                <SheetTitle className="text-left">
+                  <Logo className="w-50" />
+                </SheetTitle>
               </SheetHeader>
               <div className="overflow-y-auto px-4 pb-6">
                 <Accordion type="multiple">
