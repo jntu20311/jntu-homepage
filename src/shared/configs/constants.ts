@@ -3,6 +3,7 @@ export const CONSTANTS = {
   KAKAO_CHANNEL: "https://pf.kakao.com/_xcpxmWK",
   INSTAGRAM: "https://www.instagram.com/jntu_korea/",
   NAVER_BAND: "https://band.us/band/79062839",
+  BLOG: "https://blog.naver.com/jntu_korea",
 
   // 교사지원포털
   PORTAL_LABEL: "교사지원포털",

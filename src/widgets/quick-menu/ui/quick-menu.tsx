@@ -2,6 +2,8 @@ import { ReactNode, useState } from "react";
 import { ChevronLeft, ChevronRight, PhoneIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import KakaoChannelIcon from "@/shared/assets/images/kakao-channel.png";
+import InstgramIcon from "@/shared/assets/icons/ic_instagram.svg";
+import NaverBlogIcon from "@/shared/assets/icons/ic_naver_blog.svg";
 import { AppIcon } from "@/shared/ui/app-icon";
 import { CONSTANTS } from "@/shared/configs/constants";
 import { Link } from "react-router-dom";
@@ -14,18 +16,31 @@ interface QuickMenuItem {
   icon: ReactNode;
 }
 
+const quickMenuIconStyle = "size-6 shrink-0";
 const quickItems: QuickMenuItem[] = [
   {
     label: "조합원 가입",
     link: routes.JOIN_MEMBER,
     external: false,
-    icon: <AppIcon className="size-7 shrink-0 text-primary" />,
+    icon: <AppIcon className={`${quickMenuIconStyle} text-primary`} />,
   },
   {
     label: "카카오채널",
     link: CONSTANTS.KAKAO_CHANNEL,
     external: true,
-    icon: <img src={KakaoChannelIcon} className="size-7 shrink-0" />,
+    icon: <img src={KakaoChannelIcon} className={`${quickMenuIconStyle}`} />,
+  },
+  {
+    label: "인스타그램",
+    link: CONSTANTS.INSTAGRAM,
+    external: true,
+    icon: <img src={InstgramIcon} className={`${quickMenuIconStyle}`} />,
+  },
+  {
+    label: "네이버 블로그",
+    link: CONSTANTS.BLOG,
+    external: true,
+    icon: <img src={NaverBlogIcon} className={`${quickMenuIconStyle}`} />,
   },
 ];
 
