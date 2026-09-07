@@ -13,7 +13,7 @@ export const PolicyCard = ({ policy }: PolicyCardProps) => {
       to={policyDetailPath(policy.id)}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
     >
-      <div className="aspect-video w-full overflow-hidden bg-muted">
+      <div className="aspect-[1080/1350] w-full overflow-hidden bg-muted">
         <img
           src={policy.image}
           alt={policy.title}
