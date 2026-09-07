@@ -19,7 +19,7 @@ export const navMenus: NavMenu[] = [
     label: "전남광주교사노조",
     items: [
       { label: "소개", path: routes.ABOUT_INTRO },
-      { label: "위원장 인사말", path: routes.ABOUT_GREETING },
+      { label: "인사말", path: routes.ABOUT_GREETING },
       { label: "오시는길", path: routes.ABOUT_LOCATION },
     ],
   },
