@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { PolicyCard, policies } from "@/entities/policy";
 import { Pagination } from "@/shared/ui/pagination";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 4;
 
 export const PolicyPage = () => {
   const [searchParams] = useSearchParams();
@@ -22,7 +22,7 @@ export const PolicyPage = () => {
         </h1>
       </header>
 
-      <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {pageItems.map((policy) => (
           <li key={policy.id}>
             <PolicyCard policy={policy} />
