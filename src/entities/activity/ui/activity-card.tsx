@@ -13,12 +13,12 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
       to={activityHistoryDetailPath(activity.id)}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
     >
-      <div className="aspect-video w-full overflow-hidden bg-muted">
+      <div className="aspect-[1080/1350] w-full overflow-hidden bg-muted">
         <img
           src={activity.image}
           alt={activity.title}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">

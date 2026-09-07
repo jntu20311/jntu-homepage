@@ -12,6 +12,7 @@
     "publish": true
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.115.0",
     "@tailwindcss/vite": "^4.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
