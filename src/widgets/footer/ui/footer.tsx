@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import { legalItems } from "@/shared/configs/nav";
 import { routes } from "@/shared/configs/routes";
 import { Logo } from "@/shared/ui/logo";
-import { BandIcon, InstagramIcon, KakaoIcon } from "@/shared/ui/social-icons";
+import {
+  BandIcon,
+  InstagramIcon,
+  KakaoIcon,
+  NaverBlogIcon,
+} from "@/shared/ui/social-icons";
 import { CONSTANTS } from "@/shared/configs/constants";
 
 interface SnsLink {
@@ -14,9 +19,10 @@ interface SnsLink {
 
 // TODO: href를 실제 SNS 채널 주소로 교체하세요.
 const snsLinks: SnsLink[] = [
-  { label: "인스타그램", href: CONSTANTS.INSTAGRAM, icon: InstagramIcon },
   { label: "카카오채널", href: CONSTANTS.KAKAO_CHANNEL, icon: KakaoIcon },
+  { label: "인스타그램", href: CONSTANTS.INSTAGRAM, icon: InstagramIcon },
   { label: "네이버밴드", href: CONSTANTS.NAVER_BAND, icon: BandIcon },
+  { label: "네이버 블로그", href: CONSTANTS.NAVER_BAND, icon: NaverBlogIcon },
 ];
 
 export const Footer = () => {
@@ -53,7 +59,11 @@ export const Footer = () => {
                       title={label}
                       className="flex size-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-accent"
                     >
-                      <Icon className="size-5" />
+                      {label == "인스타그램" ? (
+                        <Icon className="size-5" />
+                      ) : (
+                        <Icon className="size-4.5" />
+                      )}
                     </a>
                   </li>
                 ))}
