@@ -5,18 +5,14 @@ import slide3 from "@/shared/assets/images/slides/slide-3.svg";
 import { Link } from "react-router-dom";
 import { routes } from "@/shared/configs/routes";
 import { ArrowRightIcon } from "lucide-react";
+import { HomeLink } from "@/entities/home-link/model/types";
+import { HomeLinkCard } from "@/entities/home-link";
 
 const slides: SlideImage[] = [
   { src: slide1, alt: "전남광주교사노조" },
   { src: slide2, alt: "함께하는 교사노조" },
   { src: slide3, alt: "당당한 교사, 바로 서는 교육" },
 ];
-
-type HomeLink = {
-  label: string;
-  link: string;
-  external?: boolean;
-};
 
 const homeLinks: HomeLink[] = [
   { label: "조합원 가입", link: routes.JOIN_MEMBER },
@@ -39,20 +35,20 @@ const homeBoards: HomeBoard[] = [
 export const HomePage = () => {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
         <ImageSlider className="max-w-[550px]" images={slides} />
-        <div className="flex flex-col justify-center">
-          <p className="text-2xl md:text-4xl font-bold text-primary">
-            당당한 교사! 바로 서는 교육!
-          </p>
-          <p className="text-3xl md:text-5xl font-bold">전남광주교사노동조합</p>
-          <div className="grid grid-cols-2 gap-2 mt-4">
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col">
+            <p className="text-2xl md:text-4xl font-bold text-primary">
+              당당한 교사! 바로 서는 교육!
+            </p>
+            <p className="text-[34px] md:text-[50px] font-bold">
+              전남광주교사노동조합
+            </p>
+          </div>
+          <div className="w-full grid grid-cols-2 gap-6 mt-8">
             {homeLinks.map((el) => (
-              <Link to={el.link} key={`homelink-${el.link}`}>
-                <div className="flex items-center justify-center rounded-md border py-4 hover:bg-gray-100">
-                  {el.label}
-                </div>
-              </Link>
+              <HomeLinkCard key={`link-${el.label}`} data={el} />
             ))}
           </div>
         </div>
