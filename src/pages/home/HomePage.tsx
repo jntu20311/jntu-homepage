@@ -46,7 +46,7 @@ export const HomePage = () => {
               전남광주교사노동조합
             </p>
           </div>
-          <div className="w-full grid grid-cols-2 gap-6 mt-8">
+          <div className="w-full grid grid-cols-2 gap-3 mt-4 md:gap-6 md:mt-8">
             {homeLinks.map((el) => (
               <HomeLinkCard key={`link-${el.label}`} data={el} />
             ))}
