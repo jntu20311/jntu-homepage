@@ -18,12 +18,10 @@ export const Layout = () => {
     <div className="flex min-h-screen bg-muted/20">
       <aside className="flex w-56 shrink-0 flex-col border-r bg-background">
         <div className="border-b px-4 py-4">
-          <p className="text-sm font-bold">JNTU 관리자</p>
-          {identity?.name && (
-            <p className="mt-0.5 truncate text-xs text-muted-foreground">
-              {identity.name}
-            </p>
-          )}
+          <p className="text-sm font-bold">전남광주교사노동조합 홈페이지</p>
+          <p className="mt-0.5 truncate text-xs text-muted-foreground">
+            {identity?.name ? `사용자명: ${identity.name}` : "-"}
+          </p>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-2">

@@ -32,7 +32,9 @@ export const LoginPage = () => {
         onSubmit={onSubmit}
         className="w-full max-w-sm space-y-4 rounded-lg border bg-background p-6 shadow-sm"
       >
-        <h1 className="text-lg font-bold">JNTU 관리자 로그인</h1>
+        <h1 className="text-lg font-bold">
+          전남광주교사노동조합 관리자 로그인
+        </h1>
 
         <div>
           <label className="mb-1 block text-sm font-medium">이메일</label>
