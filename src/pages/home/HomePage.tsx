@@ -9,9 +9,24 @@ import { HomeLink } from "@/entities/home-link/model/types";
 import { HomeLinkCard } from "@/entities/home-link";
 
 const slides: SlideImage[] = [
-  { src: slide1, alt: "전남광주교사노조" },
-  { src: slide2, alt: "함께하는 교사노조" },
-  { src: slide3, alt: "당당한 교사, 바로 서는 교육" },
+  {
+    src: slide1,
+    alt: "전남광주교사노조",
+    link: "https://www.naver.com/",
+    external: false,
+  },
+  {
+    src: slide2,
+    alt: "함께하는 교사노조",
+    link: "https://www.google.com/",
+    external: true,
+  },
+  {
+    src: slide3,
+    alt: "당당한 교사, 바로 서는 교육",
+    link: null,
+    external: false,
+  },
 ];
 
 const homeLinks: HomeLink[] = [

@@ -5,6 +5,8 @@ import { cn } from "@/shared/lib/utils";
 export interface SlideImage {
   src: string;
   alt: string;
+  link: string | null;
+  external: boolean;
 }
 
 interface ImageSliderProps {
@@ -50,9 +52,23 @@ export const ImageSlider = ({
     <div
       className={cn(
         // 1080 x 1350 = 4:5 비율
-        "group relative mx-auto aspect-[4/5] w-full max-w-[1080px] overflow-hidden rounded-xl bg-muted",
+        "group relative mx-auto aspect-[4/5] w-full max-w-[1080px] overflow-hidden rounded-xl bg-muted cursor-pointer",
         className,
       )}
+      onClick={() => {
+        try {
+          const image = images[current];
+          if (image.link == null) return;
+
+          if (image.external) {
+            window.open(image.link, "_blank", "noopener,noreferrer");
+          } else {
+            window.open(image.link, "_self");
+          }
+        } catch (_) {
+          //
+        }
+      }}
       role="region"
       aria-roledescription="carousel"
       aria-label="이미지 슬라이더"
@@ -75,7 +91,10 @@ export const ImageSlider = ({
         <>
           <button
             type="button"
-            onClick={prev}
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
             aria-label="이전 이미지"
             className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-background/70 p-2 text-foreground opacity-0 shadow-sm transition-opacity hover:bg-background focus-visible:opacity-100 group-hover:opacity-100"
           >
@@ -83,7 +102,10 @@ export const ImageSlider = ({
           </button>
           <button
             type="button"
-            onClick={next}
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
             aria-label="다음 이미지"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-background/70 p-2 text-foreground opacity-0 shadow-sm transition-opacity hover:bg-background focus-visible:opacity-100 group-hover:opacity-100"
           >
