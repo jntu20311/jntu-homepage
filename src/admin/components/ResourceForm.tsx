@@ -7,6 +7,7 @@ import { cn } from "@/shared/lib/utils";
 import type { FieldDef, ResourceDef } from "../config";
 import { uploadPublicFile } from "../lib/upload";
 import { CKEditorField } from "./CKEditorField";
+import { Markdown } from "@/shared/ui/markdown";
 
 interface ResourceFormProps {
   resource: ResourceDef;
@@ -43,9 +44,13 @@ export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
   const fields = resource.fields.filter(
     (f) => !(action === "edit" && f.createOnly),
   );
+  const hasMarkdown = fields.some((f) => f.markdown);
 
   return (
-    <form onSubmit={handleSubmit(onFinish)} className="max-w-3xl space-y-5">
+    <form
+      onSubmit={handleSubmit(onFinish)}
+      className={cn("space-y-5", hasMarkdown ? "max-w-5xl" : "max-w-3xl")}
+    >
       <h1 className="text-xl font-bold">
         {resource.label} {action === "create" ? "등록" : "수정"}
       </h1>
@@ -100,13 +105,19 @@ const Field = ({
   error,
 }: FieldProps) => {
   const [uploading, setUploading] = useState(false);
-  const rules = field.required ? { required: `${field.label}은(는) 필수입니다.` } : {};
+  const rules = field.required
+    ? { required: `${field.label}은(는) 필수입니다.` }
+    : {};
 
   const handleUpload = async (file: File) => {
     if (!field.bucket) return;
     setUploading(true);
     try {
-      const url = await uploadPublicFile(field.bucket, field.folder ?? "misc", file);
+      const url = await uploadPublicFile(
+        field.bucket,
+        field.folder ?? "misc",
+        file,
+      );
       setValue(field.name, url, { shouldDirty: true });
       if (field.fileNameField) {
         setValue(field.fileNameField, file.name, { shouldDirty: true });
@@ -152,11 +163,35 @@ const Field = ({
       return (
         <div>
           {label}
-          <textarea
-            rows={12}
-            className={cn(inputClass, "font-mono")}
-            {...register(field.name, rules)}
-          />
+          {field.markdown ? (
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div className="flex flex-col">
+                <span className="mb-1 text-xs font-medium text-muted-foreground">
+                  작성 (Markdown)
+                </span>
+                <textarea
+                  rows={20}
+                  className={cn(inputClass, "h-full min-h-80 font-mono")}
+                  {...register(field.name, rules)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="mb-1 text-xs font-medium text-muted-foreground">
+                  미리보기
+                </span>
+                <div className="min-h-80 overflow-auto rounded-md border border-input bg-background px-4 py-2">
+                  <Markdown>{watch(field.name) || "_(내용 없음)_"}</Markdown>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <textarea
+              rows={12}
+              className={cn(inputClass, "font-mono")}
+              {...register(field.name, rules)}
+            />
+          )}
+
           {helperAndError}
         </div>
       );
@@ -211,9 +246,13 @@ const Field = ({
             type="file"
             accept="image/*"
             className="text-sm"
-            onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])}
+            onChange={(e) =>
+              e.target.files?.[0] && handleUpload(e.target.files[0])
+            }
           />
-          {uploading && <p className="mt-1 text-xs text-muted-foreground">업로드 중...</p>}
+          {uploading && (
+            <p className="mt-1 text-xs text-muted-foreground">업로드 중...</p>
+          )}
           <input type="hidden" {...register(field.name, rules)} />
           {helperAndError}
         </div>
@@ -222,7 +261,9 @@ const Field = ({
 
     case "file": {
       const current = watch(field.name);
-      const currentName = field.fileNameField ? watch(field.fileNameField) : undefined;
+      const currentName = field.fileNameField
+        ? watch(field.fileNameField)
+        : undefined;
       return (
         <div>
           {label}
@@ -234,9 +275,13 @@ const Field = ({
           <input
             type="file"
             className="text-sm"
-            onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0])}
+            onChange={(e) =>
+              e.target.files?.[0] && handleUpload(e.target.files[0])
+            }
           />
-          {uploading && <p className="mt-1 text-xs text-muted-foreground">업로드 중...</p>}
+          {uploading && (
+            <p className="mt-1 text-xs text-muted-foreground">업로드 중...</p>
+          )}
           <input type="hidden" {...register(field.name)} />
           {field.fileNameField && (
             <input type="hidden" {...register(field.fileNameField)} />
@@ -263,7 +308,11 @@ const Field = ({
       return (
         <div>
           {label}
-          <input type="date" className={inputClass} {...register(field.name, rules)} />
+          <input
+            type="date"
+            className={inputClass}
+            {...register(field.name, rules)}
+          />
           {helperAndError}
         </div>
       );

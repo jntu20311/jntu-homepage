@@ -26,6 +26,8 @@ export interface FieldDef {
   helper?: string;
   /** 생성 시에만 노출 (예: 비밀번호) */
   createOnly?: boolean;
+  /** textarea 옆에 Markdown 미리보기를 병렬 배치 */
+  markdown?: boolean;
 }
 
 export interface ColumnDef {
@@ -212,7 +214,8 @@ export const resources: ResourceDef[] = [
         name: "content",
         label: "본문 (Markdown)",
         type: "textarea",
-        helper: "Markdown 문법으로 작성합니다.",
+        markdown: true,
+        helper: "왼쪽에 Markdown 으로 작성하면 오른쪽에서 미리보기가 갱신됩니다.",
       },
     ],
   },

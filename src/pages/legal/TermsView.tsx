@@ -29,14 +29,14 @@ export const TermsView = ({ slug, emptyMessage }: TermsViewProps) => {
             <label className="flex items-center gap-2 text-sm">
               <span className="text-muted-foreground">적용날짜</span>
               <select
-                className="rounded-md border border-input bg-background px-3 py-1.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                name="terms-date"
+                className="rounded-md border border-input bg-background px-3 pr-4 py-1.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
                 value={current.id}
                 onChange={(e) => setSelectedId(Number(e.target.value))}
               >
                 {versions?.map((v) => (
                   <option key={v.id} value={v.id}>
                     {v.effectiveDate ? formatDate(v.effectiveDate) : "(미지정)"}
-                    {" 시행"}
                   </option>
                 ))}
               </select>
