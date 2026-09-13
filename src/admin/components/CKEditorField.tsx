@@ -24,7 +24,7 @@ import {
   type FileLoader,
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/api/supabase";
 import { BOARD_BUCKET, boardPathToUrl } from "../lib/storageAssets";
 
 /**

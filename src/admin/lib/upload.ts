@@ -1,4 +1,4 @@
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/api/supabase";
 
 /** 파일을 지정 버킷/폴더에 업로드하고 public URL 반환 */
 export const uploadPublicFile = async (

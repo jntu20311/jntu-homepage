@@ -1,5 +1,5 @@
 import type { AuthProvider } from "@refinedev/core";
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/api/supabase";
 
 /**
  * 현재 세션 사용자가 admins 테이블에 존재하는지 확인.

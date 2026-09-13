@@ -6,10 +6,20 @@ import type { ColumnDef, ResourceDef } from "../config";
 
 const renderCell = (col: ColumnDef, row: Record<string, unknown>) => {
   const value = row[col.name];
+  const mapped =
+    col.map && value != null ? (col.map[String(value)] ?? String(value)) : value;
   if (col.type === "date" && value)
     return formatDate(String(value));
   if (col.type === "boolean")
     return value ? "✓" : "—";
+  if (col.type === "badge" && mapped)
+    return (
+      <span className="rounded bg-secondary px-1.5 py-0.5 text-xs">
+        {String(mapped)}
+      </span>
+    );
+  if (col.map)
+    return mapped == null ? "—" : String(mapped);
   if (col.type === "image" && value)
     return (
       <img
@@ -17,12 +27,6 @@ const renderCell = (col: ColumnDef, row: Record<string, unknown>) => {
         alt=""
         className="h-10 w-16 rounded border object-contain"
       />
-    );
-  if (col.type === "badge" && value)
-    return (
-      <span className="rounded bg-secondary px-1.5 py-0.5 text-xs">
-        {String(value)}
-      </span>
     );
   return value == null ? "—" : String(value);
 };

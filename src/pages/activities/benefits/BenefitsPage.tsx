@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
-import { BenefitCard, fetchBenefits } from "@/entities/benefit";
+import { BenefitCard, useBenefits } from "@/entities/benefit";
 import { Pagination } from "@/shared/ui/pagination";
-import { useAsync } from "@/shared/lib/use-async";
 
 const PAGE_SIZE = 4;
 
@@ -9,10 +8,7 @@ export const BenefitsPage = () => {
   const [searchParams] = useSearchParams();
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
-  const { data, loading } = useAsync(
-    () => fetchBenefits(page, PAGE_SIZE),
-    [page],
-  );
+  const { data, isLoading: loading } = useBenefits(page, PAGE_SIZE);
 
   const items = data?.items ?? [];
   const totalPages = Math.max(1, Math.ceil((data?.total ?? 0) / PAGE_SIZE));

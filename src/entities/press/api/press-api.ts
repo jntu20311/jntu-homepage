@@ -1,4 +1,4 @@
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/api/supabase";
 import type { Press, PressType } from "../model/types";
 
 const TABLE = "press";

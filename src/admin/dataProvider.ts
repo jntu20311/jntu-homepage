@@ -1,6 +1,6 @@
 import type { DataProvider } from "@refinedev/core";
 import { dataProvider as supabaseDataProvider } from "@refinedev/supabase";
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/api/supabase";
 import {
   cleanupRemovedImages,
   commitContentImages,

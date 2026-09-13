@@ -1,16 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { ChevronLeft, Download } from "lucide-react";
-import { PressTypeBadge, fetchPress } from "@/entities/press";
+import { PressTypeBadge, usePress } from "@/entities/press";
 import { routes } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
-import { useAsync } from "@/shared/lib/use-async";
 
 export const PressDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: press, loading } = useAsync(
-    () => (id ? fetchPress(id) : Promise.resolve(null)),
-    [id],
-  );
+  const { data: press, isLoading: loading } = usePress(id);
 
   if (loading) {
     return <p className="text-muted-foreground">불러오는 중...</p>;

@@ -32,6 +32,8 @@ export interface ColumnDef {
   name: string;
   label: string;
   type?: "text" | "date" | "boolean" | "image" | "badge";
+  /** 값 → 표시 라벨 매핑 (예: slug terms→이용약관) */
+  map?: Record<string, string>;
 }
 
 export interface ResourceDef {
@@ -180,16 +182,32 @@ export const resources: ResourceDef[] = [
   {
     name: "terms",
     label: "약관",
-    canCreate: false,
-    canDelete: false,
-    idColumnName: "slug",
+    sorter: { field: "effective_date", order: "desc" },
     list: [
-      { name: "slug", label: "구분" },
+      {
+        name: "slug",
+        label: "구분",
+        type: "badge",
+        map: { terms: "이용약관", privacy: "개인정보처리방침" },
+      },
       { name: "title", label: "제목" },
+      { name: "effective_date", label: "적용날짜", type: "date" },
       { name: "updated_at", label: "수정일", type: "date" },
     ],
     fields: [
+      {
+        name: "slug",
+        label: "구분",
+        type: "select",
+        required: true,
+        options: [
+          { label: "이용약관", value: "terms" },
+          { label: "개인정보처리방침", value: "privacy" },
+        ],
+        defaultValue: "terms",
+      },
       { name: "title", label: "제목", type: "text", required: true },
+      { name: "effective_date", label: "적용(시행)날짜", type: "date", required: true },
       {
         name: "content",
         label: "본문 (Markdown)",

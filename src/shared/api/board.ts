@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-/** 공개 게시판(활동내역/정책/조합원혜택) 공통 조회 헬퍼 */
+/** 공개 게시판(활동내역/정책/조합원혜택) 공통 전송 헬퍼 */
 
 export interface BoardRow {
   id: number;
@@ -38,7 +38,7 @@ export const fetchBoardPage = async (
   page: number,
   pageSize: number,
   orderColumn = "created_at",
-): Promise<{ rows: Record<string, unknown>[]; total: number }> => {
+): Promise<{ items: BoardItem[]; total: number }> => {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
   const { data, count, error } = await supabase
@@ -48,14 +48,15 @@ export const fetchBoardPage = async (
     .order(orderColumn, { ascending: false })
     .range(from, to);
   if (error) throw error;
-  return { rows: data ?? [], total: count ?? 0 };
+  const rows = (data ?? []) as unknown as BoardRow[];
+  return { items: rows.map(mapBoardRow), total: count ?? 0 };
 };
 
 /** 공개된 게시글 단건 조회 */
 export const fetchBoardOne = async (
   table: string,
   id: string,
-): Promise<Record<string, unknown> | null> => {
+): Promise<BoardItem | null> => {
   const { data, error } = await supabase
     .from(table)
     .select("*")
@@ -63,5 +64,32 @@ export const fetchBoardOne = async (
     .eq("published", true)
     .maybeSingle();
   if (error) throw error;
-  return data;
+  return data ? mapBoardRow(data as unknown as BoardRow) : null;
+};
+
+export interface PreviewItem {
+  id: string;
+  title: string;
+  date: string;
+}
+
+/** 홈 화면 게시판 미리보기 (최신 N건) */
+export const fetchBoardPreview = async (
+  table: string,
+  dateColumn = "created_at",
+  limit = 5,
+): Promise<PreviewItem[]> => {
+  const { data, error } = await supabase
+    .from(table)
+    .select(`id, title, ${dateColumn}`)
+    .eq("published", true)
+    .order(dateColumn, { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  const rows = (data ?? []) as unknown as Record<string, unknown>[];
+  return rows.map((r) => ({
+    id: String(r.id),
+    title: String(r.title),
+    date: String(r[dateColumn]),
+  }));
 };

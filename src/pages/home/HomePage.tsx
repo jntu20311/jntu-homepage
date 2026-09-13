@@ -1,5 +1,6 @@
-import { ImageSlider } from "@/shared/ui/image-slider";
+import { ImageSlider, type SlideImage } from "@/shared/ui/image-slider";
 import { Link } from "react-router-dom";
+import type { UseQueryResult } from "@tanstack/react-query";
 import {
   routes,
   pressDetailPath,
@@ -7,56 +8,57 @@ import {
   benefitDetailPath,
 } from "@/shared/configs/routes";
 import { ArrowRightIcon } from "lucide-react";
-import { HomeLinkCard } from "@/entities/home-link";
+import { HomeLinkCard, useHomeLinks } from "@/entities/home-link";
+import { useBanners } from "@/entities/banner";
+import { usePressPreview } from "@/entities/press";
+import { useActivitiesPreview } from "@/entities/activity";
+import { useBenefitsPreview } from "@/entities/benefit";
 import { formatDate } from "@/shared/lib/format";
-import { useAsync } from "@/shared/lib/use-async";
-import {
-  fetchBanners,
-  fetchHomeLinks,
-  fetchBoardPreview,
-  type PreviewItem,
-} from "@/shared/lib/home-api";
+import type { PreviewItem } from "@/shared/api/board";
 
 interface HomeBoard {
   title: string;
   link: string;
-  table: string;
-  dateColumn: string;
   detailPath: (id: string) => string;
+  usePreview: () => UseQueryResult<PreviewItem[]>;
 }
 
 const homeBoards: HomeBoard[] = [
   {
     title: "보도자료",
     link: routes.ACTIVITIES_PRESS,
-    table: "press",
-    dateColumn: "press_date",
     detailPath: pressDetailPath,
+    usePreview: usePressPreview,
   },
   {
     title: "활동내역",
     link: routes.ACTIVITIES_HISTORY,
-    table: "activities",
-    dateColumn: "created_at",
     detailPath: activityHistoryDetailPath,
+    usePreview: useActivitiesPreview,
   },
   {
     title: "조합원 혜택",
     link: routes.ACTIVITIES_BENEFITS,
-    table: "benefits",
-    dateColumn: "created_at",
     detailPath: benefitDetailPath,
+    usePreview: useBenefitsPreview,
   },
 ];
 
 export const HomePage = () => {
-  const { data: slides } = useAsync(fetchBanners, []);
-  const { data: homeLinks } = useAsync(fetchHomeLinks, []);
+  const { data: banners } = useBanners();
+  const { data: homeLinks } = useHomeLinks();
+
+  const slides: SlideImage[] = (banners ?? []).map((b) => ({
+    src: b.imageUrl,
+    alt: b.alt,
+    link: b.link,
+    external: b.external,
+  }));
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-        {slides && slides.length > 0 ? (
+        {slides.length > 0 ? (
           <ImageSlider className="max-w-[550px]" images={slides} />
         ) : (
           <div className="aspect-video w-full max-w-[550px] rounded-lg bg-muted" />
@@ -88,10 +90,7 @@ export const HomePage = () => {
 };
 
 const HomeBoardColumn = ({ board }: { board: HomeBoard }) => {
-  const { data: items } = useAsync<PreviewItem[]>(
-    () => fetchBoardPreview(board.table, board.dateColumn, 5),
-    [board.table],
-  );
+  const { data: items } = board.usePreview();
 
   return (
     <div>

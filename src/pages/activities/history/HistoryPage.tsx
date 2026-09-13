@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
-import { ActivityCard, fetchActivities } from "@/entities/activity";
+import { ActivityCard, useActivities } from "@/entities/activity";
 import { Pagination } from "@/shared/ui/pagination";
-import { useAsync } from "@/shared/lib/use-async";
 
 const PAGE_SIZE = 9;
 
@@ -9,10 +8,7 @@ export const HistoryPage = () => {
   const [searchParams] = useSearchParams();
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
-  const { data, loading } = useAsync(
-    () => fetchActivities(page, PAGE_SIZE),
-    [page],
-  );
+  const { data, isLoading: loading } = useActivities(page, PAGE_SIZE);
 
   const items = data?.items ?? [];
   const totalPages = Math.max(1, Math.ceil((data?.total ?? 0) / PAGE_SIZE));

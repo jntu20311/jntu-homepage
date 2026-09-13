@@ -19,6 +19,8 @@
     "@refinedev/supabase": "^6.0.2",
     "@supabase/supabase-js": "^2.115.0",
     "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/react-query": "^5.102.8",
+    "@tanstack/react-query-devtools": "^5.102.8",
     "ckeditor5": "^48.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

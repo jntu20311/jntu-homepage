@@ -1,10 +1,9 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { Paperclip } from "lucide-react";
-import { PressTypeBadge, fetchPressList } from "@/entities/press";
+import { PressTypeBadge, usePressList } from "@/entities/press";
 import { pressDetailPath } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
 import { Pagination } from "@/shared/ui/pagination";
-import { useAsync } from "@/shared/lib/use-async";
 
 const PAGE_SIZE = 10;
 
@@ -12,10 +11,7 @@ export const PressPage = () => {
   const [searchParams] = useSearchParams();
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
-  const { data, loading } = useAsync(
-    () => fetchPressList(page, PAGE_SIZE),
-    [page],
-  );
+  const { data, isLoading: loading } = usePressList(page, PAGE_SIZE);
 
   const items = data?.items ?? [];
   const totalPages = Math.max(1, Math.ceil((data?.total ?? 0) / PAGE_SIZE));

@@ -1,4 +1,4 @@
-import { supabase } from "@/shared/lib/supabase";
+import { supabase } from "@/shared/api/supabase";
 
 /**
  * 게시판 본문(CKEditor) 이미지의 Storage 고아 파일 관리 유틸.

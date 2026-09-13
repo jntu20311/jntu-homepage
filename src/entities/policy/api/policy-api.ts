@@ -1,22 +1,16 @@
-import {
-  fetchBoardPage,
-  fetchBoardOne,
-  mapBoardRow,
-  type BoardRow,
-} from "@/shared/lib/board";
+import { fetchBoardPage, fetchBoardOne } from "@/shared/api/board";
 import type { Policy } from "../model/types";
 
 const TABLE = "policy";
 
-export const fetchPolicies = async (
+export const fetchPolicies = (
   page: number,
   pageSize: number,
-): Promise<{ items: Policy[]; total: number }> => {
-  const { rows, total } = await fetchBoardPage(TABLE, page, pageSize);
-  return { items: rows.map((r) => mapBoardRow(r as unknown as BoardRow)), total };
-};
+): Promise<{ items: Policy[]; total: number }> =>
+  fetchBoardPage(TABLE, page, pageSize) as Promise<{
+    items: Policy[];
+    total: number;
+  }>;
 
-export const fetchPolicy = async (id: string): Promise<Policy | null> => {
-  const row = await fetchBoardOne(TABLE, id);
-  return row ? mapBoardRow(row as unknown as BoardRow) : null;
-};
+export const fetchPolicy = (id: string): Promise<Policy | null> =>
+  fetchBoardOne(TABLE, id) as Promise<Policy | null>;

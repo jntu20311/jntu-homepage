@@ -1,22 +1,16 @@
-import {
-  fetchBoardPage,
-  fetchBoardOne,
-  mapBoardRow,
-  type BoardRow,
-} from "@/shared/lib/board";
+import { fetchBoardPage, fetchBoardOne } from "@/shared/api/board";
 import type { Activity } from "../model/types";
 
 const TABLE = "activities";
 
-export const fetchActivities = async (
+export const fetchActivities = (
   page: number,
   pageSize: number,
-): Promise<{ items: Activity[]; total: number }> => {
-  const { rows, total } = await fetchBoardPage(TABLE, page, pageSize);
-  return { items: rows.map((r) => mapBoardRow(r as unknown as BoardRow)), total };
-};
+): Promise<{ items: Activity[]; total: number }> =>
+  fetchBoardPage(TABLE, page, pageSize) as Promise<{
+    items: Activity[];
+    total: number;
+  }>;
 
-export const fetchActivity = async (id: string): Promise<Activity | null> => {
-  const row = await fetchBoardOne(TABLE, id);
-  return row ? mapBoardRow(row as unknown as BoardRow) : null;
-};
+export const fetchActivity = (id: string): Promise<Activity | null> =>
+  fetchBoardOne(TABLE, id) as Promise<Activity | null>;

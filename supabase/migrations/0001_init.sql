@@ -159,22 +159,30 @@ create index if not exists idx_benefits_created   on public.benefits   (created_
 -- ---------------------------------------------------------------------------
 -- 약관 (이용약관 / 개인정보취급방침)
 -- ---------------------------------------------------------------------------
+-- terms: slug(terms|privacy) 별로 적용날짜(effective_date) 버전을 여러 개 보유
 create table if not exists public.terms (
-  slug        text primary key check (slug in ('terms', 'privacy')),
-  title       text not null,
-  content     text not null default '',            -- Markdown
-  updated_at  timestamptz not null default now()
+  id              bigint generated always as identity primary key,
+  slug            text not null check (slug in ('terms', 'privacy')),
+  title           text not null,
+  content         text not null default '',         -- Markdown
+  effective_date  date,                              -- 적용(시행)날짜
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
 );
+
+create index if not exists idx_terms_slug_effective
+  on public.terms (slug, effective_date desc);
 
 create trigger trg_terms_updated before update on public.terms for each row execute function public.set_updated_at();
 
--- 약관 기본 행 시드 (본문은 관리자에서 입력)
-insert into public.terms (slug, title, content) values
-  ('terms',   '이용약관',         '')
-on conflict (slug) do nothing;
-insert into public.terms (slug, title, content) values
-  ('privacy', '개인정보취급방침', '')
-on conflict (slug) do nothing;
+-- 약관 기본 행 시드 (본문은 관리자에서 입력) — 각 slug 최소 1건
+insert into public.terms (slug, title, content, effective_date)
+select 'terms', '이용약관', '', current_date
+where not exists (select 1 from public.terms where slug = 'terms');
+
+insert into public.terms (slug, title, content, effective_date)
+select 'privacy', '개인정보처리방침', '', current_date
+where not exists (select 1 from public.terms where slug = 'privacy');
 
 -- ---------------------------------------------------------------------------
 -- 조회수 증가 RPC (공개 사이트 상세 진입 시)
