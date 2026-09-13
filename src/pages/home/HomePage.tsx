@@ -61,7 +61,7 @@ export const HomePage = () => {
         {slides.length > 0 ? (
           <ImageSlider className="max-w-[550px]" images={slides} />
         ) : (
-          <div className="aspect-video w-full max-w-[550px] rounded-lg bg-muted" />
+          <div className="aspect-[4/5] w-full max-w-[550px] rounded-lg bg-muted" />
         )}
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-col">
