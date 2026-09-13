@@ -11,13 +11,14 @@ interface TermsViewProps {
 /** 약관/개인정보 공통 화면 — 적용날짜별 버전을 선택해 열람 */
 export const TermsView = ({ slug, emptyMessage }: TermsViewProps) => {
   const { data: versions, isLoading } = useTermsVersions(slug);
+
   // 선택 안 하면 최신(첫) 버전을 기본 표시
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const current =
     versions?.find((v) => v.id === selectedId) ?? versions?.[0] ?? null;
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
       {isLoading ? (
         <p className="text-muted-foreground">불러오는 중...</p>
       ) : !current ? (
