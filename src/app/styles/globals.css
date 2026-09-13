@@ -123,4 +123,27 @@
   body {
     @apply bg-background text-foreground;
   }
+
+
+
+}
+
+/* Heading1 */
+.ck h2 {
+  font-size: 32px;
+}
+
+/* Heading2 */
+.ck h3 {
+  font-size: 24px;
+}
+
+/* Heading3 */
+.ck h4 {
+  font-size: 20px;
+}
+
+/* paragraph */
+.ck p {
+  font-size: 14px;
 }

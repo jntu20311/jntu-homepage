@@ -51,10 +51,13 @@ class SupabaseUploadAdapter {
   abort() {}
 }
 
-const makeUploadPlugin = (postType: string) => (editor: Editor) => {
-  editor.plugins.get("FileRepository").createUploadAdapter = (loader) =>
-    new SupabaseUploadAdapter(loader, postType);
-};
+// CKEditor 는 함수 플러그인을 `new` 로 생성하므로 화살표 함수가 아닌
+// 일반 함수(생성 가능)를 반환해야 한다. (화살표 함수면 "is not a constructor")
+const makeUploadPlugin = (postType: string) =>
+  function SupabaseUploadPlugin(editor: Editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) =>
+      new SupabaseUploadAdapter(loader, postType);
+  };
 
 interface CKEditorFieldProps {
   value?: string;

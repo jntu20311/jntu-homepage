@@ -165,7 +165,6 @@ export const resources: ResourceDef[] = [
       { name: "press_date", label: "보도날짜", type: "date" },
     ],
     fields: [
-      { name: "title", label: "제목", type: "text", required: true },
       {
         name: "type",
         label: "유형",
@@ -175,9 +174,11 @@ export const resources: ResourceDef[] = [
           { label: "연맹", value: "연맹" },
         ],
         defaultValue: "전남광주",
+        required: true,
       },
-      { name: "press_date", label: "보도날짜", type: "date" },
-      { name: "author", label: "작성자", type: "text" },
+      { name: "title", label: "제목", type: "text", required: true },
+      { name: "press_date", label: "보도날짜", type: "date", required: true },
+      // { name: "author", label: "작성자", type: "text" },
       {
         name: "attachment_url",
         label: "첨부파일",

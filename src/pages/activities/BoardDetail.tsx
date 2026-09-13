@@ -3,6 +3,7 @@ import { ChevronLeft, Eye } from "lucide-react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { formatDate, formatNumber } from "@/shared/lib/format";
 import type { BoardItem } from "@/shared/api/board";
+import { HTMLViewer } from "@/widgets/html-viewer";
 
 interface BoardDetailProps {
   /** 엔티티 상세 조회 훅 (useActivity / usePolicy / useBenefit) */
@@ -53,7 +54,6 @@ export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
           </span>
         </div>
       </header>
-
       {item.image && (
         <img
           src={item.image}
@@ -61,12 +61,8 @@ export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
           className="w-full rounded-xl border border-border bg-muted object-cover"
         />
       )}
-
       {/* CKEditor HTML 본문 */}
-      <div
-        className="prose prose-neutral max-w-none dark:prose-invert"
-        dangerouslySetInnerHTML={{ __html: item.content }}
-      />
+      <HTMLViewer content={item.content} />
 
       <div className="border-t border-border pt-5">{backLink}</div>
     </article>

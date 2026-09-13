@@ -3,6 +3,7 @@ import { ChevronLeft, Download } from "lucide-react";
 import { PressTypeBadge, usePress } from "@/entities/press";
 import { routes } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
+import { HTMLViewer } from "@/widgets/html-viewer";
 
 export const PressDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,10 +57,7 @@ export const PressDetailPage = () => {
       </header>
 
       {/* HTML 에디터 내용 렌더링 */}
-      <div
-        className="prose prose-neutral max-w-none dark:prose-invert"
-        dangerouslySetInnerHTML={{ __html: press.content }}
-      />
+      <HTMLViewer content={press.content} />
 
       <div className="border-t border-border pt-5">
         <Link
