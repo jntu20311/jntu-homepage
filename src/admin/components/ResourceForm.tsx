@@ -245,7 +245,7 @@ const Field = ({
           <input
             type="file"
             accept="image/*"
-            className="text-sm"
+            className="text-sm border rounded-sm p-2 cursor-pointer hover:bg-gray-100"
             onChange={(e) =>
               e.target.files?.[0] && handleUpload(e.target.files[0])
             }
