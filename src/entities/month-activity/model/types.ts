@@ -1,4 +1,4 @@
-export interface Policy {
+export interface MonthActivity {
   id: string;
   /** 대표 이미지 */
   image: string;

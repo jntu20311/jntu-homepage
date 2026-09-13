@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import { policyDetailPath } from "@/shared/configs/routes";
+import { monthActivityDetailPath } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
-import type { Policy } from "../model/types";
+import type { MonthActivity } from "../model/types";
 
-interface PolicyCardProps {
-  policy: Policy;
+interface MonthActivityCardProps {
+  policy: MonthActivity;
 }
 
-export const PolicyCard = ({ policy }: PolicyCardProps) => {
+export const MonthActivityCard = ({ policy }: MonthActivityCardProps) => {
   return (
     <Link
-      to={policyDetailPath(policy.id)}
+      to={monthActivityDetailPath(policy.id)}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
     >
       <div className="aspect-[1080/1350] w-full overflow-hidden bg-muted">

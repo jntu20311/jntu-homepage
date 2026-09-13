@@ -11,7 +11,7 @@ interface BoardDetailProps {
   backRoute: string;
 }
 
-/** 활동내역/정책/조합원혜택 상세 공통 컴포넌트 */
+/** 활동내역/월별활동보고/조합원혜택 상세 공통 컴포넌트 */
 export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
   const { id } = useParams<{ id: string }>();
   const { data: item, isLoading } = useItem(id);

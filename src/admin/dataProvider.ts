@@ -10,7 +10,12 @@ import {
 } from "./lib/storageAssets";
 
 /** CKEditor 본문(content)을 갖는 게시판 리소스 */
-const BOARD_RESOURCES = new Set(["press", "activities", "policy", "benefits"]);
+const BOARD_RESOURCES = new Set([
+  "press",
+  "activities",
+  "month_activities",
+  "benefits",
+]);
 
 const base = supabaseDataProvider(supabase);
 

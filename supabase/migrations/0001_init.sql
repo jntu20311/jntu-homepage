@@ -94,7 +94,8 @@ create table if not exists public.press (
   id               bigint generated always as identity primary key,
   title            text not null,
   content          text not null default '',       -- CKEditor HTML
-  author           text not null default '',
+  author           text not null default '',        -- 작성자 표시용 이름 스냅샷
+  author_id        uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views            integer not null default 0,
   image_url        text,
   published        boolean not null default true,
@@ -111,7 +112,8 @@ create table if not exists public.activities (
   id          bigint generated always as identity primary key,
   title       text not null,
   content     text not null default '',
-  author      text not null default '',
+  author      text not null default '',        -- 작성자 표시용 이름 스냅샷
+  author_id   uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views       integer not null default 0,
   image_url   text,
   published   boolean not null default true,
@@ -119,11 +121,12 @@ create table if not exists public.activities (
   updated_at  timestamptz not null default now()
 );
 
-create table if not exists public.policy (
+create table if not exists public.month_activities (
   id          bigint generated always as identity primary key,
   title       text not null,
   content     text not null default '',
-  author      text not null default '',
+  author      text not null default '',        -- 작성자 표시용 이름 스냅샷
+  author_id   uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views       integer not null default 0,
   image_url   text,
   published   boolean not null default true,
@@ -135,7 +138,8 @@ create table if not exists public.benefits (
   id          bigint generated always as identity primary key,
   title       text not null,
   content     text not null default '',
-  author      text not null default '',
+  author      text not null default '',        -- 작성자 표시용 이름 스냅샷
+  author_id   uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views       integer not null default 0,
   image_url   text,
   published   boolean not null default true,
@@ -146,15 +150,21 @@ create table if not exists public.benefits (
 -- updated_at 트리거 부착
 create trigger trg_press_updated       before update on public.press      for each row execute function public.set_updated_at();
 create trigger trg_activities_updated  before update on public.activities for each row execute function public.set_updated_at();
-create trigger trg_policy_updated       before update on public.policy     for each row execute function public.set_updated_at();
+create trigger trg_month_activities_updated       before update on public.month_activities     for each row execute function public.set_updated_at();
 create trigger trg_benefits_updated    before update on public.benefits   for each row execute function public.set_updated_at();
 
 -- 목록 정렬용 인덱스
 create index if not exists idx_press_created      on public.press      (created_at desc);
 create index if not exists idx_press_date         on public.press      (press_date desc);
 create index if not exists idx_activities_created on public.activities (created_at desc);
-create index if not exists idx_policy_created     on public.policy     (created_at desc);
+create index if not exists idx_month_activities_created     on public.month_activities     (created_at desc);
 create index if not exists idx_benefits_created   on public.benefits   (created_at desc);
+
+-- 작성 관리자(author_id) 별 조회/필터용 인덱스
+create index if not exists idx_press_author      on public.press      (author_id);
+create index if not exists idx_activities_author on public.activities (author_id);
+create index if not exists idx_month_activities_author     on public.month_activities     (author_id);
+create index if not exists idx_benefits_author   on public.benefits   (author_id);
 
 -- ---------------------------------------------------------------------------
 -- 약관 (이용약관 / 개인정보취급방침)
@@ -194,7 +204,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if table_name not in ('press', 'activities', 'policy', 'benefits') then
+  if table_name not in ('press', 'activities', 'month_activities', 'benefits') then
     raise exception 'invalid table';
   end if;
   execute format('update public.%I set views = views + 1 where id = $1', table_name)
@@ -210,7 +220,7 @@ alter table public.banners     enable row level security;
 alter table public.home_links  enable row level security;
 alter table public.press       enable row level security;
 alter table public.activities  enable row level security;
-alter table public.policy      enable row level security;
+alter table public.month_activities      enable row level security;
 alter table public.benefits    enable row level security;
 alter table public.terms       enable row level security;
 

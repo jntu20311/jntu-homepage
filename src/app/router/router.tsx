@@ -14,8 +14,8 @@ import {
   JoinUpdatePage,
   LocationPage,
   NotFoundPage,
-  PolicyDetailPage,
-  PolicyPage,
+  MonthActivityDetailPage,
+  MonthActivityPage,
   PressDetailPage,
   PressPage,
   PrivacyPage,
@@ -64,10 +64,13 @@ const router = createBrowserRouter([
             element: <HistoryDetailPage />,
           },
 
-          { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
           {
-            path: routes.ACTIVITIES_POLICY_DETAIL,
-            element: <PolicyDetailPage />,
+            path: routes.ACTIVITIES_MONTH_ACTIVITY,
+            element: <MonthActivityPage />,
+          },
+          {
+            path: routes.ACTIVITIES_MONTH_ACTIVITY_DETAIL,
+            element: <MonthActivityDetailPage />,
           },
           { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
           {

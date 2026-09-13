@@ -28,12 +28,14 @@ Supabase 대시보드 → **SQL Editor** 에서 [`migrations/0001_init.sql`](./m
 ## 3. 환경변수
 
 ### 클라이언트 (`.env`) — 이미 존재
+
 ```
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_PUBLISHABLE_KEY=...    # anon(publishable) 키
 ```
 
 ### Worker 시크릿 — 관리자 계정 생성/삭제에 필요 (service_role)
+
 - 로컬: `.dev.vars` (예시는 `.dev.vars.example`)
   ```
   SUPABASE_URL=https://<project>.supabase.co
@@ -53,21 +55,22 @@ VITE_SUPABASE_PUBLISHABLE_KEY=...    # anon(publishable) 키
 ```bash
 npm run dev
 ```
+
 - 관리자: `http://localhost:5173/admin` → 기본 관리자로 로그인
 - 배너/게시판/약관을 등록하면 공개 사이트(홈·알림마당·약관)에 반영됩니다.
 
 ## 관리 대상 테이블
 
-| 테이블 | 용도 | 공개 페이지 |
-|---|---|---|
-| `banners` | 홈 배너 슬라이드 | 홈 |
-| `home_links` | 홈 바로가기 | 홈 |
-| `press` | 보도자료 | 알림마당 › 보도자료 |
-| `activities` | 활동내역 | 알림마당 › 활동내역 |
-| `policy` | 정책/월별활동보고 | 알림마당 › 정책 |
-| `benefits` | 조합원 혜택 | 알림마당 › 조합원 혜택 |
-| `terms` | 이용약관/개인정보취급방침 | 푸터 링크 |
-| `admins` | 관리자 계정 | (관리자 전용) |
+| 테이블             | 용도                      | 공개 페이지             |
+| ------------------ | ------------------------- | ----------------------- |
+| `banners`          | 홈 배너 슬라이드          | 홈                      |
+| `home_links`       | 홈 바로가기               | 홈                      |
+| `press`            | 보도자료                  | 알림마당 › 보도자료     |
+| `activities`       | 활동내역                  | 알림마당 › 활동내역     |
+| `month_activities` | 월별활동보고              | 알림마당 › 월별활동보고 |
+| `benefits`         | 조합원 혜택               | 알림마당 › 조합원 혜택  |
+| `terms`            | 이용약관/개인정보취급방침 | 푸터 링크               |
+| `admins`           | 관리자 계정               | (관리자 전용)           |
 
 ## 게시판 본문 이미지(CKEditor) 고아 파일 관리
 

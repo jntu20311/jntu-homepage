@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
-import { PolicyCard, usePolicies } from "@/entities/policy";
+import { PolicyCard, usePolicies } from "@/entities/month-activity";
 import { Pagination } from "@/shared/ui/pagination";
 
 const PAGE_SIZE = 4;
 
-export const PolicyPage = () => {
+export const MonthActivityPage = () => {
   const [searchParams] = useSearchParams();
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
 

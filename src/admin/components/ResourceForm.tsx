@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { useForm } from "@refinedev/react-hook-form";
+import { useGetIdentity } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
@@ -20,6 +21,7 @@ const inputClass =
 
 export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
   const navigate = useNavigate();
+  const { data: identity } = useGetIdentity<{ id?: string; name?: string }>();
   const {
     refineCore: { onFinish, formLoading },
     register,
@@ -46,9 +48,19 @@ export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
   );
   const hasMarkdown = fields.some((f) => f.markdown);
 
+  // 생성 시 작성자를 로그인한 관리자(admins)와 연동:
+  //   author_id → 작성 관리자 admins.id (추적용), author → 표시용 이름 스냅샷
+  const submit = (values: Record<string, unknown>) => {
+    if (action === "create" && resource.autoAuthor) {
+      values.author_id = identity?.id ?? null;
+      values.author = identity?.name ?? "";
+    }
+    return onFinish(values);
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onFinish)}
+      onSubmit={handleSubmit(submit)}
       className={cn("space-y-5", hasMarkdown ? "max-w-5xl" : "max-w-3xl")}
     >
       <h1 className="text-xl font-bold">

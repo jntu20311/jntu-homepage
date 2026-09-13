@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-/** 공개 게시판(활동내역/정책/조합원혜택) 공통 전송 헬퍼 */
+/** 공개 게시판(활동내역/월별활동보고/조합원혜택) 공통 전송 헬퍼 */
 
 export interface BoardRow {
   id: number;

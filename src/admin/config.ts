@@ -52,12 +52,13 @@ export interface ResourceDef {
   postType?: string;
   /** 기본 키 컬럼명이 id 가 아닐 때 (예: terms.slug) */
   idColumnName?: string;
+  /** 생성 시 작성자를 로그인한 관리자와 연동 (author_id → admins.id 추적용, author → 이름 스냅샷) */
+  autoAuthor?: boolean;
 }
 
-/** 게시판 3종(활동내역/정책/조합원혜택) 공통 필드 */
+/** 게시판 3종(활동내역/월별활동보고/조합원혜택) 공통 필드 */
 const boardFields = (): FieldDef[] => [
   { name: "title", label: "제목", type: "text", required: true },
-  { name: "author", label: "작성자", type: "text" },
   {
     name: "image_url",
     label: "대표 이미지",
@@ -158,6 +159,7 @@ export const resources: ResourceDef[] = [
     label: "보도자료",
     sorter: { field: "press_date", order: "desc" },
     postType: "press",
+    autoAuthor: true,
     list: [
       { name: "id", label: "번호" },
       { name: "type", label: "유형", type: "badge" },
@@ -178,7 +180,6 @@ export const resources: ResourceDef[] = [
       },
       { name: "title", label: "제목", type: "text", required: true },
       { name: "press_date", label: "보도날짜", type: "date", required: true },
-      // { name: "author", label: "작성자", type: "text" },
       {
         name: "attachment_url",
         label: "첨부파일",
@@ -196,14 +197,16 @@ export const resources: ResourceDef[] = [
     label: "활동내역",
     sorter: { field: "created_at", order: "desc" },
     postType: "activities",
+    autoAuthor: true,
     list: boardColumns,
     fields: boardFields(),
   },
   {
-    name: "policy",
-    label: "정책",
+    name: "month_activities",
+    label: "월별활동보고",
     sorter: { field: "created_at", order: "desc" },
-    postType: "policy",
+    postType: "month_activities",
+    autoAuthor: true,
     list: boardColumns,
     fields: boardFields(),
   },
@@ -212,6 +215,7 @@ export const resources: ResourceDef[] = [
     label: "조합원 혜택",
     sorter: { field: "created_at", order: "desc" },
     postType: "benefits",
+    autoAuthor: true,
     list: boardColumns,
     fields: boardFields(),
   },
