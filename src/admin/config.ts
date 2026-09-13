@@ -131,28 +131,28 @@ export const resources: ResourceDef[] = [
       },
     ],
   },
-  {
-    name: "home_links",
-    label: "홈 바로가기",
-    sorter: { field: "sort_order", order: "asc" },
-    list: [
-      { name: "label", label: "라벨" },
-      { name: "link", label: "링크" },
-      { name: "active", label: "노출", type: "boolean" },
-    ],
-    fields: [
-      { name: "label", label: "라벨", type: "text", required: true },
-      { name: "link", label: "링크", type: "text", required: true },
-      { name: "external", label: "외부 링크(새 탭)", type: "boolean" },
-      {
-        name: "sort_order",
-        label: "정렬 순서",
-        type: "number",
-        defaultValue: 0,
-      },
-      { name: "active", label: "노출", type: "boolean", defaultValue: true },
-    ],
-  },
+  // {
+  //   name: "home_links",
+  //   label: "홈 바로가기",
+  //   sorter: { field: "sort_order", order: "asc" },
+  //   list: [
+  //     { name: "label", label: "라벨" },
+  //     { name: "link", label: "링크" },
+  //     { name: "active", label: "노출", type: "boolean" },
+  //   ],
+  //   fields: [
+  //     { name: "label", label: "라벨", type: "text", required: true },
+  //     { name: "link", label: "링크", type: "text", required: true },
+  //     { name: "external", label: "외부 링크(새 탭)", type: "boolean" },
+  //     {
+  //       name: "sort_order",
+  //       label: "정렬 순서",
+  //       type: "number",
+  //       defaultValue: 0,
+  //     },
+  //     { name: "active", label: "노출", type: "boolean", defaultValue: true },
+  //   ],
+  // },
   {
     name: "press",
     label: "보도자료",
