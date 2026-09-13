@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import {
   AboutIntroPage,
   BenefitsDetailPage,
@@ -24,7 +25,19 @@ import { routes } from "@/shared/configs/routes";
 import { RootLayout } from "@/app/layouts/root-layout";
 import { BoardLayout } from "../layouts/board-layout";
 
+// 관리자 페이지(Refine + MUI 없는 헤드리스)는 별도 번들로 lazy 로드
+const AdminApp = lazy(() => import("@/admin/AdminApp"));
+
 const router = createBrowserRouter([
+  // 관리자: 공개 사이트 레이아웃(헤더/푸터) 바깥에서 자체 라우팅
+  {
+    path: "/admin/*",
+    element: (
+      <Suspense fallback={null}>
+        <AdminApp />
+      </Suspense>
+    ),
+  },
   {
     element: <RootLayout />,
     errorElement: <ErrorPage />,
