@@ -56,17 +56,13 @@ export const ImageSlider = ({
         className,
       )}
       onClick={() => {
-        try {
-          const image = images[current];
-          if (image.link == null) return;
+        const image = images[current];
+        if (image.link == null) return;
 
-          if (image.external) {
-            window.open(image.link, "_blank", "noopener,noreferrer");
-          } else {
-            window.open(image.link, "_self");
-          }
-        } catch (_) {
-          //
+        if (image.external) {
+          window.open(image.link, "_blank", "noopener,noreferrer");
+        } else {
+          window.open(image.link, "_self");
         }
       }}
       role="region"
