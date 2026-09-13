@@ -17,7 +17,15 @@ import { ResourceForm } from "./components/ResourceForm";
 
 const EditRoute = ({ resource }: { resource: (typeof resourceDefs)[number] }) => {
   const { id } = useParams<{ id: string }>();
-  return <ResourceForm resource={resource} action="edit" id={id} />;
+  // 리소스/레코드 변경 시 폼을 새로 마운트해 이전 값이 남지 않도록 함
+  return (
+    <ResourceForm
+      key={`${resource.name}-${id}`}
+      resource={resource}
+      action="edit"
+      id={id}
+    />
+  );
 };
 
 const refineResources = resourceDefs.map((r) => ({
@@ -63,11 +71,20 @@ export default function AdminApp() {
           <Route index element={<NavigateToResource resource="banners" />} />
           {resourceDefs.map((r) => (
             <Fragment key={r.name}>
-              <Route path={r.name} element={<ResourceList resource={r} />} />
+              <Route
+                path={r.name}
+                element={<ResourceList key={r.name} resource={r} />}
+              />
               {r.canCreate !== false && (
                 <Route
                   path={`${r.name}/create`}
-                  element={<ResourceForm resource={r} action="create" />}
+                  element={
+                    <ResourceForm
+                      key={`${r.name}-create`}
+                      resource={r}
+                      action="create"
+                    />
+                  }
                 />
               )}
               {r.canEdit !== false && (
