@@ -29,6 +29,7 @@ export const PressPage = () => {
           <thead>
             <tr className="border-b border-border text-muted-foreground">
               <th className="w-24 px-3 py-3 text-center font-medium">번호</th>
+              <th className="w-24 px-3 py-3 text-center font-medium">유형</th>
               <th className="px-3 py-3 text-center font-medium">제목</th>
               <th className="w-32 px-3 py-3 text-center font-medium whitespace-nowrap">
                 보도날짜
@@ -38,14 +39,20 @@ export const PressPage = () => {
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={3} className="px-3 py-6 text-center text-muted-foreground">
+                <td
+                  colSpan={3}
+                  className="px-3 py-6 text-center text-muted-foreground"
+                >
                   불러오는 중...
                 </td>
               </tr>
             )}
             {!loading && items.length === 0 && (
               <tr>
-                <td colSpan={3} className="px-3 py-6 text-center text-muted-foreground">
+                <td
+                  colSpan={3}
+                  className="px-3 py-6 text-center text-muted-foreground"
+                >
                   등록된 게시물이 없습니다.
                 </td>
               </tr>
@@ -57,12 +64,14 @@ export const PressPage = () => {
                   className="border-b border-border transition-colors hover:bg-accent/50"
                 >
                   <td className="px-3 py-3 text-center">{press.id}</td>
+                  <td className="px-3 py-3 text-center">
+                    <PressTypeBadge type={press.type} />
+                  </td>
                   <td className="px-3 py-3">
                     <Link
                       to={pressDetailPath(press.id)}
                       className="inline-flex items-center gap-1.5 font-medium text-foreground hover:underline"
                     >
-                      <PressTypeBadge type={press.type} />
                       <span className="line-clamp-1">{press.title}</span>
                       {press.attachment ? (
                         <Paperclip
