@@ -46,7 +46,8 @@ export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
           {item.title}
         </h1>
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-          {item.author && <span>작성자 {item.author}</span>}
+          {/* {item.author && <span>작성자 {item.author}</span>} */}
+          {<span>작성자 전남광주교사노동조합</span>}
           <time dateTime={item.createdAt}>{formatDate(item.createdAt)}</time>
           <span className="inline-flex items-center gap-1">
             <Eye className="size-4" />
