@@ -65,9 +65,11 @@ const boardFields = (): FieldDef[] => [
     type: "image",
     bucket: "board",
     folder: "images",
+    required: true,
   },
-  { name: "content", label: "본문", type: "richtext" },
+  { name: "content", label: "본문 (선택)", type: "textarea" },
   { name: "published", label: "공개", type: "boolean", defaultValue: true },
+  { name: "created_at", label: "등록일", type: "date" },
 ];
 
 const boardColumns: ColumnDef[] = [
