@@ -45,12 +45,12 @@ export const BandIcon = (props: SVGProps<SVGSVGElement>) => (
         gradientTransform="matrix(0 177.49 177.49 0 199.5 507.18)"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0" stop-color="currentColor" />
-        <stop offset=".25" stop-color="currentColor" />
-        <stop offset=".5" stop-color="currentColor" />
-        <stop offset=".8" stop-color="currentColor" />
-        <stop offset=".93" stop-color="currentColor" />
-        <stop offset="1" stop-color="currentColor" />
+        <stop offset="0" stopColor="currentColor" />
+        <stop offset=".25" stopColor="currentColor" />
+        <stop offset=".5" stopColor="currentColor" />
+        <stop offset=".8" stopColor="currentColor" />
+        <stop offset=".93" stopColor="currentColor" />
+        <stop offset="1" stopColor="currentColor" />
       </linearGradient>
       <clipPath id="b">
         <path d="M0 793.7h793.7V0H0z" />
@@ -61,7 +61,7 @@ export const BandIcon = (props: SVGProps<SVGSVGElement>) => (
       d="M147.5 684.67c-20.294 0-36.747-16.452-36.747-36.746v-104c0-20.295 16.453-36.747 36.747-36.747h104c20.295 0 36.747 16.452 36.747 36.747v104c0 20.294-16.452 36.746-36.747 36.746z"
       transform="matrix(.4472 0 0 -.4472 -49.529 306.18)"
     />
-    <g clip-path="url(#b)" transform="matrix(.4472 0 0 -.4472 -49.529 306.18)">
+    <g clipPath="url(#b)" transform="matrix(.4472 0 0 -.4472 -49.529 306.18)">
       <path
         fill="#fff"
         d="M186.89 582.48c0 6.966 5.647 12.614 12.614 12.614 6.966 0 12.614-5.648 12.614-12.614s-5.648-12.613-12.614-12.613c-6.967 0-12.614 5.647-12.614 12.613m12.614-43.152c-23.832 0-43.152 19.32-43.152 43.152v58.587c0 6.325 5.127 11.452 11.452 11.452 6.324 0 11.452-5.127 11.452-11.452V582.48c0-11.183 9.065-20.248 20.248-20.248 11.182 0 20.248 9.065 20.248 20.248s-9.066 20.249-20.248 20.249c-4.77 0-9.154-1.651-12.614-4.41v9.031a27.748 27.748 0 0 0 12.614 3.013c15.399 0 27.883-12.484 27.883-27.883s-12.484-27.883-27.883-27.883c-15.4 0-27.883 12.484-27.883 27.883v58.587a3.817 3.817 0 0 1-7.635 0V582.48c0-19.616 15.902-35.517 35.518-35.517 19.615 0 35.517 15.901 35.517 35.517s-15.902 35.518-35.517 35.518c-4.443 0-8.694-.817-12.614-2.308v8.066a43.104 43.104 0 0 0 12.614 1.876c23.832 0 43.152-19.319 43.152-43.152 0-23.832-19.32-43.152-43.152-43.152m0 93.939a50.87 50.87 0 0 1-12.614-1.581v9.381c0 10.541-8.545 19.087-19.086 19.087s-19.087-8.546-19.087-19.087V582.48c0-28.048 22.738-50.786 50.787-50.786s50.786 22.738 50.786 50.786c0 28.049-22.737 50.787-50.786 50.787"

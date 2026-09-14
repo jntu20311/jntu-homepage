@@ -11,8 +11,8 @@ export const routes = {
   ACTIVITIES_PRESS_DETAIL: "/activities/press/:id",
   ACTIVITIES_HISTORY: "/activities/history",
   ACTIVITIES_HISTORY_DETAIL: "/activities/history/:id",
-  ACTIVITIES_POLICY: "/activities/policy",
-  ACTIVITIES_POLICY_DETAIL: "/activities/policy/:id",
+  ACTIVITIES_MONTH_ACTIVITY: "/activities/month",
+  ACTIVITIES_MONTH_ACTIVITY_DETAIL: "/activities/month/:id",
   ACTIVITIES_BENEFITS: "/activities/benefits",
   ACTIVITIES_BENEFITS_DETAIL: "/activities/benefits/:id",
 
@@ -34,7 +34,8 @@ export const activityHistoryDetailPath = (id: string) =>
 export const pressDetailPath = (id: string) => `/activities/press/${id}`;
 
 /** 월별활동보고 상세 페이지 경로를 생성합니다. */
-export const policyDetailPath = (id: string) => `/activities/policy/${id}`;
+export const monthActivityDetailPath = (id: string) =>
+  `/activities/month/${id}`;
 
 /** 조합원 혜택 상세 페이지 경로를 생성합니다. */
 export const benefitDetailPath = (id: string) => `/activities/benefits/${id}`;

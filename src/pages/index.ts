@@ -39,13 +39,13 @@ export const HistoryDetailPage = lazyNamed(
   () => import("./activities/history/detail/HistoryDetailPage"),
   "HistoryDetailPage",
 );
-export const PolicyPage = lazyNamed(
-  () => import("./activities/policy/PolicyPage"),
-  "PolicyPage",
+export const MonthActivityPage = lazyNamed(
+  () => import("./activities/month-activity/MonthActivityPage"),
+  "MonthActivityPage",
 );
-export const PolicyDetailPage = lazyNamed(
-  () => import("./activities/policy/detail/PolicyDetailPage"),
-  "PolicyDetailPage",
+export const MonthActivityDetailPage = lazyNamed(
+  () => import("./activities/month-activity/detail/MonthActivityDetailPage"),
+  "MonthActivityDetailPage",
 );
 export const BenefitsPage = lazyNamed(
   () => import("./activities/benefits/BenefitsPage"),

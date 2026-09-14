@@ -1,10 +1,5 @@
-import { Markdown } from "@/shared/ui/markdown";
-import privacyPolicy from "@/shared/assets/privacy-policy.md?raw";
+import { TermsView } from "@/pages/legal/TermsView";
 
-export const PrivacyPage = () => {
-  return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <Markdown>{privacyPolicy}</Markdown>
-    </section>
-  );
-};
+export const PrivacyPage = () => (
+  <TermsView slug="privacy" emptyMessage="등록된 개인정보처리방침이 없습니다." />
+);
