@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { useForm } from "@refinedev/react-hook-form";
 import { useGetIdentity } from "@refinedev/core";
@@ -18,6 +18,21 @@ interface ResourceFormProps {
 
 const inputClass =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40";
+
+/** 저장된 ISO(UTC) → datetime-local 입력값(브라우저 로컬시간) */
+const toLocalInput = (iso: unknown): string => {
+  if (!iso || typeof iso !== "string") return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours(),
+  )}:${pad(d.getMinutes())}`;
+};
+
+/** datetime-local 입력값(로컬시간) → 저장용 ISO(UTC). 비우면 null */
+const fromLocalInput = (local: string): string | null =>
+  local ? new Date(local).toISOString() : null;
 
 export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
   const navigate = useNavigate();
@@ -47,6 +62,16 @@ export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
     (f) => !(action === "edit" && f.createOnly),
   );
   const hasMarkdown = fields.some((f) => f.markdown);
+
+  // 생성 시 defaultNow datetime 필드를 현재 시각으로 초기화 (예: 공개 예약 일시)
+  useEffect(() => {
+    if (action !== "create") return;
+    const now = new Date().toISOString();
+    for (const f of resource.fields) {
+      if (f.type === "datetime" && f.defaultNow) setValue(f.name, now);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [action, resource.name]);
 
   // 생성 시 작성자를 로그인한 관리자(admins)와 연동:
   //   author_id → 작성 관리자 admins.id (추적용), author → 표시용 이름 스냅샷
@@ -324,6 +349,27 @@ const Field = ({
             type="date"
             className={inputClass}
             {...register(field.name, rules)}
+          />
+          {helperAndError}
+        </div>
+      );
+
+    case "datetime":
+      return (
+        <div>
+          {label}
+          <Controller
+            name={field.name}
+            control={control}
+            rules={rules}
+            render={({ field: f }) => (
+              <input
+                type="datetime-local"
+                className={inputClass}
+                value={toLocalInput(f.value)}
+                onChange={(e) => f.onChange(fromLocalInput(e.target.value))}
+              />
+            )}
           />
           {helperAndError}
         </div>

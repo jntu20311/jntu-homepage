@@ -8,6 +8,18 @@ export const formatDate = (iso: string): string => {
   return `${y}.${m}.${d}`;
 };
 
+/** ISO 날짜 문자열을 "YYYY.MM.DD HH:mm" 형식으로 변환합니다. */
+export const formatDateTime = (iso: string): string => {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  return `${y}.${m}.${d} ${hh}:${mm}`;
+};
+
 /** 숫자를 천 단위 구분 기호가 있는 문자열로 변환합니다. */
 export const formatNumber = (value: number): string =>
   value.toLocaleString("ko-KR");

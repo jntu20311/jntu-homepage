@@ -1,7 +1,7 @@
 import { useTable, useDelete } from "@refinedev/core";
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button";
-import { formatDate } from "@/shared/lib/format";
+import { formatDate, formatDateTime } from "@/shared/lib/format";
 import type { ColumnDef, ResourceDef } from "../config";
 
 const renderCell = (col: ColumnDef, row: Record<string, unknown>) => {
@@ -10,6 +10,8 @@ const renderCell = (col: ColumnDef, row: Record<string, unknown>) => {
     col.map && value != null ? (col.map[String(value)] ?? String(value)) : value;
   if (col.type === "date" && value)
     return formatDate(String(value));
+  if (col.type === "datetime")
+    return value ? formatDateTime(String(value)) : "비공개";
   if (col.type === "boolean")
     return value ? "✓" : "—";
   if (col.type === "badge" && mapped)

@@ -27,7 +27,7 @@ export const pressQuery = (id: string | undefined) =>
 export const pressPreviewQuery = () =>
   queryOptions({
     queryKey: pressKeys.preview(),
-    queryFn: () => fetchBoardPreview("press", "press_date", 5),
+    queryFn: () => fetchBoardPreview("press", "press_date", 5, "boolean"),
   });
 
 export const usePressList = (page: number, pageSize: number) =>

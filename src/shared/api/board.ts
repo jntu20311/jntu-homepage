@@ -2,6 +2,13 @@ import { supabase } from "./supabase";
 
 /** 공개 게시판(활동내역/월별활동보고/조합원혜택) 공통 전송 헬퍼 */
 
+/**
+ * 공개 노출 기준.
+ * - "schedule": published_at(예약 datetime)이 현재 시각을 지난 글만 공개 (null=비공개)
+ * - "boolean":  published=true 인 글만 공개 (press 전용, 레거시)
+ */
+export type PublishMode = "schedule" | "boolean";
+
 export interface BoardRow {
   id: number;
   title: string;
@@ -9,7 +16,7 @@ export interface BoardRow {
   author: string | null;
   views: number;
   image_url: string | null;
-  created_at: string;
+  published_at: string;
 }
 
 export interface BoardItem {
@@ -29,7 +36,7 @@ export const mapBoardRow = (row: BoardRow): BoardItem => ({
   author: row.author ?? "",
   views: row.views ?? 0,
   image: row.image_url ?? "",
-  createdAt: row.created_at,
+  createdAt: row.published_at,
 });
 
 /** 공개된 게시글 페이지 조회 (내림차순) */
@@ -38,13 +45,16 @@ export const fetchBoardPage = async (
   page: number,
   pageSize: number,
   orderColumn = "created_at",
+  mode: PublishMode = "schedule",
 ): Promise<{ items: BoardItem[]; total: number }> => {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
-  const { data, count, error } = await supabase
-    .from(table)
-    .select("*", { count: "exact" })
-    .eq("published", true)
+  const base = supabase.from(table).select("*", { count: "exact" });
+  const filtered =
+    mode === "schedule"
+      ? base.lte("published_at", new Date().toISOString())
+      : base.eq("published", true);
+  const { data, count, error } = await filtered
     .order(orderColumn, { ascending: false })
     .range(from, to);
   if (error) throw error;
@@ -56,13 +66,14 @@ export const fetchBoardPage = async (
 export const fetchBoardOne = async (
   table: string,
   id: string,
+  mode: PublishMode = "schedule",
 ): Promise<BoardItem | null> => {
-  const { data, error } = await supabase
-    .from(table)
-    .select("*")
-    .eq("id", id)
-    .eq("published", true)
-    .maybeSingle();
+  const base = supabase.from(table).select("*").eq("id", id);
+  const filtered =
+    mode === "schedule"
+      ? base.lte("published_at", new Date().toISOString())
+      : base.eq("published", true);
+  const { data, error } = await filtered.maybeSingle();
   if (error) throw error;
   return data ? mapBoardRow(data as unknown as BoardRow) : null;
 };
@@ -78,11 +89,14 @@ export const fetchBoardPreview = async (
   table: string,
   dateColumn = "created_at",
   limit = 5,
+  mode: PublishMode = "schedule",
 ): Promise<PreviewItem[]> => {
-  const { data, error } = await supabase
-    .from(table)
-    .select(`id, title, ${dateColumn}`)
-    .eq("published", true)
+  const base = supabase.from(table).select(`id, title, ${dateColumn}`);
+  const filtered =
+    mode === "schedule"
+      ? base.lte("published_at", new Date().toISOString())
+      : base.eq("published", true);
+  const { data, error } = await filtered
     .order(dateColumn, { ascending: false })
     .limit(limit);
   if (error) throw error;

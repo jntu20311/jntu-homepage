@@ -7,6 +7,7 @@ export type FieldType =
   | "boolean"
   | "select"
   | "date"
+  | "datetime"
   | "image"
   | "file"
   | "richtext"
@@ -26,6 +27,8 @@ export interface FieldDef {
   helper?: string;
   /** 생성 시에만 노출 (예: 비밀번호) */
   createOnly?: boolean;
+  /** datetime 필드: 생성 시 현재 시각을 기본값으로 채움 */
+  defaultNow?: boolean;
   /** textarea 옆에 Markdown 미리보기를 병렬 배치 */
   markdown?: boolean;
 }
@@ -33,7 +36,7 @@ export interface FieldDef {
 export interface ColumnDef {
   name: string;
   label: string;
-  type?: "text" | "date" | "boolean" | "image" | "badge";
+  type?: "text" | "date" | "datetime" | "boolean" | "image" | "badge";
   /** 값 → 표시 라벨 매핑 (예: slug terms→이용약관) */
   map?: Record<string, string>;
 }
@@ -68,15 +71,21 @@ const boardFields = (): FieldDef[] => [
     required: true,
   },
   { name: "content", label: "본문 (선택)", type: "textarea" },
-  { name: "published", label: "공개", type: "boolean", defaultValue: true },
-  { name: "created_at", label: "등록일", type: "date" },
+  {
+    name: "published_at",
+    label: "공개 예약 일시",
+    type: "datetime",
+    defaultNow: true,
+    helper:
+      "기본값은 현재 시각(작성 즉시 공개)입니다. 미래로 지정하면 그 시각에 자동 공개되고, 비우면 비공개됩니다.",
+  },
 ];
 
 const boardColumns: ColumnDef[] = [
   { name: "id", label: "번호" },
   { name: "title", label: "제목" },
   { name: "created_at", label: "등록일", type: "date" },
-  { name: "published", label: "공개", type: "boolean" },
+  { name: "published_at", label: "공개일시", type: "datetime" },
 ];
 
 export const resources: ResourceDef[] = [

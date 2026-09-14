@@ -116,7 +116,7 @@ create table if not exists public.activities (
   author_id   uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views       integer not null default 0,
   image_url   text,
-  published   boolean not null default true,
+  published_at timestamptz,                     -- 공개 예약 일시 (null=비공개, 지난 시각만 공개)
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
@@ -129,7 +129,7 @@ create table if not exists public.month_activities (
   author_id   uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views       integer not null default 0,
   image_url   text,
-  published   boolean not null default true,
+  published_at timestamptz,                     -- 공개 예약 일시 (null=비공개, 지난 시각만 공개)
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
@@ -142,7 +142,7 @@ create table if not exists public.benefits (
   author_id   uuid,                             -- 작성 관리자 admins.id (추적용, FK 제약 없음)
   views       integer not null default 0,
   image_url   text,
-  published   boolean not null default true,
+  published_at timestamptz,                     -- 공개 예약 일시 (null=비공개, 지난 시각만 공개)
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
@@ -165,6 +165,11 @@ create index if not exists idx_press_author      on public.press      (author_id
 create index if not exists idx_activities_author on public.activities (author_id);
 create index if not exists idx_month_activities_author     on public.month_activities     (author_id);
 create index if not exists idx_benefits_author   on public.benefits   (author_id);
+
+-- 공개 예약(published_at) 필터용 인덱스
+create index if not exists idx_activities_published      on public.activities      (published_at desc);
+create index if not exists idx_month_activities_published on public.month_activities (published_at desc);
+create index if not exists idx_benefits_published        on public.benefits        (published_at desc);
 
 -- ---------------------------------------------------------------------------
 -- 약관 (이용약관 / 개인정보취급방침)
@@ -237,17 +242,23 @@ create policy banners_admin_write on public.banners for all using (public.is_adm
 create policy home_links_public_read on public.home_links for select using (active = true or public.is_admin());
 create policy home_links_admin_write on public.home_links for all using (public.is_admin()) with check (public.is_admin());
 
--- 게시판: published = true 만 공개, 관리자는 전체
+-- 게시판 공개 기준:
+--   press        : published = true (레거시 불리언)
+--   그 외 3종    : published_at 이 현재 시각을 지난 경우만 공개 (null=비공개)
+--   관리자는 항상 전체 조회
 create policy press_public_read on public.press for select using (published = true or public.is_admin());
 create policy press_admin_write on public.press for all using (public.is_admin()) with check (public.is_admin());
 
-create policy activities_public_read on public.activities for select using (published = true or public.is_admin());
+create policy activities_public_read on public.activities for select
+  using (public.is_admin() or (published_at is not null and published_at <= now()));
 create policy activities_admin_write on public.activities for all using (public.is_admin()) with check (public.is_admin());
 
-create policy policy_public_read on public.policy for select using (published = true or public.is_admin());
-create policy policy_admin_write on public.policy for all using (public.is_admin()) with check (public.is_admin());
+create policy month_activities_public_read on public.month_activities for select
+  using (public.is_admin() or (published_at is not null and published_at <= now()));
+create policy month_activities_admin_write on public.month_activities for all using (public.is_admin()) with check (public.is_admin());
 
-create policy benefits_public_read on public.benefits for select using (published = true or public.is_admin());
+create policy benefits_public_read on public.benefits for select
+  using (public.is_admin() or (published_at is not null and published_at <= now()));
 create policy benefits_admin_write on public.benefits for all using (public.is_admin()) with check (public.is_admin());
 
 -- 약관: 전체 공개 읽기, 관리자 수정
