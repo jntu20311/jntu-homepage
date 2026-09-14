@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import {
   AboutIntroPage,
   BenefitsDetailPage,
@@ -13,8 +14,8 @@ import {
   JoinUpdatePage,
   LocationPage,
   NotFoundPage,
-  PolicyDetailPage,
-  PolicyPage,
+  MonthActivityDetailPage,
+  MonthActivityPage,
   PressDetailPage,
   PressPage,
   PrivacyPage,
@@ -24,7 +25,19 @@ import { routes } from "@/shared/configs/routes";
 import { RootLayout } from "@/app/layouts/root-layout";
 import { BoardLayout } from "../layouts/board-layout";
 
+// 관리자 페이지(Refine + MUI 없는 헤드리스)는 별도 번들로 lazy 로드
+const AdminApp = lazy(() => import("@/admin/AdminApp"));
+
 const router = createBrowserRouter([
+  // 관리자: 공개 사이트 레이아웃(헤더/푸터) 바깥에서 자체 라우팅
+  {
+    path: "/admin/*",
+    element: (
+      <Suspense fallback={null}>
+        <AdminApp />
+      </Suspense>
+    ),
+  },
   {
     element: <RootLayout />,
     errorElement: <ErrorPage />,
@@ -51,10 +64,13 @@ const router = createBrowserRouter([
             element: <HistoryDetailPage />,
           },
 
-          { path: routes.ACTIVITIES_POLICY, element: <PolicyPage /> },
           {
-            path: routes.ACTIVITIES_POLICY_DETAIL,
-            element: <PolicyDetailPage />,
+            path: routes.ACTIVITIES_MONTH_ACTIVITY,
+            element: <MonthActivityPage />,
+          },
+          {
+            path: routes.ACTIVITIES_MONTH_ACTIVITY_DETAIL,
+            element: <MonthActivityDetailPage />,
           },
           { path: routes.ACTIVITIES_BENEFITS, element: <BenefitsPage /> },
           {

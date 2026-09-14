@@ -1,10 +1,5 @@
-import { Markdown } from "@/shared/ui/markdown";
-import usePolicy from "@/shared/assets/use-policy.md?raw";
+import { TermsView } from "@/pages/legal/TermsView";
 
-export const TermsPage = () => {
-  return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <Markdown>{usePolicy}</Markdown>
-    </section>
-  );
-};
+export const TermsPage = () => (
+  <TermsView slug="terms" emptyMessage="등록된 약관이 없습니다." />
+);
