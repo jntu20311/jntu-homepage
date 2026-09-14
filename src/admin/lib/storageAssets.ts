@@ -77,6 +77,25 @@ export const commitContentImages = async (
 };
 
 /**
+ * 대표 이미지/첨부 등 단일 자산 URL 을 tmp → 최종 경로로 커밋.
+ * tmp/ 경로면 posts/<postType>/<postId>/ 로 이동한 뒤 최종 URL 을 반환하고,
+ * 이미 커밋됐거나(board 밖·posts/) 이동 실패 시 원본 URL 을 그대로 반환한다.
+ */
+export const commitBoardAsset = async (
+  url: string | null | undefined,
+  postType: string,
+  postId: string | number,
+): Promise<string | null | undefined> => {
+  if (!url) return url;
+  const path = urlToBoardPath(url);
+  if (!path || !path.startsWith("tmp/")) return url; // 이미 커밋됐거나 board 밖
+  const dest = `posts/${postType}/${postId}/${fileName(path)}`;
+  const { error } = await supabase.storage.from(BOARD_BUCKET).move(path, dest);
+  if (error) return url; // 이동 실패 시 원본 유지 (스윕 대상)
+  return boardPathToUrl(dest);
+};
+
+/**
  * 수정 시 제거된 본문 이미지 정리: old 에는 있으나 next 에는 없는 경로 삭제.
  * (최종 경로 posts/... 만 삭제 대상. tmp 는 스윕/commit 이 처리)
  */

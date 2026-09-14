@@ -112,33 +112,52 @@ app.delete("/api/admin/users/:id", async (c) => {
 });
 
 /* --------------------------------------------------------------------------
- * 스케줄: board/tmp 고아 파일 스윕 (24h 이상 미저장 이미지)
+ * 스케줄: tmp 고아 파일 스윕 (24h 이상 미저장 업로드)
+ *   - board  : tmp/<postType>/<file>  (본문 이미지·대표 이미지·첨부)
+ *   - banners: tmp/<file>             (배너 이미지)
  * -------------------------------------------------------------------------- */
 const TMP_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+/** 지정 prefix 아래 파일 중 24h 초과분 경로 수집 */
+const collectAgedFiles = async (
+  sb: ReturnType<typeof admin>,
+  bucket: string,
+  prefix: string,
+  now: number,
+): Promise<string[]> => {
+  const out: string[] = [];
+  const { data: files } = await sb.storage.from(bucket).list(prefix, {
+    limit: 1000,
+  });
+  for (const f of files ?? []) {
+    if (!f.id) continue; // 하위 디렉터리는 스킵(파일만)
+    const created = f.created_at ? new Date(f.created_at).getTime() : now;
+    if (now - created > TMP_MAX_AGE_MS) out.push(`${prefix}/${f.name}`);
+  }
+  return out;
+};
 
 const sweepTmpOrphans = async (env: Bindings) => {
   const sb = admin(env);
   const now = Date.now();
-  const toRemove: string[] = [];
 
-  // tmp/<postType>/ 구조 → 2단계 순회
+  // board: tmp/<postType>/ 구조 → 2단계 순회
+  const boardRemove: string[] = [];
   const { data: typeDirs } = await sb.storage.from("board").list("tmp");
   for (const dir of typeDirs ?? []) {
     if (dir.id) continue; // 파일이면 스킵(디렉터리만 순회)
-    const prefix = `tmp/${dir.name}`;
-    const { data: files } = await sb.storage.from("board").list(prefix, {
-      limit: 1000,
-    });
-    for (const f of files ?? []) {
-      const created = f.created_at ? new Date(f.created_at).getTime() : now;
-      if (now - created > TMP_MAX_AGE_MS) {
-        toRemove.push(`${prefix}/${f.name}`);
-      }
-    }
+    boardRemove.push(
+      ...(await collectAgedFiles(sb, "board", `tmp/${dir.name}`, now)),
+    );
+  }
+  if (boardRemove.length > 0) {
+    await sb.storage.from("board").remove(boardRemove);
   }
 
-  if (toRemove.length > 0) {
-    await sb.storage.from("board").remove(toRemove);
+  // banners: tmp/ 평면 구조
+  const bannerRemove = await collectAgedFiles(sb, "banners", "tmp", now);
+  if (bannerRemove.length > 0) {
+    await sb.storage.from("banners").remove(bannerRemove);
   }
 };
 

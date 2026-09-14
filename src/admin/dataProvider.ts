@@ -3,11 +3,23 @@ import { dataProvider as supabaseDataProvider } from "@refinedev/supabase";
 import { supabase } from "@/shared/api/supabase";
 import {
   cleanupRemovedImages,
+  commitBoardAsset,
   commitContentImages,
   deletePaths,
   extractBoardImagePaths,
   urlToBoardPath,
 } from "./lib/storageAssets";
+
+import {
+  commitBannerImage,
+  deleteBannerImage,
+} from "./lib/bannerAssets";
+
+/** 게시판 tmp 커밋 대상 단일 자산 필드 (대표 이미지 / 첨부파일) */
+const ASSET_FIELDS = ["image_url", "attachment_url"] as const;
+
+/** 홈 배너 리소스명 (자체 tmp→commit / 교체·삭제 정리) */
+const BANNER_RESOURCE = "banners";
 
 /** CKEditor 본문(content)을 갖는 게시판 리소스 */
 const BOARD_RESOURCES = new Set([
@@ -42,71 +54,163 @@ export const dataProvider: DataProvider = { ...base };
 
 dataProvider.create = async (params: any): Promise<any> => {
   const result = await base.create(params);
-  if (!BOARD_RESOURCES.has(params.resource)) return result;
 
-  const record = result.data as AnyRecord;
-  const content = record?.content as string | undefined;
-  if (content) {
-    const committed = await commitContentImages(
-      content,
-      params.resource,
-      record.id as string | number,
-    );
-    if (committed !== content) {
+  // 홈 배너: 업로드된 tmp 이미지를 images/ 로 커밋
+  if (params.resource === BANNER_RESOURCE) {
+    const record = result.data as AnyRecord;
+    const url = record?.image_url as string | undefined;
+    const finalUrl = await commitBannerImage(url);
+    if (finalUrl && finalUrl !== url) {
       const updated = await base.update({
         resource: params.resource,
         id: record.id as string | number,
-        variables: { content: committed },
+        variables: { image_url: finalUrl },
       });
       return { data: updated.data };
     }
+    return result;
+  }
+
+  if (!BOARD_RESOURCES.has(params.resource)) return result;
+
+  const record = result.data as AnyRecord;
+  const postId = record.id as string | number;
+  const patch: AnyRecord = {};
+
+  // 본문 이미지 tmp → posts 커밋
+  const content = record?.content as string | undefined;
+  if (content) {
+    const committed = await commitContentImages(content, params.resource, postId);
+    if (committed !== content) patch.content = committed;
+  }
+
+  // 대표 이미지 / 첨부 tmp → posts 커밋
+  for (const key of ASSET_FIELDS) {
+    const url = record?.[key] as string | undefined;
+    if (typeof url === "string" && url) {
+      const finalUrl = await commitBoardAsset(url, params.resource, postId);
+      if (finalUrl !== url) patch[key] = finalUrl;
+    }
+  }
+
+  if (Object.keys(patch).length > 0) {
+    const updated = await base.update({
+      resource: params.resource,
+      id: postId,
+      variables: patch,
+    });
+    return { data: updated.data };
   }
   return result;
 };
 
 dataProvider.update = async (params: any): Promise<any> => {
+  // 홈 배너: 새 tmp 이미지 커밋 + 교체/제거된 이전 이미지 삭제
+  if (params.resource === BANNER_RESOURCE) {
+    let prevUrl: string | undefined;
+    try {
+      const p = await base.getOne({ resource: params.resource, id: params.id });
+      prevUrl = (p.data as AnyRecord)?.image_url as string | undefined;
+    } catch {
+      prevUrl = undefined;
+    }
+
+    const result = await base.update(params);
+    const vars = (params.variables ?? {}) as AnyRecord;
+
+    if ("image_url" in vars) {
+      const newUrl = vars.image_url as string | undefined;
+      let finalUrl: string | null | undefined = newUrl;
+      if (typeof newUrl === "string" && newUrl) {
+        finalUrl = await commitBannerImage(newUrl);
+      }
+      if (typeof prevUrl === "string" && prevUrl && prevUrl !== finalUrl) {
+        await deleteBannerImage(prevUrl);
+      }
+      if (finalUrl && finalUrl !== newUrl) {
+        const updated = await base.update({
+          resource: params.resource,
+          id: params.id,
+          variables: { image_url: finalUrl },
+        });
+        return { data: updated.data };
+      }
+    }
+    return { data: result.data };
+  }
+
   if (!BOARD_RESOURCES.has(params.resource)) return base.update(params);
 
-  // 이전 본문 확보 (제거된 이미지 정리를 위해)
-  let oldContent: string | undefined;
+  // 이전 레코드 확보 (제거/교체된 자산 정리를 위해)
+  let prev: AnyRecord | undefined;
   try {
-    const prev = await base.getOne({
-      resource: params.resource,
-      id: params.id,
-    });
-    oldContent = (prev.data as AnyRecord)?.content as string | undefined;
+    const p = await base.getOne({ resource: params.resource, id: params.id });
+    prev = p.data as AnyRecord;
   } catch {
-    oldContent = undefined;
+    prev = undefined;
   }
 
   const result = await base.update(params);
-  const nextContentRaw = (params.variables as AnyRecord)?.content as
-    | string
-    | undefined;
+  const vars = (params.variables ?? {}) as AnyRecord;
+  const patch: AnyRecord = {};
 
+  // 본문 이미지: tmp 커밋 + 제거된 이미지 정리
+  const nextContentRaw = vars.content as string | undefined;
   if (typeof nextContentRaw === "string") {
     const committed = await commitContentImages(
       nextContentRaw,
       params.resource,
       params.id,
     );
-    let finalRecord = result.data;
-    if (committed !== nextContentRaw) {
-      const updated = await base.update({
-        resource: params.resource,
-        id: params.id,
-        variables: { content: committed },
-      });
-      finalRecord = updated.data;
-    }
-    await cleanupRemovedImages(oldContent, committed);
-    return { data: finalRecord };
+    if (committed !== nextContentRaw) patch.content = committed;
+    await cleanupRemovedImages(prev?.content as string | undefined, committed);
   }
 
+  // 대표 이미지 / 첨부: 새 tmp 파일 커밋 + 교체/제거된 이전 파일 삭제
+  for (const key of ASSET_FIELDS) {
+    if (!(key in vars)) continue;
+    const newUrl = vars[key] as string | undefined;
+    const oldUrl = prev?.[key] as string | undefined;
+
+    let finalUrl: string | null | undefined = newUrl;
+    if (typeof newUrl === "string" && newUrl) {
+      finalUrl = await commitBoardAsset(newUrl, params.resource, params.id);
+      if (finalUrl !== newUrl) patch[key] = finalUrl;
+    }
+
+    // 이전 파일이 최종본과 다르면(교체/제거) posts 원본 삭제
+    if (typeof oldUrl === "string" && oldUrl && oldUrl !== finalUrl) {
+      const oldPath = urlToBoardPath(oldUrl);
+      if (oldPath && oldPath.startsWith("posts/")) await deletePaths([oldPath]);
+    }
+  }
+
+  if (Object.keys(patch).length > 0) {
+    const updated = await base.update({
+      resource: params.resource,
+      id: params.id,
+      variables: patch,
+    });
+    return { data: updated.data };
+  }
   return { data: result.data };
 };
 
 dataProvider.deleteOne = async (params: any): Promise<any> => {
+  // 홈 배너: 삭제 시 이미지도 제거
+  if (params.resource === BANNER_RESOURCE) {
+    let url: string | undefined;
+    try {
+      const p = await base.getOne({ resource: params.resource, id: params.id });
+      url = (p.data as AnyRecord)?.image_url as string | undefined;
+    } catch {
+      url = undefined;
+    }
+    const result = await base.deleteOne(params);
+    await deleteBannerImage(url);
+    return result;
+  }
+
   if (!BOARD_RESOURCES.has(params.resource)) return base.deleteOne(params);
 
   let assetPaths: string[] = [];

@@ -7,6 +7,8 @@ import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
 import type { FieldDef, ResourceDef } from "../config";
 import { uploadPublicFile } from "../lib/upload";
+import { BOARD_BUCKET } from "../lib/storageAssets";
+import { BANNER_BUCKET } from "../lib/bannerAssets";
 import { CKEditorField } from "./CKEditorField";
 import { Markdown } from "@/shared/ui/markdown";
 
@@ -150,11 +152,14 @@ const Field = ({
     if (!field.bucket) return;
     setUploading(true);
     try {
-      const url = await uploadPublicFile(
-        field.bucket,
-        field.folder ?? "misc",
-        file,
-      );
+      // board/banners 자산은 tmp 로 올린 뒤 저장 시 커밋 → 미저장분은 cron 이 스윕.
+      const folder =
+        field.bucket === BOARD_BUCKET && postType
+          ? `tmp/${postType}`
+          : field.bucket === BANNER_BUCKET
+            ? "tmp"
+            : (field.folder ?? "misc");
+      const url = await uploadPublicFile(field.bucket, folder, file);
       setValue(field.name, url, { shouldDirty: true });
       if (field.fileNameField) {
         setValue(field.fileNameField, file.name, { shouldDirty: true });
