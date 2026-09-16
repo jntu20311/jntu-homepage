@@ -89,7 +89,7 @@ export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className={cn("space-y-5", hasMarkdown ? "max-w-5xl" : "max-w-3xl")}
+      className={cn("space-y-5", hasMarkdown ? "max-w-5xl" : "max-w-4xl")}
     >
       <h1 className="text-xl font-bold">
         {resource.label} {action === "create" ? "등록" : "수정"}
