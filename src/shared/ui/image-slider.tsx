@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
+import AutoColorContainer from "./auto-color-container";
 
 export interface SlideImage {
   src: string;
@@ -70,7 +71,7 @@ export const ImageSlider = ({
       aria-label="이미지 슬라이더"
     >
       {images.map((image, index) => (
-        <img
+        <AutoColorContainer
           key={image.src}
           src={image.src}
           alt={image.alt}
@@ -79,7 +80,7 @@ export const ImageSlider = ({
             "absolute inset-0 h-full w-full object-contain object-center transition-opacity ease-in-out motion-reduce:transition-none",
             index === current ? "opacity-100" : "opacity-0",
           )}
-          style={{ transitionDuration: `${duration}ms` }}
+          duration={duration}
         />
       ))}
 
