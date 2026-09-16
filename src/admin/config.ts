@@ -63,14 +63,11 @@ export interface ResourceDef {
 const boardFields = (): FieldDef[] => [
   { name: "title", label: "제목", type: "text", required: true },
   {
-    name: "image_url",
-    label: "대표 이미지",
-    type: "image",
-    bucket: "board",
-    folder: "images",
-    required: true,
+    name: "content",
+    label: "본문",
+    type: "richtext",
+    helper: "본문의 첫 번째 이미지가 목록 썸네일(대표 이미지)로 자동 설정됩니다.",
   },
-  { name: "content", label: "본문 (선택)", type: "textarea" },
   {
     name: "published_at",
     label: "공개 예약 일시",
@@ -176,6 +173,7 @@ export const resources: ResourceDef[] = [
       { name: "type", label: "유형", type: "badge" },
       { name: "title", label: "제목" },
       { name: "press_date", label: "보도날짜", type: "date" },
+      { name: "published_at", label: "게시날짜", type: "datetime" },
     ],
     fields: [
       {
@@ -199,8 +197,15 @@ export const resources: ResourceDef[] = [
         folder: "files",
         fileNameField: "attachment_name",
       },
+      {
+        name: "published_at",
+        label: "공개 예약 일시",
+        type: "datetime",
+        defaultNow: true,
+        helper:
+          "기본값은 현재 시각(작성 즉시 공개)입니다. 미래로 지정하면 그 시각에 자동 공개되고, 비우면 비공개됩니다.",
+      },
       { name: "content", label: "본문", type: "richtext" },
-      { name: "published", label: "공개", type: "boolean", defaultValue: true },
     ],
   },
   {

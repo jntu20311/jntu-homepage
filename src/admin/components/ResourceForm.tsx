@@ -7,6 +7,7 @@ import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
 import type { FieldDef, ResourceDef } from "../config";
 import { uploadPublicFile } from "../lib/upload";
+import { compressImage } from "../lib/compressImage";
 import { BOARD_BUCKET } from "../lib/storageAssets";
 import { BANNER_BUCKET } from "../lib/bannerAssets";
 import { CKEditorField } from "./CKEditorField";
@@ -88,7 +89,7 @@ export const ResourceForm = ({ resource, action, id }: ResourceFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className={cn("space-y-5", hasMarkdown ? "max-w-5xl" : "max-w-3xl")}
+      className={cn("space-y-5", hasMarkdown ? "max-w-5xl" : "max-w-4xl")}
     >
       <h1 className="text-xl font-bold">
         {resource.label} {action === "create" ? "등록" : "수정"}
@@ -152,6 +153,9 @@ const Field = ({
     if (!field.bucket) return;
     setUploading(true);
     try {
+      // 이미지 필드는 업로드 전 압축(첨부파일은 원본 유지).
+      const toUpload =
+        field.type === "image" ? await compressImage(file) : file;
       // board/banners 자산은 tmp 로 올린 뒤 저장 시 커밋 → 미저장분은 cron 이 스윕.
       const folder =
         field.bucket === BOARD_BUCKET && postType
@@ -159,7 +163,7 @@ const Field = ({
           : field.bucket === BANNER_BUCKET
             ? "tmp"
             : (field.folder ?? "misc");
-      const url = await uploadPublicFile(field.bucket, folder, file);
+      const url = await uploadPublicFile(field.bucket, folder, toUpload);
       setValue(field.name, url, { shouldDirty: true });
       if (field.fileNameField) {
         setValue(field.fileNameField, file.name, { shouldDirty: true });
@@ -353,6 +357,7 @@ const Field = ({
           <input
             type="date"
             className={inputClass}
+            max="9999-12-31T23:59"
             {...register(field.name, rules)}
           />
           {helperAndError}
@@ -371,6 +376,7 @@ const Field = ({
               <input
                 type="datetime-local"
                 className={inputClass}
+                max="9999-12-31T23:59"
                 value={toLocalInput(f.value)}
                 onChange={(e) => f.onChange(fromLocalInput(e.target.value))}
               />

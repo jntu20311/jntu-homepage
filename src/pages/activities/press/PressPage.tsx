@@ -14,7 +14,8 @@ export const PressPage = () => {
   const { data, isLoading: loading } = usePressList(page, PAGE_SIZE);
 
   const items = data?.items ?? [];
-  const totalPages = Math.max(1, Math.ceil((data?.total ?? 0) / PAGE_SIZE));
+  const total = data?.total ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <div className="flex flex-col gap-6">
@@ -58,12 +59,14 @@ export const PressPage = () => {
               </tr>
             )}
             {!loading &&
-              items.map((press) => (
+              items.map((press, index) => (
                 <tr
                   key={press.id}
                   className="border-b border-border transition-colors hover:bg-accent/50"
                 >
-                  <td className="px-3 py-3 text-center">{press.id}</td>
+                  <td className="px-3 py-3 text-center">
+                    {total - (page - 1) * PAGE_SIZE - index}
+                  </td>
                   <td className="px-3 py-3 text-center">
                     <PressTypeBadge type={press.type} />
                   </td>

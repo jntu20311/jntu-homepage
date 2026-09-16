@@ -19,6 +19,9 @@ import {
   ImageResize,
   Table,
   TableToolbar,
+  LinkImage,
+  Font,
+  Alignment,
   type Editor,
   type EditorConfig,
   type FileLoader,
@@ -26,6 +29,7 @@ import {
 import "ckeditor5/ckeditor5.css";
 import { supabase } from "@/shared/api/supabase";
 import { BOARD_BUCKET, boardPathToUrl } from "../lib/storageAssets";
+import { compressImage } from "../lib/compressImage";
 
 /**
  * CKEditor 업로드 어댑터: 이미지를 board/tmp/<postType>/<uuid>.<ext> 에 즉시 업로드.
@@ -38,7 +42,8 @@ class SupabaseUploadAdapter {
   ) {}
 
   async upload() {
-    const file = (await this.loader.file) as File;
+    const original = (await this.loader.file) as File;
+    const file = await compressImage(original);
     const ext = file.name.includes(".") ? file.name.split(".").pop() : "png";
     const path = `tmp/${this.postType}/${crypto.randomUUID()}.${ext}`;
     const { error } = await supabase.storage
@@ -83,6 +88,7 @@ export const CKEditorField = ({
         Underline,
         Link,
         List,
+        LinkImage,
         BlockQuote,
         Image,
         ImageUpload,
@@ -92,6 +98,8 @@ export const CKEditorField = ({
         ImageResize,
         Table,
         TableToolbar,
+        Alignment,
+        Font,
       ],
       extraPlugins: [makeUploadPlugin(postType)],
       toolbar: [
@@ -99,6 +107,9 @@ export const CKEditorField = ({
         "redo",
         "|",
         "heading",
+        "|",
+        "fontColor",
+        "fontBackgroundColor",
         "|",
         "bold",
         "italic",
@@ -109,11 +120,18 @@ export const CKEditorField = ({
         "numberedList",
         "blockQuote",
         "|",
+        "alignment:left",
+        "alignment:center",
+        "alignment:right",
+        "alignment:justify",
+        "|",
         "uploadImage",
         "insertTable",
       ],
       image: {
         toolbar: [
+          "linkImage",
+          "|",
           "imageStyle:inline",
           "imageStyle:block",
           "imageStyle:side",

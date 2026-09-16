@@ -7,6 +7,7 @@ import {
   commitContentImages,
   deletePaths,
   extractBoardImagePaths,
+  firstImageSrc,
   urlToBoardPath,
 } from "./lib/storageAssets";
 
@@ -24,6 +25,13 @@ const BANNER_RESOURCE = "banners";
 /** CKEditor 본문(content)을 갖는 게시판 리소스 */
 const BOARD_RESOURCES = new Set([
   "press",
+  "activities",
+  "month_activities",
+  "benefits",
+]);
+
+/** 목록 썸네일(image_url)을 본문 첫 이미지에서 자동 도출하는 리소스 */
+const THUMBNAIL_FROM_CONTENT = new Set([
   "activities",
   "month_activities",
   "benefits",
@@ -79,9 +87,11 @@ dataProvider.create = async (params: any): Promise<any> => {
 
   // 본문 이미지 tmp → posts 커밋
   const content = record?.content as string | undefined;
+  let committedContent = content;
   if (content) {
     const committed = await commitContentImages(content, params.resource, postId);
     if (committed !== content) patch.content = committed;
+    committedContent = committed;
   }
 
   // 대표 이미지 / 첨부 tmp → posts 커밋
@@ -90,6 +100,14 @@ dataProvider.create = async (params: any): Promise<any> => {
     if (typeof url === "string" && url) {
       const finalUrl = await commitBoardAsset(url, params.resource, postId);
       if (finalUrl !== url) patch[key] = finalUrl;
+    }
+  }
+
+  // 썸네일: 본문(커밋 후)의 첫 이미지를 대표 이미지로 설정
+  if (THUMBNAIL_FROM_CONTENT.has(params.resource)) {
+    const thumb = firstImageSrc(committedContent);
+    if (((record.image_url as string) ?? null) !== (thumb ?? null)) {
+      patch.image_url = thumb;
     }
   }
 
@@ -156,6 +174,7 @@ dataProvider.update = async (params: any): Promise<any> => {
 
   // 본문 이미지: tmp 커밋 + 제거된 이미지 정리
   const nextContentRaw = vars.content as string | undefined;
+  let committedContent: string | undefined;
   if (typeof nextContentRaw === "string") {
     const committed = await commitContentImages(
       nextContentRaw,
@@ -164,6 +183,17 @@ dataProvider.update = async (params: any): Promise<any> => {
     );
     if (committed !== nextContentRaw) patch.content = committed;
     await cleanupRemovedImages(prev?.content as string | undefined, committed);
+    committedContent = committed;
+  }
+
+  // 썸네일: 본문(커밋 후)의 첫 이미지를 대표 이미지로 재설정
+  if (
+    THUMBNAIL_FROM_CONTENT.has(params.resource) &&
+    committedContent !== undefined
+  ) {
+    const thumb = firstImageSrc(committedContent);
+    const prevThumb = (prev?.image_url as string) ?? null;
+    if ((thumb ?? null) !== prevThumb) patch.image_url = thumb;
   }
 
   // 대표 이미지 / 첨부: 새 tmp 파일 커밋 + 교체/제거된 이전 파일 삭제

@@ -55,13 +55,7 @@ export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
           </span>
         </div>
       </header>
-      {item.image && (
-        <img
-          src={item.image}
-          alt={item.title}
-          className="w-full rounded-xl border border-border bg-muted object-cover"
-        />
-      )}
+
       {/* CKEditor HTML 본문 */}
       <HTMLViewer content={item.content} />
 
