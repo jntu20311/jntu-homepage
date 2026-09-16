@@ -33,7 +33,7 @@ export const fetchPressList = async (
   const { data, count, error } = await supabase
     .from(TABLE)
     .select("*", { count: "exact" })
-    .eq("published", true)
+    .lte("published_at", new Date().toISOString())
     .order("press_date", { ascending: false })
     .range(from, to);
   if (error) throw error;
@@ -48,7 +48,7 @@ export const fetchPress = async (id: string): Promise<Press | null> => {
     .from(TABLE)
     .select("*")
     .eq("id", id)
-    .eq("published", true)
+    .lte("published_at", new Date().toISOString())
     .maybeSingle();
   if (error) throw error;
   return data ? mapPress(data as unknown as PressRow) : null;
