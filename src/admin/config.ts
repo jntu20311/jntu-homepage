@@ -70,7 +70,7 @@ const boardFields = (): FieldDef[] => [
     folder: "images",
     required: true,
   },
-  { name: "content", label: "본문 (선택)", type: "textarea" },
+  { name: "content", label: "본문 (선택)", type: "richtext" },
   {
     name: "published_at",
     label: "공개 예약 일시",
