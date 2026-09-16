@@ -40,6 +40,15 @@ export const extractBoardImagePaths = (html: string | null | undefined): string[
   return [...paths];
 };
 
+/** HTML 본문에서 첫 번째 이미지의 src(전체 URL) 반환. 없으면 null. */
+export const firstImageSrc = (
+  html: string | null | undefined,
+): string | null => {
+  if (!html) return null;
+  const m = /<img[^>]+src=["']([^"']+)["']/i.exec(html);
+  return m ? m[1] : null;
+};
+
 /** Storage 객체 삭제 (조용히 실패 허용) */
 export const deletePaths = async (paths: string[]): Promise<void> => {
   const targets = paths.filter(Boolean);

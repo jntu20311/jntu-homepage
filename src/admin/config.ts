@@ -63,14 +63,11 @@ export interface ResourceDef {
 const boardFields = (): FieldDef[] => [
   { name: "title", label: "제목", type: "text", required: true },
   {
-    name: "image_url",
-    label: "대표 이미지",
-    type: "image",
-    bucket: "board",
-    folder: "images",
-    required: true,
+    name: "content",
+    label: "본문",
+    type: "richtext",
+    helper: "본문의 첫 번째 이미지가 목록 썸네일(대표 이미지)로 자동 설정됩니다.",
   },
-  { name: "content", label: "본문 (선택)", type: "textarea" },
   {
     name: "published_at",
     label: "공개 예약 일시",
