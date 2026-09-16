@@ -1,4 +1,8 @@
-import { queryOptions, useQuery, keepPreviousData } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useQuery,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { fetchBoardPreview } from "@/shared/api/board";
 import { fetchPressList, fetchPress } from "./press-api";
 
@@ -27,7 +31,7 @@ export const pressQuery = (id: string | undefined) =>
 export const pressPreviewQuery = () =>
   queryOptions({
     queryKey: pressKeys.preview(),
-    queryFn: () => fetchBoardPreview("press", "press_date", 5, "boolean"),
+    queryFn: () => fetchBoardPreview("press", "press_date", 5, "schedule"),
   });
 
 export const usePressList = (page: number, pageSize: number) =>
