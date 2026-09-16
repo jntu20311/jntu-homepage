@@ -8,7 +8,7 @@ type Props = {
 };
 
 const cardClassName =
-  "group flex aspect-square h-full flex-col items-center justify-center gap-3 rounded-3xl border border-border bg-card p-4 text-center transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md";
+  "group flex aspect-square h-full flex-col items-center justify-center gap-3 rounded-3xl border border-border bg-card p-4 text-center transition-all hover:shadow-md";
 
 const content = (label: string) => (
   <>
@@ -32,7 +32,7 @@ export const HomeLinkCard = ({ data }: Props) => {
         href={data.link}
         target="_blank"
         rel="noreferrer"
-        className={cn(cardClassName)}
+        className={cn(cardClassName, data.hoverColor)}
       >
         {content(data.label)}
       </a>
@@ -40,7 +40,7 @@ export const HomeLinkCard = ({ data }: Props) => {
   }
 
   return (
-    <Link to={data.link} className={cn(cardClassName)}>
+    <Link to={data.link} className={cn(cardClassName, data.hoverColor)}>
       {content(data.label)}
     </Link>
   );
