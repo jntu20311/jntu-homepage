@@ -353,6 +353,7 @@ const Field = ({
           <input
             type="date"
             className={inputClass}
+            max="9999-12-31T23:59"
             {...register(field.name, rules)}
           />
           {helperAndError}
@@ -371,6 +372,7 @@ const Field = ({
               <input
                 type="datetime-local"
                 className={inputClass}
+                max="9999-12-31T23:59"
                 value={toLocalInput(f.value)}
                 onChange={(e) => f.onChange(fromLocalInput(e.target.value))}
               />
