@@ -19,6 +19,7 @@ import {
   ImageResize,
   Table,
   TableToolbar,
+  LinkImage,
   type Editor,
   type EditorConfig,
   type FileLoader,
@@ -83,6 +84,7 @@ export const CKEditorField = ({
         Underline,
         Link,
         List,
+        LinkImage,
         BlockQuote,
         Image,
         ImageUpload,
@@ -114,6 +116,8 @@ export const CKEditorField = ({
       ],
       image: {
         toolbar: [
+          "linkImage",
+          "|",
           "imageStyle:inline",
           "imageStyle:block",
           "imageStyle:side",
