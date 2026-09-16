@@ -44,7 +44,7 @@ export const fetchBoardPage = async (
   table: string,
   page: number,
   pageSize: number,
-  orderColumn = "created_at",
+  orderColumn = "published_at",
   mode: PublishMode = "schedule",
 ): Promise<{ items: BoardItem[]; total: number }> => {
   const from = (page - 1) * pageSize;
