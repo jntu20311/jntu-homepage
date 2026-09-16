@@ -76,7 +76,7 @@ export const ImageSlider = ({
           alt={image.alt}
           aria-hidden={index !== current}
           className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out motion-reduce:transition-none",
+            "absolute inset-0 h-full w-full object-contain object-center transition-opacity ease-in-out motion-reduce:transition-none",
             index === current ? "opacity-100" : "opacity-0",
           )}
           style={{ transitionDuration: `${duration}ms` }}

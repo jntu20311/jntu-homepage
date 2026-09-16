@@ -18,7 +18,12 @@ export const BenefitCard = ({ benefit }: BenefitCardProps) => {
           src={benefit.image}
           alt={benefit.title}
           loading="lazy"
-          className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-contain object-center transition-transform duration-300 group-hover:scale-105"
+        />
+        <img
+          src={benefit.image}
+          className="inset-0 w-full h-full object-cover blur-xl scale-110 opacity-70"
+          alt=""
         />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
