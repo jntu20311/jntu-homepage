@@ -22,7 +22,7 @@ const snsLinks: SnsLink[] = [
   { label: "카카오채널", href: CONSTANTS.KAKAO_CHANNEL, icon: KakaoIcon },
   { label: "인스타그램", href: CONSTANTS.INSTAGRAM, icon: InstagramIcon },
   { label: "네이버밴드", href: CONSTANTS.NAVER_BAND, icon: BandIcon },
-  { label: "네이버 블로그", href: CONSTANTS.NAVER_BAND, icon: NaverBlogIcon },
+  { label: "네이버 블로그", href: CONSTANTS.BLOG, icon: NaverBlogIcon },
 ];
 
 export const Footer = () => {
