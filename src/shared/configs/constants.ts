@@ -9,8 +9,9 @@ export const CONSTANTS = {
   PORTAL_LABEL: "교사지원포털",
   PORTAL_LINK: "https://tforu.net/",
 
-  // 조합 가입
-  BANKCMS_LINK: "https://my.bankcms.co.kr/mygive/main.do?ks3pFB",
+  // 정보 변경 링크
+  INFO_CHNAGE_LINK:
+    "https://mygive.bankcms.co.kr/mygive/main.do?uid=7489&goto=change",
 
   // 홈페이지 정보
   REPRESENTATIVE: "대표자 : 김신안",
