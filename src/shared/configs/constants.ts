@@ -13,6 +13,9 @@ export const CONSTANTS = {
   INFO_CHNAGE_LINK:
     "https://mygive.bankcms.co.kr/mygive/main.do?uid=7489&goto=change",
 
+  // 조합원, 후원회원가입 링크
+  JOIN_LINK: "https://my.bankcms.co.kr/ks3pFB",
+
   // 홈페이지 정보
   REPRESENTATIVE: "대표자 : 김신안",
   NUMBER: "고유번호 : 231-82-69370",
