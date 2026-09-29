@@ -1,4 +1,6 @@
-import JntuJoinImage from "@/shared/assets/images/img_jntu_join.png";
+import JoinMemberImage1 from "@/shared/assets/images/img_join_member_1.png";
+import JoinMemberImage2 from "@/shared/assets/images/img_join_member_2.png";
+import { CONSTANTS } from "@/shared/configs/constants";
 import { Link } from "react-router-dom";
 
 export const JoinMemberPage = () => {
@@ -9,18 +11,10 @@ export const JoinMemberPage = () => {
           조합원 가입
         </h1>
       </header>
-      <img src={JntuJoinImage} className="hidden w-full flex mt-4" />
 
-      <Link to={"https://www.naver.com/"} target="_blank">
-        <div className="flex w-full items-center justify-center text-white text-3xl font-bold bg-green-600 h-200">
-          {"조합원 가입 관련 이미지 \n(클릭시 네이버로 이동)"}
-        </div>
-      </Link>
-
-      <Link to={"https://www.google.com/"} target="_blank">
-        <div className="flex w-full items-center justify-center text-white text-3xl font-bold bg-blue-600 h-200">
-          {"조합원 가입 관련 이미지2 \n(클릭시 구글로 이동)"}
-        </div>
+      <Link to={CONSTANTS.JOIN_LINK} target="_blank">
+        <img src={JoinMemberImage1} alt="조합원 가입" className="w-full" />
+        <img src={JoinMemberImage2} alt="조합원 가입" className="w-full" />
       </Link>
     </div>
   );
