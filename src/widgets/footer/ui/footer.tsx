@@ -39,10 +39,10 @@ export const Footer = () => {
 
             <div className="md:flex md:items-end">
               <address className="w-full text-sm not-italic text-muted-foreground mt-4 flex flex-col gap-y-1">
-                <div className="flex items-center gap-x-4">
+                {/* <div className="flex items-center gap-x-4">
                   <p>{CONSTANTS.REPRESENTATIVE}</p>
                   <p>{CONSTANTS.NUMBER}</p>
-                </div>
+                </div> */}
                 <p>{CONSTANTS.ADDRESS}</p>
                 <p>{CONSTANTS.TEL}</p>
               </address>
