@@ -37,7 +37,7 @@ export const navMenus: NavMenu[] = [
     items: [
       { label: "조합원 가입", path: routes.JOIN_MEMBER },
       { label: "후원회원 가입", path: routes.JOIN_SUPPORTER },
-      { label: "정보 변경", path: CONSTANTS.BANKCMS_LINK, external: true },
+      { label: "정보 변경", path: CONSTANTS.INFO_CHNAGE_LINK, external: true },
     ],
   },
 ];

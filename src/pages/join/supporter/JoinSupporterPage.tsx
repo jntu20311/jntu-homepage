@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import JoinSupporterImage from "@/shared/assets/images/img_join_supporter.png";
+import { CONSTANTS } from "@/shared/configs/constants";
 
 export const JoinSupporterPage = () => {
   return (
@@ -8,16 +10,8 @@ export const JoinSupporterPage = () => {
           후원회원 가입
         </h1>
       </header>
-      <Link to={"https://www.naver.com/"} target="_blank">
-        <div className="flex w-full items-center justify-center text-white text-3xl font-bold bg-green-600 h-200">
-          {"후원회원가입 관련 이미지 \n(클릭시 네이버로 이동)"}
-        </div>
-      </Link>
-
-      <Link to={"https://www.google.com/"} target="_blank">
-        <div className="flex w-full items-center justify-center text-white text-3xl font-bold bg-blue-600 h-200">
-          {"후원회원가입 관련 이미지2 \n(클릭시 구글로 이동)"}
-        </div>
+      <Link to={CONSTANTS.JOIN_LINK} target="_blank">
+        <img src={JoinSupporterImage} className="w-full" />
       </Link>
     </div>
   );
