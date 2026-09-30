@@ -1,4 +1,8 @@
-import { queryOptions, useQuery, keepPreviousData } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useQuery,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { fetchBoardPreview } from "@/shared/api/board";
 import { fetchBenefits, fetchBenefit } from "./benefit-api";
 
@@ -27,10 +31,11 @@ export const benefitQuery = (id: string | undefined) =>
 export const benefitsPreviewQuery = () =>
   queryOptions({
     queryKey: benefitKeys.preview(),
-    queryFn: () => fetchBoardPreview("benefits", "created_at", 5),
+    queryFn: () => fetchBoardPreview("benefits", "published_at", 5),
   });
 
 export const useBenefits = (page: number, pageSize: number) =>
   useQuery(benefitsListQuery(page, pageSize));
-export const useBenefit = (id: string | undefined) => useQuery(benefitQuery(id));
+export const useBenefit = (id: string | undefined) =>
+  useQuery(benefitQuery(id));
 export const useBenefitsPreview = () => useQuery(benefitsPreviewQuery());

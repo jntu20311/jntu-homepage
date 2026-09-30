@@ -60,6 +60,29 @@ const collectRecordAssetPaths = (record: AnyRecord): string[] => {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const dataProvider: DataProvider = { ...base };
 
+/** published_at 내림차순 정렬 시 null 값은 맨 뒤로 보내는 리소스 */
+const NULLS_LAST_RESOURCES = new Set(["activities", "month_activities", "benefits"]);
+
+dataProvider.getList = async (params: any): Promise<any> => {
+  const sorter = params.sorters?.[0];
+  if (!NULLS_LAST_RESOURCES.has(params.resource) || !sorter) {
+    return base.getList(params);
+  }
+  const current = params.pagination?.currentPage ?? 1;
+  const pageSize = params.pagination?.pageSize ?? 10;
+  const from = (current - 1) * pageSize;
+  const { data, count, error } = await supabase
+    .from(params.resource)
+    .select("*", { count: "exact" })
+    .order(sorter.field, {
+      ascending: sorter.order === "asc",
+      nullsFirst: false,
+    })
+    .range(from, from + pageSize - 1);
+  if (error) throw error;
+  return { data: data ?? [], total: count ?? 0 };
+};
+
 dataProvider.create = async (params: any): Promise<any> => {
   const result = await base.create(params);
 

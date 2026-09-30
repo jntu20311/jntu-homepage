@@ -79,7 +79,7 @@ const boardFields = (): FieldDef[] => [
 ];
 
 const boardColumns: ColumnDef[] = [
-  { name: "id", label: "번호" },
+  { name: "id", label: "ID" },
   { name: "title", label: "제목" },
   { name: "created_at", label: "등록일", type: "date" },
   { name: "published_at", label: "공개일시", type: "datetime" },
@@ -169,7 +169,7 @@ export const resources: ResourceDef[] = [
     postType: "press",
     autoAuthor: true,
     list: [
-      { name: "id", label: "번호" },
+      { name: "id", label: "ID" },
       { name: "type", label: "유형", type: "badge" },
       { name: "title", label: "제목" },
       { name: "press_date", label: "보도날짜", type: "date" },
@@ -211,7 +211,7 @@ export const resources: ResourceDef[] = [
   {
     name: "activities",
     label: "활동내역",
-    sorter: { field: "created_at", order: "desc" },
+    sorter: { field: "published_at", order: "desc" },
     postType: "activities",
     autoAuthor: true,
     list: boardColumns,
@@ -220,7 +220,7 @@ export const resources: ResourceDef[] = [
   {
     name: "month_activities",
     label: "월별활동보고",
-    sorter: { field: "created_at", order: "desc" },
+    sorter: { field: "published_at", order: "desc" },
     postType: "month_activities",
     autoAuthor: true,
     list: boardColumns,
@@ -229,7 +229,7 @@ export const resources: ResourceDef[] = [
   {
     name: "benefits",
     label: "조합원 혜택",
-    sorter: { field: "created_at", order: "desc" },
+    sorter: { field: "published_at", order: "desc" },
     postType: "benefits",
     autoAuthor: true,
     list: boardColumns,
