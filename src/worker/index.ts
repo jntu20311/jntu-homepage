@@ -16,6 +16,82 @@ const admin = (env: Bindings): SupabaseClient =>
 app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 
 /* --------------------------------------------------------------------------
+ * SEO: sitemap.xml / robots.txt (요청 origin 기준 동적 생성)
+ * -------------------------------------------------------------------------- */
+
+const STATIC_PATHS = [
+  "/",
+  "/about/intro",
+  "/about/greeting",
+  "/about/location",
+  "/activities/press",
+  "/activities/history",
+  "/activities/month",
+  "/activities/benefits",
+  "/terms",
+  "/privacy",
+];
+
+// [테이블, URL 경로, 공개 조건]
+const SITEMAP_BOARDS = [
+  ["press", "/activities/press", "boolean"],
+  ["activities", "/activities/history", "schedule"],
+  ["month_activities", "/activities/month", "schedule"],
+  ["benefits", "/activities/benefits", "schedule"],
+] as const;
+
+const escapeXml = (v: string) =>
+  v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+app.get("/robots.txt", (c) => {
+  const origin = new URL(c.req.url).origin;
+  return c.text(
+    `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\n\nSitemap: ${origin}/sitemap.xml\n`,
+  );
+});
+
+app.get("/sitemap.xml", async (c) => {
+  const origin = new URL(c.req.url).origin;
+  const sb = admin(c.env);
+  const nowIso = new Date().toISOString();
+  const urls: { loc: string; lastmod?: string }[] = STATIC_PATHS.map((p) => ({
+    loc: `${origin}${p}`,
+  }));
+
+  for (const [table, base, mode] of SITEMAP_BOARDS) {
+    const dateCol = mode === "boolean" ? "created_at" : "published_at";
+    const q = sb.from(table).select(`id, ${dateCol}`);
+    const { data } = await (
+      mode === "boolean"
+        ? q.eq("published", true)
+        : q.lte("published_at", nowIso)
+    ).order("id", { ascending: false });
+    for (const row of (data ?? []) as unknown as Record<string, unknown>[]) {
+      const d = row[dateCol];
+      urls.push({
+        loc: `${origin}${base}/${row.id}`,
+        lastmod: typeof d === "string" ? d.slice(0, 10) : undefined,
+      });
+    }
+  }
+
+  const body = urls
+    .map(
+      (u) =>
+        `  <url><loc>${escapeXml(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ""}</url>`,
+    )
+    .join("\n");
+  return c.body(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`,
+    200,
+    {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
+    },
+  );
+});
+
+/* --------------------------------------------------------------------------
  * 관리자 계정 관리 (service_role 필요). 호출자는 관리자 JWT 를 Bearer 로 전달.
  * -------------------------------------------------------------------------- */
 
