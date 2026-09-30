@@ -107,3 +107,47 @@ export const fetchBoardPreview = async (
     date: String(r[dateColumn]),
   }));
 };
+
+const VIEW_TTL_MS = 24 * 60 * 60 * 1000;
+
+const viewedKey = (table: string, id: string) => `viewed:${table}:${id}`;
+
+/** 최근 24시간 내 이미 집계한 글인지 (localStorage 접근 실패 시 false) */
+const hasRecentlyViewed = (table: string, id: string): boolean => {
+  try {
+    const at = Number(localStorage.getItem(viewedKey(table, id)));
+    return at > 0 && Date.now() - at < VIEW_TTL_MS;
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * 조회수 +1 (브라우저당 글별 24시간 1회).
+ * 증가했으면 true. 실패해도 화면에는 영향을 주지 않는다.
+ */
+export const incrementViews = async (
+  table: string,
+  id: string,
+): Promise<boolean> => {
+  if (hasRecentlyViewed(table, id)) return false;
+  // StrictMode 중복 실행 방지: 호출 전에 먼저 기록
+  try {
+    localStorage.setItem(viewedKey(table, id), String(Date.now()));
+  } catch {
+    // 저장 불가 환경 — 그냥 집계
+  }
+  const { error } = await supabase.rpc("increment_views", {
+    table_name: table,
+    row_id: Number(id),
+  });
+  if (error) {
+    try {
+      localStorage.removeItem(viewedKey(table, id));
+    } catch {
+      // ignore
+    }
+    return false;
+  }
+  return true;
+};

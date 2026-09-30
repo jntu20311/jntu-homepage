@@ -6,5 +6,6 @@ export const MonthActivityDetailPage = () => (
   <BoardDetail
     useItem={usePolicy}
     backRoute={routes.ACTIVITIES_MONTH_ACTIVITY}
+    table="month_activities"
   />
 );

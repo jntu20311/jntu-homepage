@@ -1,20 +1,36 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ChevronLeft, Eye } from "lucide-react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { formatDate, formatNumber } from "@/shared/lib/format";
-import type { BoardItem } from "@/shared/api/board";
+import { incrementViews, type BoardItem } from "@/shared/api/board";
 import { HTMLViewer } from "@/widgets/html-viewer";
 
 interface BoardDetailProps {
   /** 엔티티 상세 조회 훅 (useActivity / usePolicy / useBenefit) */
   useItem: (id: string | undefined) => UseQueryResult<BoardItem | null>;
   backRoute: string;
+  /** 조회수 집계 대상 테이블 */
+  table: string;
 }
 
 /** 활동내역/월별활동보고/조합원혜택 상세 공통 컴포넌트 */
-export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
+export const BoardDetail = ({
+  useItem,
+  backRoute,
+  table,
+}: BoardDetailProps) => {
   const { id } = useParams<{ id: string }>();
   const { data: item, isLoading } = useItem(id);
+  const [viewed, setViewed] = useState(false);
+
+  // 글이 정상 조회된 뒤 1회 집계 (24시간 중복 방지는 incrementViews 내부)
+  const hasItem = !!item;
+  useEffect(() => {
+    setViewed(false);
+    if (!id || !hasItem) return;
+    incrementViews(table, id).then(setViewed);
+  }, [table, id, hasItem]);
 
   const backLink = (
     <Link
@@ -51,7 +67,7 @@ export const BoardDetail = ({ useItem, backRoute }: BoardDetailProps) => {
           <time dateTime={item.createdAt}>{formatDate(item.createdAt)}</time>
           <span className="inline-flex items-center gap-1">
             <Eye className="size-4" />
-            {formatNumber(item.views)}
+            {formatNumber(item.views + (viewed ? 1 : 0))}
           </span>
         </div>
       </header>
