@@ -211,7 +211,7 @@ export const resources: ResourceDef[] = [
   {
     name: "activities",
     label: "활동내역",
-    sorter: { field: "created_at", order: "desc" },
+    sorter: { field: "published_at", order: "desc" },
     postType: "activities",
     autoAuthor: true,
     list: boardColumns,
@@ -220,7 +220,7 @@ export const resources: ResourceDef[] = [
   {
     name: "month_activities",
     label: "월별활동보고",
-    sorter: { field: "created_at", order: "desc" },
+    sorter: { field: "published_at", order: "desc" },
     postType: "month_activities",
     autoAuthor: true,
     list: boardColumns,
@@ -229,7 +229,7 @@ export const resources: ResourceDef[] = [
   {
     name: "benefits",
     label: "조합원 혜택",
-    sorter: { field: "created_at", order: "desc" },
+    sorter: { field: "published_at", order: "desc" },
     postType: "benefits",
     autoAuthor: true,
     list: boardColumns,
