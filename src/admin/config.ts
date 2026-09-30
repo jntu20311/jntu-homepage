@@ -79,7 +79,7 @@ const boardFields = (): FieldDef[] => [
 ];
 
 const boardColumns: ColumnDef[] = [
-  { name: "id", label: "번호" },
+  { name: "id", label: "ID" },
   { name: "title", label: "제목" },
   { name: "created_at", label: "등록일", type: "date" },
   { name: "published_at", label: "공개일시", type: "datetime" },
@@ -169,7 +169,7 @@ export const resources: ResourceDef[] = [
     postType: "press",
     autoAuthor: true,
     list: [
-      { name: "id", label: "번호" },
+      { name: "id", label: "ID" },
       { name: "type", label: "유형", type: "badge" },
       { name: "title", label: "제목" },
       { name: "press_date", label: "보도날짜", type: "date" },
