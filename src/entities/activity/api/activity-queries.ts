@@ -1,4 +1,8 @@
-import { queryOptions, useQuery, keepPreviousData } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useQuery,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { fetchBoardPreview } from "@/shared/api/board";
 import { fetchActivities, fetchActivity } from "./activity-api";
 
@@ -27,7 +31,7 @@ export const activityQuery = (id: string | undefined) =>
 export const activitiesPreviewQuery = () =>
   queryOptions({
     queryKey: activityKeys.preview(),
-    queryFn: () => fetchBoardPreview("activities", "created_at", 5),
+    queryFn: () => fetchBoardPreview("activities", "published_at", 5),
   });
 
 export const useActivities = (page: number, pageSize: number) =>
