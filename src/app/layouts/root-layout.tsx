@@ -1,8 +1,11 @@
 import { Suspense } from "react";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Footer, Header, QuickMenu } from "@/widgets";
+import { usePageMeta } from "@/shared/hooks/use-page-meta";
 
 export const RootLayout = () => {
+  usePageMeta();
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />

@@ -22,14 +22,11 @@ app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 const STATIC_PATHS = [
   "/",
   "/about/intro",
-  "/about/greeting",
-  "/about/location",
-  "/activities/press",
   "/activities/history",
+  "/activities/press",
   "/activities/month",
   "/activities/benefits",
-  "/terms",
-  "/privacy",
+  "/join/member",
 ];
 
 // [테이블, URL 경로, 공개 조건]
