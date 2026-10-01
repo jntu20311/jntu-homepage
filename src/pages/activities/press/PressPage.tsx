@@ -5,7 +5,7 @@ import { pressDetailPath } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
 import { Pagination } from "@/shared/ui/pagination";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 export const PressPage = () => {
   const [searchParams] = useSearchParams();
