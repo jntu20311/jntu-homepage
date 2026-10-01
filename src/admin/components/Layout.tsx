@@ -8,7 +8,7 @@ const navGroups: { title: string; names: string[] }[] = [
   { title: "홈 화면", names: ["banners", "home_links"] },
   {
     title: "게시판",
-    names: ["press", "activities", "month_activities", "benefits"],
+    names: ["activities", "press", "month_activities", "benefits"],
   },
   { title: "사이트", names: ["terms", "admins"] },
 ];

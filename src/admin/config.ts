@@ -165,7 +165,7 @@ export const resources: ResourceDef[] = [
   // },
   {
     name: "press",
-    label: "보도자료",
+    label: "보도자료 및 성명서",
     sorter: { field: "press_date", order: "desc" },
     postType: "press",
     autoAuthor: true,
