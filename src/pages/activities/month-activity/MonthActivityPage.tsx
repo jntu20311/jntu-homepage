@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { PolicyCard, usePolicies } from "@/entities/month-activity";
 import { Pagination } from "@/shared/ui/pagination";
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 12;
 
 export const MonthActivityPage = () => {
   const [searchParams] = useSearchParams();
