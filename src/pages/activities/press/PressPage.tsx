@@ -29,10 +29,14 @@ export const PressPage = () => {
         <table className="w-full border-t-2 border-foreground text-sm">
           <thead>
             <tr className="border-b border-border text-muted-foreground">
-              <th className="w-24 px-3 py-3 text-center font-medium">번호</th>
-              <th className="w-24 px-3 py-3 text-center font-medium">유형</th>
-              <th className="px-3 py-3 text-center font-medium">제목</th>
-              <th className="w-32 px-3 py-3 text-center font-medium whitespace-nowrap">
+              <th className="w-8 md:w-24 py-3 md:p-3 text-center font-medium">
+                번호
+              </th>
+              <th className="w-14 md:w-24 py-3 md:p-3 text-center font-medium">
+                유형
+              </th>
+              <th className="py-3 md:p-3 text-center font-medium">제목</th>
+              <th className="w-18 md:w-24 py-3 md:p-3 text-center font-medium whitespace-nowrap">
                 보도날짜
               </th>
             </tr>
@@ -64,18 +68,23 @@ export const PressPage = () => {
                   key={press.id}
                   className="border-b border-border transition-colors hover:bg-accent/50"
                 >
-                  <td className="px-3 py-3 text-center">
+                  <td className="md:p-3 text-center">
                     {total - (page - 1) * PAGE_SIZE - index}
                   </td>
-                  <td className="px-3 py-3 text-center">
-                    <PressTypeBadge type={press.type} />
+                  <td className="md:p-3 text-center">
+                    <PressTypeBadge
+                      type={press.type}
+                      className="px-1.5 md:px-2.5"
+                    />
                   </td>
-                  <td className="px-3 py-3">
+                  <td className="px-1 md:p-3">
                     <Link
                       to={pressDetailPath(press.id)}
-                      className="inline-flex items-center gap-1.5 font-medium text-foreground hover:underline"
+                      className="inline-flex items-center gap-0 md:gap-1.5 font-medium text-foreground hover:underline"
                     >
-                      <span className="line-clamp-1">{press.title}</span>
+                      <span className="line-clamp-1 md:line-clamp-1">
+                        {press.title}
+                      </span>
                       {press.attachment ? (
                         <Paperclip
                           className="size-4 shrink-0 text-muted-foreground"
@@ -84,7 +93,7 @@ export const PressPage = () => {
                       ) : null}
                     </Link>
                   </td>
-                  <td className="px-3 py-3 text-center whitespace-nowrap text-muted-foreground">
+                  <td className="py-3 md:p-3 text-center whitespace-nowrap text-muted-foreground">
                     {formatDate(press.pressDate)}
                   </td>
                 </tr>
