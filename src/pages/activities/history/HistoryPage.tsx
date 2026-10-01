@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { ActivityCard, useActivities } from "@/entities/activity";
 import { Pagination } from "@/shared/ui/pagination";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 24;
 
 export const HistoryPage = () => {
   const [searchParams] = useSearchParams();
