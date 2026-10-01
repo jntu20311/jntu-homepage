@@ -14,7 +14,7 @@ type PageItem = number | "ellipsis";
 
 const buildPageItems = (page: number, total: number): PageItem[] => {
   const pages = new Set<number>([1, total]);
-  for (let p = page - 1; p <= page + 1; p += 1) {
+  for (let p = page - 2; p <= page + 2; p += 1) {
     if (p >= 1 && p <= total) pages.add(p);
   }
 
@@ -61,7 +61,10 @@ export const Pagination = ({
         <Link
           to={getPageHref(page - 1)}
           aria-label="이전 페이지"
-          className={cn(baseCell, "hover:bg-accent hover:text-accent-foreground")}
+          className={cn(
+            baseCell,
+            "hover:bg-accent hover:text-accent-foreground",
+          )}
         >
           <ChevronLeft className="size-4" />
         </Link>
@@ -72,7 +75,7 @@ export const Pagination = ({
           <span
             key={`ellipsis-${index}`}
             aria-hidden="true"
-            className={cn(baseCell, "text-muted-foreground")}
+            className={cn(baseCell, "text-muted-foreground min-w-3 px-0")}
           >
             …
           </span>
@@ -105,7 +108,10 @@ export const Pagination = ({
         <Link
           to={getPageHref(page + 1)}
           aria-label="다음 페이지"
-          className={cn(baseCell, "hover:bg-accent hover:text-accent-foreground")}
+          className={cn(
+            baseCell,
+            "hover:bg-accent hover:text-accent-foreground",
+          )}
         >
           <ChevronRight className="size-4" />
         </Link>
