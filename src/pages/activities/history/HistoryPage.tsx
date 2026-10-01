@@ -26,7 +26,7 @@ export const HistoryPage = () => {
       ) : items.length === 0 ? (
         <p className="text-muted-foreground">등록된 게시물이 없습니다.</p>
       ) : (
-        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {items.map((activity) => (
             <li key={activity.id}>
               <ActivityCard activity={activity} />
