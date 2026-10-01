@@ -1,7 +1,8 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 type Bindings = Env & {
+  ASSETS: Fetcher;
   SUPABASE_URL: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
 };
@@ -89,6 +90,16 @@ app.get("/sitemap.xml", async (c) => {
     },
   );
 });
+
+// 관리자 페이지: 정적 자산(SPA)을 그대로 응답하되 검색엔진 색인만 차단
+const serveAdminNoIndex = async (c: Context<{ Bindings: Bindings }>) => {
+  const res = await c.env.ASSETS.fetch(c.req.raw);
+  const out = new Response(res.body, res);
+  out.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return out;
+};
+app.get("/admin", serveAdminNoIndex);
+app.get("/admin/*", serveAdminNoIndex);
 
 /* --------------------------------------------------------------------------
  * 관리자 계정 관리 (service_role 필요). 호출자는 관리자 JWT 를 Bearer 로 전달.
