@@ -15,7 +15,7 @@ export const MonthActivityCard = ({ policy }: MonthActivityCardProps) => {
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
     >
       <AutoColorContainer src={policy.image} alt={policy.title} />
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col gap-1 p-2">
         <h3 className="line-clamp-2 font-semibold leading-snug text-card-foreground">
           {policy.title}
         </h3>
