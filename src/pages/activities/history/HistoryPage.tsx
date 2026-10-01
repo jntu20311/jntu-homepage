@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { ActivityCard, useActivities } from "@/entities/activity";
 import { Pagination } from "@/shared/ui/pagination";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 24;
 
 export const HistoryPage = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +17,7 @@ export const HistoryPage = () => {
     <div className="flex flex-col gap-6">
       <header className="flex items-center gap-2">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          활동내역
+          주요활동
         </h1>
       </header>
 
@@ -26,7 +26,7 @@ export const HistoryPage = () => {
       ) : items.length === 0 ? (
         <p className="text-muted-foreground">등록된 게시물이 없습니다.</p>
       ) : (
-        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {items.map((activity) => (
             <li key={activity.id}>
               <ActivityCard activity={activity} />

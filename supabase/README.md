@@ -66,7 +66,7 @@ npm run dev
 | `banners`          | 홈 배너 슬라이드          | 홈                      |
 | `home_links`       | 홈 바로가기               | 홈                      |
 | `press`            | 보도자료                  | 알림마당 › 보도자료     |
-| `activities`       | 활동내역                  | 알림마당 › 활동내역     |
+| `activities`       | 주요활동                  | 알림마당 › 주요활동     |
 | `month_activities` | 월별활동보고              | 알림마당 › 월별활동보고 |
 | `benefits`         | 조합원 혜택               | 알림마당 › 조합원 혜택  |
 | `terms`            | 이용약관/개인정보취급방침 | 푸터 링크               |

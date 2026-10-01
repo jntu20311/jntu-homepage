@@ -14,7 +14,7 @@ interface BoardDetailProps {
   table: string;
 }
 
-/** 활동내역/월별활동보고/조합원혜택 상세 공통 컴포넌트 */
+/** 주요활동/월별활동보고/조합원혜택 상세 공통 컴포넌트 */
 export const BoardDetail = ({
   useItem,
   backRoute,

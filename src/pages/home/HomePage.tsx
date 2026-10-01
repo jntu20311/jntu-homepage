@@ -31,7 +31,7 @@ const homeBoards: HomeBoard[] = [
     usePreview: usePressPreview,
   },
   {
-    title: "활동내역",
+    title: "주요활동",
     link: routes.ACTIVITIES_HISTORY,
     detailPath: activityHistoryDetailPath,
     usePreview: useActivitiesPreview,

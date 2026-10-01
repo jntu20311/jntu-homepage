@@ -1,7 +1,8 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 type Bindings = Env & {
+  ASSETS: Fetcher;
   SUPABASE_URL: string;
   SUPABASE_SERVICE_ROLE_KEY: string;
 };
@@ -22,23 +23,20 @@ app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 const STATIC_PATHS = [
   "/",
   "/about/intro",
-  "/about/greeting",
-  "/about/location",
-  "/activities/press",
   "/activities/history",
+  "/activities/press",
   "/activities/month",
   "/activities/benefits",
-  "/terms",
-  "/privacy",
+  "/join/member",
 ];
 
 // [테이블, URL 경로, 공개 조건]
-const SITEMAP_BOARDS = [
-  ["press", "/activities/press", "boolean"],
-  ["activities", "/activities/history", "schedule"],
-  ["month_activities", "/activities/month", "schedule"],
-  ["benefits", "/activities/benefits", "schedule"],
-] as const;
+// const SITEMAP_BOARDS = [
+//   ["press", "/activities/press", "boolean"],
+//   ["activities", "/activities/history", "schedule"],
+//   ["month_activities", "/activities/month", "schedule"],
+//   ["benefits", "/activities/benefits", "schedule"],
+// ] as const;
 
 const escapeXml = (v: string) =>
   v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -52,28 +50,30 @@ app.get("/robots.txt", (c) => {
 
 app.get("/sitemap.xml", async (c) => {
   const origin = new URL(c.req.url).origin;
-  const sb = admin(c.env);
-  const nowIso = new Date().toISOString();
   const urls: { loc: string; lastmod?: string }[] = STATIC_PATHS.map((p) => ({
     loc: `${origin}${p}`,
   }));
 
-  for (const [table, base, mode] of SITEMAP_BOARDS) {
-    const dateCol = mode === "boolean" ? "created_at" : "published_at";
-    const q = sb.from(table).select(`id, ${dateCol}`);
-    const { data } = await (
-      mode === "boolean"
-        ? q.eq("published", true)
-        : q.lte("published_at", nowIso)
-    ).order("id", { ascending: false });
-    for (const row of (data ?? []) as unknown as Record<string, unknown>[]) {
-      const d = row[dateCol];
-      urls.push({
-        loc: `${origin}${base}/${row.id}`,
-        lastmod: typeof d === "string" ? d.slice(0, 10) : undefined,
-      });
-    }
-  }
+  // const sb = admin(c.env);
+  // const nowIso = new Date().toISOString();
+  //
+  // for (const [table, base, mode] of SITEMAP_BOARDS) {
+  //   const dateCol = mode === "boolean" ? "created_at" : "published_at";
+  //   const q = sb.from(table).select(`id, ${dateCol}`);
+  //   const { data } = await (
+  //     mode === "boolean"
+  //       ? q.eq("published", true)
+  //       : q.lte("published_at", nowIso)
+  //   ).order("id", { ascending: false });
+  //
+  //   for (const row of (data ?? []) as unknown as Record<string, unknown>[]) {
+  //     const d = row[dateCol];
+  //     urls.push({
+  //       loc: `${origin}${base}/${row.id}`,
+  //       lastmod: typeof d === "string" ? d.slice(0, 10) : undefined,
+  //     });
+  //   }
+  // }
 
   const body = urls
     .map(
@@ -90,6 +90,16 @@ app.get("/sitemap.xml", async (c) => {
     },
   );
 });
+
+// 관리자 페이지: 정적 자산(SPA)을 그대로 응답하되 검색엔진 색인만 차단
+const serveAdminNoIndex = async (c: Context<{ Bindings: Bindings }>) => {
+  const res = await c.env.ASSETS.fetch(c.req.raw);
+  const out = new Response(res.body, res);
+  out.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return out;
+};
+app.get("/admin", serveAdminNoIndex);
+app.get("/admin/*", serveAdminNoIndex);
 
 /* --------------------------------------------------------------------------
  * 관리자 계정 관리 (service_role 필요). 호출자는 관리자 JWT 를 Bearer 로 전달.

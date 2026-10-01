@@ -152,7 +152,7 @@ export const CKEditorField = ({
       <CKEditor
         editor={ClassicEditor}
         config={config}
-        data={value ?? ""}
+        data={value ?? "<h4></h4>"}
         onChange={(_, editor) => onChange?.(editor.getData())}
       />
     </div>
