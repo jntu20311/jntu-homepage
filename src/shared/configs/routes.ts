@@ -26,7 +26,7 @@ export const routes = {
   PRIVACY: "/privacy",
 } as const;
 
-/** 활동내역 상세 페이지 경로를 생성합니다. */
+/** 주요활동 상세 페이지 경로를 생성합니다. */
 export const activityHistoryDetailPath = (id: string) =>
   `/activities/history/${id}`;
 

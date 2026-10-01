@@ -59,14 +59,15 @@ export interface ResourceDef {
   autoAuthor?: boolean;
 }
 
-/** 게시판 3종(활동내역/월별활동보고/조합원혜택) 공통 필드 */
+/** 게시판 3종(주요활동/월별활동보고/조합원혜택) 공통 필드 */
 const boardFields = (): FieldDef[] => [
   { name: "title", label: "제목", type: "text", required: true },
   {
     name: "content",
     label: "본문",
     type: "richtext",
-    helper: "본문의 첫 번째 이미지가 목록 썸네일(대표 이미지)로 자동 설정됩니다.",
+    helper:
+      "본문의 첫 번째 이미지가 목록 썸네일(대표 이미지)로 자동 설정됩니다.",
   },
   {
     name: "published_at",
@@ -210,7 +211,7 @@ export const resources: ResourceDef[] = [
   },
   {
     name: "activities",
-    label: "활동내역",
+    label: "주요활동",
     sorter: { field: "published_at", order: "desc" },
     postType: "activities",
     autoAuthor: true,
