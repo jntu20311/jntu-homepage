@@ -33,12 +33,12 @@ const STATIC_PATHS = [
 ];
 
 // [테이블, URL 경로, 공개 조건]
-const SITEMAP_BOARDS = [
-  ["press", "/activities/press", "boolean"],
-  ["activities", "/activities/history", "schedule"],
-  ["month_activities", "/activities/month", "schedule"],
-  ["benefits", "/activities/benefits", "schedule"],
-] as const;
+// const SITEMAP_BOARDS = [
+//   ["press", "/activities/press", "boolean"],
+//   ["activities", "/activities/history", "schedule"],
+//   ["month_activities", "/activities/month", "schedule"],
+//   ["benefits", "/activities/benefits", "schedule"],
+// ] as const;
 
 const escapeXml = (v: string) =>
   v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -52,28 +52,30 @@ app.get("/robots.txt", (c) => {
 
 app.get("/sitemap.xml", async (c) => {
   const origin = new URL(c.req.url).origin;
-  const sb = admin(c.env);
-  const nowIso = new Date().toISOString();
   const urls: { loc: string; lastmod?: string }[] = STATIC_PATHS.map((p) => ({
     loc: `${origin}${p}`,
   }));
 
-  for (const [table, base, mode] of SITEMAP_BOARDS) {
-    const dateCol = mode === "boolean" ? "created_at" : "published_at";
-    const q = sb.from(table).select(`id, ${dateCol}`);
-    const { data } = await (
-      mode === "boolean"
-        ? q.eq("published", true)
-        : q.lte("published_at", nowIso)
-    ).order("id", { ascending: false });
-    for (const row of (data ?? []) as unknown as Record<string, unknown>[]) {
-      const d = row[dateCol];
-      urls.push({
-        loc: `${origin}${base}/${row.id}`,
-        lastmod: typeof d === "string" ? d.slice(0, 10) : undefined,
-      });
-    }
-  }
+  // const sb = admin(c.env);
+  // const nowIso = new Date().toISOString();
+  //
+  // for (const [table, base, mode] of SITEMAP_BOARDS) {
+  //   const dateCol = mode === "boolean" ? "created_at" : "published_at";
+  //   const q = sb.from(table).select(`id, ${dateCol}`);
+  //   const { data } = await (
+  //     mode === "boolean"
+  //       ? q.eq("published", true)
+  //       : q.lte("published_at", nowIso)
+  //   ).order("id", { ascending: false });
+  //
+  //   for (const row of (data ?? []) as unknown as Record<string, unknown>[]) {
+  //     const d = row[dateCol];
+  //     urls.push({
+  //       loc: `${origin}${base}/${row.id}`,
+  //       lastmod: typeof d === "string" ? d.slice(0, 10) : undefined,
+  //     });
+  //   }
+  // }
 
   const body = urls
     .map(
