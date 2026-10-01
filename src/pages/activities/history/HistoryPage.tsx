@@ -17,7 +17,7 @@ export const HistoryPage = () => {
     <div className="flex flex-col gap-6">
       <header className="flex items-center gap-2">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          활동내역
+          주요활동
         </h1>
       </header>
 

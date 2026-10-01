@@ -26,8 +26,8 @@ export const navMenus: NavMenu[] = [
   {
     label: "알림마당",
     items: [
+      { label: "주요활동", path: routes.ACTIVITIES_HISTORY },
       { label: "보도자료 및 성명서", path: routes.ACTIVITIES_PRESS },
-      { label: "활동내역", path: routes.ACTIVITIES_HISTORY },
       { label: "월별활동보고", path: routes.ACTIVITIES_MONTH_ACTIVITY },
       { label: "조합원 혜택", path: routes.ACTIVITIES_BENEFITS },
     ],

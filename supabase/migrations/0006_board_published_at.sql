@@ -10,7 +10,7 @@
 --   (신규 설치는 0001_init.sql 에 반영됨. 기존 DB 는 이 파일을 1회 실행.)
 -- =============================================================================
 
--- ── 활동내역 ────────────────────────────────────────────────────────────────
+-- ── 주요활동 ────────────────────────────────────────────────────────────────
 drop policy if exists activities_public_read on public.activities;
 alter table public.activities add column if not exists published_at timestamptz;
 update public.activities set published_at = created_at
