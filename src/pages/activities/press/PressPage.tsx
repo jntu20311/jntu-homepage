@@ -36,7 +36,7 @@ export const PressPage = () => {
                 유형
               </th>
               <th className="py-3 md:p-3 text-center font-medium">제목</th>
-              <th className="w-18 md:w-24 py-3 md:p-3 text-center font-medium whitespace-nowrap">
+              <th className="w-18 md:w-32 py-3 md:p-3 text-center font-medium whitespace-nowrap">
                 보도날짜
               </th>
             </tr>
@@ -82,9 +82,7 @@ export const PressPage = () => {
                       to={pressDetailPath(press.id)}
                       className="inline-flex items-center gap-0 md:gap-1.5 font-medium text-foreground hover:underline"
                     >
-                      <span className="line-clamp-1 md:line-clamp-1">
-                        {press.title}
-                      </span>
+                      <span className="line-clamp-1">{press.title}</span>
                       {press.attachment ? (
                         <Paperclip
                           className="size-4 shrink-0 text-muted-foreground"
