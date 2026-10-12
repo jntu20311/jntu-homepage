@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { useForm } from "@refinedev/react-hook-form";
 import { useGetIdentity } from "@refinedev/core";
@@ -145,6 +145,7 @@ const Field = ({
   error,
 }: FieldProps) => {
   const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const rules = field.required
     ? { required: `${field.label}은(는) 필수입니다.` }
     : {};
@@ -171,6 +172,16 @@ const Field = ({
     } finally {
       setUploading(false);
     }
+  };
+
+  // 첨부 취소: 값/파일명을 비우고 file input 도 초기화(같은 파일 재선택 가능).
+  // 이미 업로드된 tmp 파일은 저장되지 않으면 cron 이 스윕한다.
+  const handleClear = () => {
+    setValue(field.name, "", { shouldDirty: true });
+    if (field.fileNameField) {
+      setValue(field.fileNameField, "", { shouldDirty: true });
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const label = (
@@ -282,13 +293,24 @@ const Field = ({
         <div>
           {label}
           {current && (
-            <img
-              src={current}
-              alt=""
-              className="mb-2 h-24 w-auto rounded border object-contain"
-            />
+            <div className="mb-2 flex items-end gap-2">
+              <img
+                src={current}
+                alt=""
+                className="h-24 w-auto rounded border object-contain"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleClear}
+              >
+                첨부파일 삭제
+              </Button>
+            </div>
           )}
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             className="text-sm border rounded-sm p-2 cursor-pointer hover:bg-gray-100"
@@ -314,11 +336,22 @@ const Field = ({
         <div>
           {label}
           {current && (
-            <p className="mb-1 text-xs text-muted-foreground">
-              현재: {currentName || current}
-            </p>
+            <div className="mb-1 flex items-center gap-2">
+              <p className="text-xs text-muted-foreground">
+                현재: {currentName || current}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleClear}
+              >
+                첨부파일 삭제
+              </Button>
+            </div>
           )}
           <input
+            ref={fileInputRef}
             type="file"
             className="text-sm border rounded-sm p-2 cursor-pointer hover:bg-gray-100"
             onChange={(e) =>
