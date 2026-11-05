@@ -50,7 +50,7 @@ export interface ResourceDef {
   canCreate?: boolean;
   canEdit?: boolean;
   canDelete?: boolean;
-  sorter?: { field: string; order: "asc" | "desc" };
+  sorter?: { field: string; order: "asc" | "desc" }[];
   /** richtext(CKEditor) 이미지 업로드 경로 구분 */
   postType?: string;
   /** 기본 키 컬럼명이 id 가 아닐 때 (예: terms.slug) */
@@ -90,7 +90,7 @@ export const resources: ResourceDef[] = [
   {
     name: "banners",
     label: "홈 배너",
-    sorter: { field: "sort_order", order: "asc" },
+    sorter: [{ field: "sort_order", order: "asc" }],
     list: [
       { name: "sort_order", label: "순서" },
       { name: "image_url", label: "이미지", type: "image" },
@@ -166,7 +166,10 @@ export const resources: ResourceDef[] = [
   {
     name: "press",
     label: "보도자료 및 성명서",
-    sorter: { field: "press_date", order: "desc" },
+    sorter: [
+      { field: "press_date", order: "desc" },
+      { field: "published_at", order: "desc" },
+    ],
     postType: "press",
     autoAuthor: true,
     list: [
@@ -212,7 +215,7 @@ export const resources: ResourceDef[] = [
   {
     name: "activities",
     label: "주요활동",
-    sorter: { field: "published_at", order: "desc" },
+    sorter: [{ field: "published_at", order: "desc" }],
     postType: "activities",
     autoAuthor: true,
     list: boardColumns,
@@ -221,7 +224,7 @@ export const resources: ResourceDef[] = [
   {
     name: "month_activities",
     label: "월별활동보고",
-    sorter: { field: "published_at", order: "desc" },
+    sorter: [{ field: "published_at", order: "desc" }],
     postType: "month_activities",
     autoAuthor: true,
     list: boardColumns,
@@ -230,7 +233,7 @@ export const resources: ResourceDef[] = [
   {
     name: "benefits",
     label: "조합원 혜택",
-    sorter: { field: "published_at", order: "desc" },
+    sorter: [{ field: "published_at", order: "desc" }],
     postType: "benefits",
     autoAuthor: true,
     list: boardColumns,
@@ -239,7 +242,7 @@ export const resources: ResourceDef[] = [
   {
     name: "terms",
     label: "약관",
-    sorter: { field: "effective_date", order: "desc" },
+    sorter: [{ field: "effective_date", order: "desc" }],
     list: [
       {
         name: "slug",

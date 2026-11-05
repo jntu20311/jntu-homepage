@@ -104,26 +104,42 @@ export const fetchAdjacentPosts = async (
       : base.eq("published", true);
   };
 
+  // 정렬 기준이 published_at 이 아니면(press_date 등) 동률일 때 published_at 으로 순서를 확정한다
+  const hasTieBreaker = orderColumn !== "published_at";
+  const selectColumns = hasTieBreaker
+    ? `${orderColumn}, published_at`
+    : orderColumn;
+
   const { data: cur, error: curError } = await supabase
     .from(table)
-    .select(orderColumn)
+    .select(selectColumns)
     .eq("id", id)
     .maybeSingle();
   if (curError) throw curError;
-  const value = (cur as unknown as Record<string, string> | null)?.[
-    orderColumn
-  ];
+  const curRow = cur as unknown as Record<string, string> | null;
+  const value = curRow?.[orderColumn];
   if (!value) return { prev: null, next: null };
+  const tieValue = curRow?.published_at;
+
+  const adjacent = (dir: "prev" | "next") => {
+    const asc = dir === "next";
+    const op = asc ? "gt" : "lt";
+    let query = selectPublished();
+    if (hasTieBreaker && tieValue) {
+      query = query.or(
+        `${orderColumn}.${op}."${value}",and(${orderColumn}.eq."${value}",published_at.${op}."${tieValue}")`,
+      );
+    } else {
+      query = query[op](orderColumn, value);
+    }
+    query = query.order(orderColumn, { ascending: asc });
+    if (hasTieBreaker) query = query.order("published_at", { ascending: asc });
+    return query.limit(1);
+  };
 
   const [prevRes, nextRes] = await Promise.all([
-    selectPublished()
-      .lt(orderColumn, value)
-      .order(orderColumn, { ascending: false })
-      .limit(1),
-    selectPublished()
-      .gt(orderColumn, value)
-      .order(orderColumn, { ascending: true })
-      .limit(1),
+    adjacent("prev"),
+    adjacent("next"),
   ]);
   if (prevRes.error) throw prevRes.error;
   if (nextRes.error) throw nextRes.error;
