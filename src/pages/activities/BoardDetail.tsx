@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  ChevronLeft,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  Eye,
-  ListIcon,
-} from "lucide-react";
-import type { UseQueryResult } from "@tanstack/react-query";
+import { ChevronLeft, Eye } from "lucide-react";
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { formatDate, formatNumber } from "@/shared/lib/format";
-import { incrementViews, type BoardItem } from "@/shared/api/board";
+import {
+  fetchAdjacentPosts,
+  incrementViews,
+  type BoardItem,
+} from "@/shared/api/board";
 import { HTMLViewer } from "@/widgets/html-viewer";
-import { routes } from "@/shared/configs/routes";
+import { PostNav } from "@/shared/ui/post-nav";
 
 interface BoardDetailProps {
   /** 엔티티 상세 조회 훅 (useActivity / usePolicy / useBenefit) */
@@ -30,6 +28,11 @@ export const BoardDetail = ({
   const { id } = useParams<{ id: string }>();
   const { data: item, isLoading } = useItem(id);
   const [viewed, setViewed] = useState(false);
+  const { data: adjacent } = useQuery({
+    queryKey: ["board-adjacent", table, id],
+    queryFn: () => fetchAdjacentPosts(table, id as string),
+    enabled: Boolean(id),
+  });
 
   // 글이 정상 조회된 뒤 1회 집계 (24시간 중복 방지는 incrementViews 내부)
   const hasItem = !!item;
@@ -78,33 +81,11 @@ export const BoardDetail = ({
       {/* CKEditor HTML 본문 */}
       <HTMLViewer content={item.content} />
 
-      <div className="border-t border-border pt-5">
-        <div className="flex items-center justify-between">
-          <Link
-            to={routes.ACTIVITIES_PRESS}
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-          >
-            <ChevronLeftIcon className="size-4" />
-            이전글
-          </Link>
-
-          <Link
-            to={backRoute}
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-          >
-            <ListIcon className="size-4" />
-            목록으로
-          </Link>
-
-          <Link
-            to={routes.ACTIVITIES_PRESS}
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-          >
-            다음글
-            <ChevronRightIcon className="size-4" />
-          </Link>
-        </div>
-      </div>
+      <PostNav
+        adjacent={adjacent}
+        listRoute={backRoute}
+        detailRoute={(itemId) => `${backRoute}/${itemId}`}
+      />
     </article>
   );
 };

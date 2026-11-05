@@ -4,6 +4,7 @@ export {
   usePressList,
   usePress,
   usePressPreview,
+  usePressAdjacent,
   pressListQuery,
   pressQuery,
   pressPreviewQuery,

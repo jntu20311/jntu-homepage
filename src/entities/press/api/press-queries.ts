@@ -3,7 +3,7 @@ import {
   useQuery,
   keepPreviousData,
 } from "@tanstack/react-query";
-import { fetchBoardPreview } from "@/shared/api/board";
+import { fetchAdjacentPosts, fetchBoardPreview } from "@/shared/api/board";
 import { fetchPressList, fetchPress } from "./press-api";
 
 export const pressKeys = {
@@ -11,6 +11,7 @@ export const pressKeys = {
   list: (page: number, pageSize: number) =>
     [...pressKeys.all, "list", page, pageSize] as const,
   detail: (id: string) => [...pressKeys.all, "detail", id] as const,
+  adjacent: (id: string) => [...pressKeys.all, "adjacent", id] as const,
   preview: () => [...pressKeys.all, "preview"] as const,
 };
 
@@ -28,6 +29,13 @@ export const pressQuery = (id: string | undefined) =>
     enabled: Boolean(id),
   });
 
+export const pressAdjacentQuery = (id: string | undefined) =>
+  queryOptions({
+    queryKey: pressKeys.adjacent(id ?? ""),
+    queryFn: () => fetchAdjacentPosts("press", id as string, "press_date"),
+    enabled: Boolean(id),
+  });
+
 export const pressPreviewQuery = () =>
   queryOptions({
     queryKey: pressKeys.preview(),
@@ -38,3 +46,5 @@ export const usePressList = (page: number, pageSize: number) =>
   useQuery(pressListQuery(page, pageSize));
 export const usePress = (id: string | undefined) => useQuery(pressQuery(id));
 export const usePressPreview = () => useQuery(pressPreviewQuery());
+export const usePressAdjacent = (id: string | undefined) =>
+  useQuery(pressAdjacentQuery(id));
