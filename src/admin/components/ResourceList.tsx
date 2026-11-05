@@ -7,21 +7,20 @@ import type { ColumnDef, ResourceDef } from "../config";
 const renderCell = (col: ColumnDef, row: Record<string, unknown>) => {
   const value = row[col.name];
   const mapped =
-    col.map && value != null ? (col.map[String(value)] ?? String(value)) : value;
-  if (col.type === "date" && value)
-    return formatDate(String(value));
+    col.map && value != null
+      ? (col.map[String(value)] ?? String(value))
+      : value;
+  if (col.type === "date" && value) return formatDate(String(value));
   if (col.type === "datetime")
     return value ? formatDateTime(String(value)) : "비공개";
-  if (col.type === "boolean")
-    return value ? "✓" : "—";
+  if (col.type === "boolean") return value ? "✓" : "—";
   if (col.type === "badge" && mapped)
     return (
       <span className="rounded bg-secondary px-1.5 py-0.5 text-xs">
         {String(mapped)}
       </span>
     );
-  if (col.map)
-    return mapped == null ? "—" : String(mapped);
+  if (col.map) return mapped == null ? "—" : String(mapped);
   if (col.type === "image" && value)
     return (
       <img
@@ -43,9 +42,7 @@ export const ResourceList = ({ resource }: { resource: ResourceDef }) => {
   } = useTable({
     resource: resource.name,
     dataProviderName: resource.dataProviderName,
-    sorters: resource.sorter
-      ? { initial: [resource.sorter] }
-      : undefined,
+    sorters: resource.sorter ? { initial: [...resource.sorter] } : undefined,
     pagination: { pageSize: 20 },
     meta: resource.idColumnName
       ? { idColumnName: resource.idColumnName }
@@ -94,7 +91,10 @@ export const ResourceList = ({ resource }: { resource: ResourceDef }) => {
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={resource.list.length + 1} className="px-3 py-6 text-center text-muted-foreground">
+                <td
+                  colSpan={resource.list.length + 1}
+                  className="px-3 py-6 text-center text-muted-foreground"
+                >
                   불러오는 중...
                 </td>
               </tr>
@@ -104,7 +104,10 @@ export const ResourceList = ({ resource }: { resource: ResourceDef }) => {
                 const id = idFor(row);
                 const protectedRow = Boolean(row.is_protected);
                 return (
-                  <tr key={id} className="border-b last:border-0 hover:bg-muted/20">
+                  <tr
+                    key={id}
+                    className="border-b last:border-0 hover:bg-muted/20"
+                  >
                     {resource.list.map((c) => (
                       <td key={c.name} className="px-3 py-2 align-middle">
                         {renderCell(c, row)}
@@ -113,7 +116,9 @@ export const ResourceList = ({ resource }: { resource: ResourceDef }) => {
                     <td className="px-3 py-2 text-right whitespace-nowrap">
                       {canEdit && (
                         <Button asChild size="xs" variant="ghost">
-                          <Link to={`/admin/${resource.name}/edit/${id}`}>수정</Link>
+                          <Link to={`/admin/${resource.name}/edit/${id}`}>
+                            수정
+                          </Link>
                         </Button>
                       )}
                       {canDelete && !protectedRow && (
@@ -139,7 +144,10 @@ export const ResourceList = ({ resource }: { resource: ResourceDef }) => {
               })}
             {!isLoading && (data ?? []).length === 0 && (
               <tr>
-                <td colSpan={resource.list.length + 1} className="px-3 py-6 text-center text-muted-foreground">
+                <td
+                  colSpan={resource.list.length + 1}
+                  className="px-3 py-6 text-center text-muted-foreground"
+                >
                   데이터가 없습니다.
                 </td>
               </tr>

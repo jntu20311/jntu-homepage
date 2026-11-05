@@ -35,6 +35,7 @@ export const fetchPressList = async (
     .select("*", { count: "exact" })
     .lte("published_at", new Date().toISOString())
     .order("press_date", { ascending: false })
+    .order("published_at", { ascending: false })
     .range(from, to);
   if (error) throw error;
   return {
