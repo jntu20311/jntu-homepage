@@ -97,10 +97,12 @@ export const fetchAdjacentPosts = async (
   orderColumn = "published_at",
   mode: PublishMode = "schedule",
 ): Promise<AdjacentPosts> => {
-  const published = <T extends { lte: Function; eq: Function }>(q: T) =>
-    mode === "schedule"
-      ? q.lte("published_at", new Date().toISOString())
-      : q.eq("published", true);
+  const selectPublished = () => {
+    const base = supabase.from(table).select("id, title");
+    return mode === "schedule"
+      ? base.lte("published_at", new Date().toISOString())
+      : base.eq("published", true);
+  };
 
   const { data: cur, error: curError } = await supabase
     .from(table)
@@ -114,11 +116,11 @@ export const fetchAdjacentPosts = async (
   if (!value) return { prev: null, next: null };
 
   const [prevRes, nextRes] = await Promise.all([
-    published(supabase.from(table).select("id, title"))
+    selectPublished()
       .lt(orderColumn, value)
       .order(orderColumn, { ascending: false })
       .limit(1),
-    published(supabase.from(table).select("id, title"))
+    selectPublished()
       .gt(orderColumn, value)
       .order(orderColumn, { ascending: true })
       .limit(1),
