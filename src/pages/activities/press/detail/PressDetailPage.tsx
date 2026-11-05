@@ -1,13 +1,15 @@
 import { Link, useParams } from "react-router-dom";
 import { ChevronLeft, Download } from "lucide-react";
-import { PressTypeBadge, usePress } from "@/entities/press";
+import { PressTypeBadge, usePress, usePressAdjacent } from "@/entities/press";
 import { routes } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
+import { PostNav } from "@/shared/ui/post-nav";
 import { HTMLViewer } from "@/widgets/html-viewer";
 
 export const PressDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: press, isLoading: loading } = usePress(id);
+  const { data: adjacent } = usePressAdjacent(id);
 
   if (loading) {
     return <p className="text-muted-foreground">불러오는 중...</p>;
@@ -59,15 +61,11 @@ export const PressDetailPage = () => {
       {/* HTML 에디터 내용 렌더링 */}
       <HTMLViewer content={press.content} />
 
-      <div className="border-t border-border pt-5">
-        <Link
-          to={routes.ACTIVITIES_PRESS}
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-        >
-          <ChevronLeft className="size-4" />
-          목록으로
-        </Link>
-      </div>
+      <PostNav
+        adjacent={adjacent}
+        listRoute={routes.ACTIVITIES_PRESS}
+        detailRoute={(pressId) => `${routes.ACTIVITIES_PRESS}/${pressId}`}
+      />
     </article>
   );
 };

@@ -78,6 +78,63 @@ export const fetchBoardOne = async (
   return data ? mapBoardRow(data as unknown as BoardRow) : null;
 };
 
+export interface AdjacentItem {
+  id: string;
+  title: string;
+}
+
+export interface AdjacentPosts {
+  /** 이전글 (목록 정렬 기준으로 더 오래된 글) */
+  prev: AdjacentItem | null;
+  /** 다음글 (목록 정렬 기준으로 더 최신 글) */
+  next: AdjacentItem | null;
+}
+
+/** 현재 글 기준 이전글/다음글 조회 (공개된 글만, orderColumn 기준) */
+export const fetchAdjacentPosts = async (
+  table: string,
+  id: string,
+  orderColumn = "published_at",
+  mode: PublishMode = "schedule",
+): Promise<AdjacentPosts> => {
+  const selectPublished = () => {
+    const base = supabase.from(table).select("id, title");
+    return mode === "schedule"
+      ? base.lte("published_at", new Date().toISOString())
+      : base.eq("published", true);
+  };
+
+  const { data: cur, error: curError } = await supabase
+    .from(table)
+    .select(orderColumn)
+    .eq("id", id)
+    .maybeSingle();
+  if (curError) throw curError;
+  const value = (cur as unknown as Record<string, string> | null)?.[
+    orderColumn
+  ];
+  if (!value) return { prev: null, next: null };
+
+  const [prevRes, nextRes] = await Promise.all([
+    selectPublished()
+      .lt(orderColumn, value)
+      .order(orderColumn, { ascending: false })
+      .limit(1),
+    selectPublished()
+      .gt(orderColumn, value)
+      .order(orderColumn, { ascending: true })
+      .limit(1),
+  ]);
+  if (prevRes.error) throw prevRes.error;
+  if (nextRes.error) throw nextRes.error;
+
+  const toItem = (rows: unknown): AdjacentItem | null => {
+    const r = (rows as { id: number; title: string }[] | null)?.[0];
+    return r ? { id: String(r.id), title: r.title } : null;
+  };
+  return { prev: toItem(prevRes.data), next: toItem(nextRes.data) };
+};
+
 export interface PreviewItem {
   id: string;
   title: string;

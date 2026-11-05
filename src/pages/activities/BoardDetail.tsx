@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ChevronLeft, Eye } from "lucide-react";
-import type { UseQueryResult } from "@tanstack/react-query";
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import { formatDate, formatNumber } from "@/shared/lib/format";
-import { incrementViews, type BoardItem } from "@/shared/api/board";
+import {
+  fetchAdjacentPosts,
+  incrementViews,
+  type BoardItem,
+} from "@/shared/api/board";
 import { HTMLViewer } from "@/widgets/html-viewer";
+import { PostNav } from "@/shared/ui/post-nav";
 
 interface BoardDetailProps {
   /** 엔티티 상세 조회 훅 (useActivity / usePolicy / useBenefit) */
@@ -23,6 +28,11 @@ export const BoardDetail = ({
   const { id } = useParams<{ id: string }>();
   const { data: item, isLoading } = useItem(id);
   const [viewed, setViewed] = useState(false);
+  const { data: adjacent } = useQuery({
+    queryKey: ["board-adjacent", table, id],
+    queryFn: () => fetchAdjacentPosts(table, id as string),
+    enabled: Boolean(id),
+  });
 
   // 글이 정상 조회된 뒤 1회 집계 (24시간 중복 방지는 incrementViews 내부)
   const hasItem = !!item;
@@ -32,16 +42,6 @@ export const BoardDetail = ({
     incrementViews(table, id).then(setViewed);
   }, [table, id, hasItem]);
 
-  const backLink = (
-    <Link
-      to={backRoute}
-      className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-    >
-      <ChevronLeft className="size-4" />
-      목록으로
-    </Link>
-  );
-
   if (isLoading) {
     return <p className="text-muted-foreground">불러오는 중...</p>;
   }
@@ -50,7 +50,13 @@ export const BoardDetail = ({
     return (
       <div className="flex flex-col items-start gap-4">
         <p className="text-muted-foreground">존재하지 않는 게시물입니다.</p>
-        {backLink}
+        <Link
+          to={backRoute}
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+        >
+          <ChevronLeft className="size-4" />
+          목록으로
+        </Link>
       </div>
     );
   }
@@ -75,7 +81,11 @@ export const BoardDetail = ({
       {/* CKEditor HTML 본문 */}
       <HTMLViewer content={item.content} />
 
-      <div className="border-t border-border pt-5">{backLink}</div>
+      <PostNav
+        adjacent={adjacent}
+        listRoute={backRoute}
+        detailRoute={(itemId) => `${backRoute}/${itemId}`}
+      />
     </article>
   );
 };
