@@ -1,5 +1,11 @@
 import { Link, useParams } from "react-router-dom";
-import { ChevronLeft, Download } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Download,
+  ListIcon,
+} from "lucide-react";
 import { PressTypeBadge, usePress } from "@/entities/press";
 import { routes } from "@/shared/configs/routes";
 import { formatDate } from "@/shared/lib/format";
@@ -60,13 +66,31 @@ export const PressDetailPage = () => {
       <HTMLViewer content={press.content} />
 
       <div className="border-t border-border pt-5">
-        <Link
-          to={routes.ACTIVITIES_PRESS}
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-        >
-          <ChevronLeft className="size-4" />
-          목록으로
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            to={routes.ACTIVITIES_PRESS}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            <ChevronLeftIcon className="size-4" />
+            이전글
+          </Link>
+
+          <Link
+            to={routes.ACTIVITIES_PRESS}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            <ListIcon className="size-4" />
+            목록으로
+          </Link>
+
+          <Link
+            to={routes.ACTIVITIES_PRESS}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            다음글
+            <ChevronRightIcon className="size-4" />
+          </Link>
+        </div>
       </div>
     </article>
   );

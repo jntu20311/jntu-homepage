@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ChevronLeft, Eye } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Eye,
+  ListIcon,
+} from "lucide-react";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { formatDate, formatNumber } from "@/shared/lib/format";
 import { incrementViews, type BoardItem } from "@/shared/api/board";
 import { HTMLViewer } from "@/widgets/html-viewer";
+import { routes } from "@/shared/configs/routes";
 
 interface BoardDetailProps {
   /** 엔티티 상세 조회 훅 (useActivity / usePolicy / useBenefit) */
@@ -32,16 +39,6 @@ export const BoardDetail = ({
     incrementViews(table, id).then(setViewed);
   }, [table, id, hasItem]);
 
-  const backLink = (
-    <Link
-      to={backRoute}
-      className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-    >
-      <ChevronLeft className="size-4" />
-      목록으로
-    </Link>
-  );
-
   if (isLoading) {
     return <p className="text-muted-foreground">불러오는 중...</p>;
   }
@@ -50,7 +47,13 @@ export const BoardDetail = ({
     return (
       <div className="flex flex-col items-start gap-4">
         <p className="text-muted-foreground">존재하지 않는 게시물입니다.</p>
-        {backLink}
+        <Link
+          to={backRoute}
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+        >
+          <ChevronLeft className="size-4" />
+          목록으로
+        </Link>
       </div>
     );
   }
@@ -75,7 +78,33 @@ export const BoardDetail = ({
       {/* CKEditor HTML 본문 */}
       <HTMLViewer content={item.content} />
 
-      <div className="border-t border-border pt-5">{backLink}</div>
+      <div className="border-t border-border pt-5">
+        <div className="flex items-center justify-between">
+          <Link
+            to={routes.ACTIVITIES_PRESS}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            <ChevronLeftIcon className="size-4" />
+            이전글
+          </Link>
+
+          <Link
+            to={backRoute}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            <ListIcon className="size-4" />
+            목록으로
+          </Link>
+
+          <Link
+            to={routes.ACTIVITIES_PRESS}
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            다음글
+            <ChevronRightIcon className="size-4" />
+          </Link>
+        </div>
+      </div>
     </article>
   );
 };
